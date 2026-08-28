@@ -1,1440 +1,1308 @@
 <!DOCTYPE html>
-<html lang="th" class="dark">
+<html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>SmartSave Banking — Mobile Saving Platform</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        bank: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            500: '#10b981',
-                            600: '#059669',
-                            700: '#047857',
-                            800: '#065f46',
-                            900: '#064e3b',
-                            accent: '#3b82f6',
-                            darkbg: '#0b0f19',
-                            darkcard: '#151c2c',
-                            darkborder: '#2a3447'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'Kanit', '-apple-system', 'sans-serif']
-                    }
-                }
-            }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>SmartSave Banking</title>
+  <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIlNtYXJ0U2F2ZSBCYW5raW5nIiwKICAic2hvcnRfbmFtZSI6ICJNtYXJ0U2F2ZSIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMGYxNzJhIiwKICAidGhlbWVfY29sb3IiOiAiIzBkOTQ4OCIKfQ==">
+  <meta name="theme-color" content="#0f172a">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+              900: '#134e4a',
+            },
+            darkbg: '#090d16',
+            darkcard: '#111827',
+            darkborder: '#1f2937'
+          }
         }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- Lucide / SVG Icons Styling -->
-    <style>
-        body {
-            font-family: 'Inter', 'Kanit', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-        }
-        .glass-card {
-            background: rgba(21, 28, 44, 0.75);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .light .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 0, 0, 0.06);
-        }
-        /* Hide scrollbars for slick mobile feel */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .safe-bottom { padding-bottom: max(1.25rem, env(safe-area-inset-bottom)); }
-        
-        /* Shimmer loading animation */
-        @keyframes pulse-slow {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-        .animate-pulse-slow { animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-    </style>
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap">
+  <style>
+    * {
+      font-family: 'Prompt', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    body {
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .dark body {
+      background-color: #090d16;
+      color: #f8fafc;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+    .dark .glass-card {
+      background: rgba(17, 24, 39, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(31, 41, 55, 0.8);
+    }
+    /* Hide scrollbar */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
-<body class="bg-bank-darkbg text-slate-100 dark:bg-bank-darkbg dark:text-slate-100 transition-colors duration-200 min-h-screen flex flex-col antialiased">
+<body class="min-h-screen pb-20 md:pb-0 md:pl-64 antialiased selection:bg-brand-500 selection:text-white">
 
-    <!-- Authentication Modal / View Layer -->
-    <div id="authOverlay" class="fixed inset-0 z-50 bg-bank-darkbg flex items-center justify-center p-4">
-        <div class="w-full max-w-md bg-bank-darkcard rounded-3xl p-6 border border-bank-darkborder shadow-2xl relative overflow-hidden">
-            <div class="text-center mb-6">
-                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-bank-600/20 text-bank-500 mb-3 border border-bank-500/30">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                </div>
-                <h1 class="text-2xl font-bold tracking-tight text-white" id="authTitle">SmartSave Banking</h1>
-                <p class="text-xs text-slate-400 mt-1" id="authSubtitle">ระบบบริหารการออมเงินส่วนบุคคลระดับสูง</p>
-            </div>
-
-            <!-- Login Form -->
-            <form id="loginForm" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">Username / User ID</label>
-                    <input type="text" id="loginUsername" required class="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/60 rounded-xl text-white focus:outline-none focus:border-bank-500 transition text-sm" placeholder="กรอกชื่อผู้ใช้งาน">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">Password</label>
-                    <input type="password" id="loginPassword" required class="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/60 rounded-xl text-white focus:outline-none focus:border-bank-500 transition text-sm" placeholder="••••••••">
-                </div>
-
-                <!-- Facial Authentication Status Indicator -->
-                <div id="facialVerificationNotice" class="hidden p-3 bg-bank-600/10 border border-bank-500/30 rounded-xl flex items-center gap-3">
-                    <svg class="w-5 h-5 text-bank-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                    <div class="text-xs text-slate-300">
-                        <span class="font-medium text-emerald-400">ยืนยันอัตลักษณ์บุคคลแล้ว</span>
-                        <p class="text-[10px] text-slate-400">ล็อกบัญชีด้วยภาพถ่ายใบหน้าเรียบร้อย</p>
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full py-3.5 bg-bank-600 hover:bg-bank-500 text-white font-semibold rounded-xl shadow-lg shadow-bank-600/30 transition text-sm flex items-center justify-center gap-2">
-                    <span>เข้าสู่ระบบ</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </button>
-
-                <div class="text-center pt-2">
-                    <button type="button" id="switchToRegister" class="text-xs text-slate-400 hover:text-bank-500 transition">ยังไม่มีบัญชี? <span class="text-bank-500 font-medium underline">ลงทะเบียนใช้งานครั้งแรก</span></button>
-                </div>
-            </form>
-
-            <!-- Registration Form with Photo Verification -->
-            <form id="registerForm" class="space-y-4 hidden">
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">ชื่อ-นามสกุล / Display Name</label>
-                    <input type="text" id="regDisplayName" required class="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/60 rounded-xl text-white focus:outline-none focus:border-bank-500 text-sm" placeholder="สมชาย ใจดี">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">Username</label>
-                    <input type="text" id="regUsername" required class="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/60 rounded-xl text-white focus:outline-none focus:border-bank-500 text-sm" placeholder="somchai88">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-medium text-slate-300 mb-1">Password</label>
-                        <input type="password" id="regPassword" required class="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/60 rounded-xl text-white focus:outline-none focus:border-bank-500 text-sm" placeholder="••••••••">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-300 mb-1">Confirm Password</label>
-                        <input type="password" id="regConfirmPassword" required class="w-full px-4 py-3 bg-slate-900/60 border border-slate-700/60 rounded-xl text-white focus:outline-none focus:border-bank-500 text-sm" placeholder="••••••••">
-                    </div>
-                </div>
-
-                <!-- WebRTC Camera Photo Capture Section -->
-                <div class="border border-slate-700/60 rounded-2xl p-3 bg-slate-900/40">
-                    <label class="block text-xs font-medium text-emerald-400 mb-2 flex items-center justify-between">
-                        <span>ถ่ายรูปยืนยันตัวตน (ครั้งแรกเท่านั้น)</span>
-                        <span class="text-[10px] text-amber-400">ล็อก 1 User / 1 ใบหน้า</span>
-                    </label>
-                    <div class="relative w-full h-44 bg-slate-950 rounded-xl overflow-hidden flex items-center justify-center border border-slate-800">
-                        <video id="webcamVideo" autoplay playsinline class="w-full h-full object-cover hidden"></video>
-                        <canvas id="webcamCanvas" class="hidden w-full h-full object-cover"></canvas>
-                        
-                        <div id="cameraPlaceholder" class="text-center p-4">
-                            <svg class="w-8 h-8 mx-auto text-slate-500 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h0.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path></svg>
-                            <p class="text-xs text-slate-400">กดปุ่มด้านล่างเพื่อเปิดกล้องถ่ายภาพ</p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-2 mt-3">
-                        <button type="button" id="startCameraBtn" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-xs text-white rounded-lg border border-slate-600">เปิดกล้อง</button>
-                        <button type="button" id="captureSnapBtn" disabled class="flex-1 py-2 bg-emerald-700 hover:bg-emerald-600 disabled:opacity-50 text-xs text-white rounded-lg font-medium">บันทึกภาพถ่าย</button>
-                    </div>
-                </div>
-
-                <button type="submit" id="submitRegisterBtn" disabled class="w-full py-3.5 bg-bank-600 hover:bg-bank-500 text-white font-semibold rounded-xl shadow-lg shadow-bank-600/30 transition text-sm">
-                    ยืนยันการลงทะเบียน
-                </button>
-
-                <div class="text-center pt-1">
-                    <button type="button" id="switchToLogin" class="text-xs text-slate-400 hover:text-white">มีบัญชีอยู่แล้ว? <span class="text-bank-500 font-medium">เข้าสู่ระบบ</span></button>
-                </div>
-            </form>
+  <!-- ================= AUTH SECTION (Login / Register / Photo Verification) ================= -->
+  <div id="authContainer" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md">
+    <div class="w-full max-w-md bg-white dark:bg-darkcard rounded-3xl p-6 shadow-2xl border border-slate-200 dark:border-darkborder transition-all">
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-brand-500/10 text-brand-600 dark:text-brand-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
         </div>
+        <h2 id="authTitle" class="text-2xl font-bold text-slate-900 dark:text-white">SmartSave Banking</h2>
+        <p id="authSubtitle" class="text-sm text-slate-500 dark:text-slate-400 mt-1">ระบบบริหารการออมเงินดิจิทัล</p>
+      </div>
+
+      <!-- Form Login -->
+      <form id="loginForm" class="space-y-4" onsubmit="handleLogin(event)">
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">ชื่อผู้ใช้ / User ID</label>
+          <input type="text" id="loginUsername" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">รหัสผ่าน</label>
+          <input type="password" id="loginPassword" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition">
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-lg shadow-brand-500/20 active:scale-[0.98] transition">เข้าสู่ระบบ</button>
+        <p class="text-center text-xs text-slate-500 dark:text-slate-400 mt-4">
+          ยังไม่มีบัญชีผู้ใช้? <button type="button" onclick="toggleAuthMode('register')" class="text-brand-600 dark:text-brand-500 font-semibold hover:underline">ลงทะเบียนที่นี่</button>
+        </p>
+      </form>
+
+      <!-- Form Register -->
+      <form id="registerForm" class="space-y-4 hidden" onsubmit="handleRegister(event)">
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">ชื่อ-นามสกุล / Display Name</label>
+          <input type="text" id="regDisplayName" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Username</label>
+          <input type="text" id="regUsername" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">รหัสผ่าน</label>
+          <input type="password" id="regPassword" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">ยืนยันรหัสผ่าน</label>
+          <input type="password" id="regConfirmPassword" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition">
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-lg shadow-brand-500/20 active:scale-[0.98] transition">ลงทะเบียน</button>
+        <p class="text-center text-xs text-slate-500 dark:text-slate-400 mt-4">
+          มีบัญชีอยู่แล้ว? <button type="button" onclick="toggleAuthMode('login')" class="text-brand-600 dark:text-brand-500 font-semibold hover:underline">เข้าสู่ระบบ</button>
+        </p>
+      </form>
+
+      <!-- Face Capture / First-time Verification -->
+      <div id="verifyStep" class="hidden text-center space-y-4">
+        <div class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-600 dark:text-amber-400 text-xs">
+          ยืนยันตัวตนด้วยการถ่ายรูปครั้งแรกสำหรับการเข้าใช้งาน (ยืนยันได้เพียงครั้งเดียวต่อ 1 บัญชีผู้ใช้)
+        </div>
+        <div class="relative w-48 h-48 mx-auto rounded-full overflow-hidden border-4 border-brand-500 bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+          <video id="webcam" autoplay playsinline class="w-full h-full object-cover hidden"></video>
+          <canvas id="photoCanvas" class="w-full h-full object-cover hidden"></canvas>
+          <div id="cameraPlaceholder" class="text-slate-400 flex flex-col items-center">
+            <svg class="w-10 h-10 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h0.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span class="text-xs">กล้องปิดอยู่</span>
+          </div>
+        </div>
+        <div class="flex gap-2 justify-center">
+          <button type="button" id="startCamBtn" onclick="startCamera()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-white rounded-xl text-xs font-semibold">เปิดกล้อง</button>
+          <button type="button" id="captureBtn" onclick="capturePhoto()" disabled class="px-4 py-2 bg-brand-600 text-white rounded-xl text-xs font-semibold disabled:opacity-50">ถ่ายภาพ</button>
+        </div>
+        <button type="button" id="confirmVerifyBtn" onclick="submitVerification()" disabled class="w-full py-3 bg-brand-600 text-white font-semibold rounded-xl disabled:opacity-50 transition">ยืนยันตัวตนและเข้าใช้งาน</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= TOP HEADER (Main Layout) ================= -->
+  <header class="sticky top-0 z-30 bg-white/80 dark:bg-darkbg/80 backdrop-blur-md border-b border-slate-200 dark:border-darkborder px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-500 flex items-center justify-center font-bold text-sm" id="userAvatar">
+        U
+      </div>
+      <div>
+        <h1 class="text-xs text-slate-500 dark:text-slate-400">ยินดีต้อนรับ</h1>
+        <p class="text-sm font-semibold text-slate-800 dark:text-slate-200" id="headerDisplayName">User</p>
+      </div>
     </div>
 
-    <!-- Main Banking App Interface -->
-    <div id="appContainer" class="hidden flex-1 flex flex-col md:flex-row max-w-7xl w-full mx-auto relative">
-        
-        <!-- Desktop Sidebar Navigation -->
-        <aside class="hidden md:flex flex-col w-64 bg-bank-darkcard border-r border-bank-darkborder p-5 sticky top-0 h-screen justify-between">
-            <div class="space-y-6">
-                <!-- App Brand -->
-                <div class="flex items-center gap-3 px-2">
-                    <div class="w-10 h-10 rounded-xl bg-bank-600 flex items-center justify-center text-white shadow-lg shadow-bank-600/40 font-bold text-lg">
-                        S
-                    </div>
-                    <div>
-                        <h2 class="font-bold text-base text-white tracking-tight leading-none">SmartSave</h2>
-                        <span class="text-[10px] tracking-wider text-emerald-400 uppercase font-semibold">Banking Pro</span>
-                    </div>
-                </div>
+    <!-- Right Utility Group -->
+    <div class="flex items-center gap-2">
+      <!-- Maintenance/Off-peak Warning Indicator -->
+      <div id="maintenanceBadge" class="hidden px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-[11px] font-medium flex items-center gap-1">
+        <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+        <span>ช่วงเวลาพักระบบ (23:00-23:30)</span>
+      </div>
 
-                <!-- User Quick Info -->
-                <div class="p-3 bg-slate-900/60 border border-slate-800 rounded-2xl flex items-center gap-3">
-                    <img id="userAvatarDesktop" src="https://placehold.co/80x80/059669/white?text=User" class="w-10 h-10 rounded-full object-cover border border-emerald-500/40">
-                    <div class="overflow-hidden">
-                        <p id="userNameDesktop" class="text-xs font-semibold text-white truncate">--</p>
-                        <span id="userRankDesktop" class="inline-block text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">Beginner</span>
-                    </div>
-                </div>
+      <!-- Realtime Date Display -->
+      <div id="realtimeDate" class="hidden sm:block text-xs text-slate-500 dark:text-slate-400 font-mono">--:--</div>
 
-                <!-- Nav Items -->
-                <nav class="space-y-1">
-                    <button data-target="dashboard" class="nav-btn active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 hover:text-white transition">
-                        <svg class="w-5 h-5 text-bank-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                        Dashboard
-                    </button>
-                    <button data-target="savings" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 hover:text-white transition">
-                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        รายการออม (Savings)
-                    </button>
-                    <button data-target="goals" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 hover:text-white transition">
-                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        เป้าหมาย (Goals)
-                    </button>
-                    <button data-target="analytics" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 hover:text-white transition">
-                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                        วิเคราะห์ (Analytics)
-                    </button>
-                    <button data-target="plans" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 hover:text-white transition">
-                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        แผนออมเงิน (Plan)
-                    </button>
-                    <button data-target="calendar" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 hover:text-white transition">
-                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        ปฏิทินการออม
-                    </button>
-                    <button data-target="settings" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800/60 hover:text-white transition">
-                        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
-                        ตั้งค่า (Settings)
-                    </button>
-                </nav>
-            </div>
-
-            <button id="logoutBtnDesktop" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-medium text-red-400 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                ออกจากระบบ
-            </button>
-        </aside>
-
-        <!-- Main Content Area -->
-        <main class="flex-1 flex flex-col min-w-0 min-h-screen pb-24 md:pb-8">
-            
-            <!-- Mobile Header / Top Bar -->
-            <header class="sticky top-0 z-30 bg-bank-darkbg/90 backdrop-blur-md px-4 py-3 border-b border-bank-darkborder flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <img id="userAvatarMobile" src="https://placehold.co/80x80/059669/white?text=User" class="w-9 h-9 rounded-full object-cover border border-bank-500/40">
-                    <div>
-                        <div class="text-[10px] text-slate-400 leading-tight">ยินดีต้อนรับคุณ</div>
-                        <p id="userNameMobile" class="text-xs font-bold text-white truncate max-w-[140px]">--</p>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-2">
-                    <!-- Notification Bell Button -->
-                    <button id="notiBellBtn" class="relative p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v1.341C7.67 7.165 6 9.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 01-6 0v-1m6 0H9"></path></svg>
-                        <span id="notiDot" class="hidden absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-bank-darkbg"></span>
-                    </button>
-                    <!-- Quick Theme Switcher -->
-                    <button id="themeToggleBtn" class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-                    </button>
-                </div>
-            </header>
-
-            <!-- Dynamic Content Views Container -->
-            <div id="viewsWrapper" class="p-4 sm:p-6 space-y-6 flex-1">
-                
-                <!-- SECTION 1: DASHBOARD -->
-                <section id="view-dashboard" class="view-section space-y-6">
-                    
-                    <!-- Digital Banking Account Card -->
-                    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-600 via-bank-700 to-slate-900 p-6 text-white shadow-2xl border border-emerald-500/20">
-                        <div class="absolute -right-8 -bottom-8 w-40 h-40 bg-emerald-400/10 rounded-full blur-2xl"></div>
-                        
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs uppercase font-medium tracking-wider text-emerald-200/80">Total Savings Balance</span>
-                            <span id="rankBadge" class="px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[10px] font-semibold text-emerald-300 border border-white/10">Master Saver</span>
-                        </div>
-
-                        <!-- Main Big Balance Display -->
-                        <div class="mb-6">
-                            <h2 id="totalSavingsDisplay" class="text-3xl sm:text-4xl font-extrabold tracking-tight">฿ 0.00</h2>
-                            <p class="text-[11px] text-emerald-200/70 mt-1">อัปเดตอัตโนมัติ Real-time</p>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-4 pt-4 border-t border-white/10">
-                            <div>
-                                <span class="text-[10px] text-emerald-200/70 block">เดือนนี้ (This Month)</span>
-                                <span id="monthlySavingDisplay" class="text-sm font-semibold text-emerald-300">+ ฿0.00</span>
-                            </div>
-                            <div>
-                                <span class="text-[10px] text-emerald-200/70 block">วันนี้ (Today's Saving)</span>
-                                <span id="todaySavingDisplay" class="text-sm font-semibold text-white">฿0.00</span>
-                            </div>
-                        </div>
-
-                        <!-- Action Button -->
-                        <div class="mt-6 flex gap-3">
-                            <button id="openAddSavingModal" class="flex-1 py-3 bg-white text-bank-900 font-bold rounded-2xl text-xs hover:bg-emerald-50 transition shadow-lg flex items-center justify-center gap-2">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
-                                บันทึกเงินออม (Add Saving)
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Stat Metric Cards -->
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                        <div class="bg-bank-darkcard p-4 rounded-2xl border border-bank-darkborder">
-                            <div class="flex items-center gap-2 text-slate-400 mb-1">
-                                <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                                <span class="text-[11px]">Saving Streak</span>
-                            </div>
-                            <div class="flex items-baseline gap-1">
-                                <span id="dashStreakVal" class="text-xl font-bold text-white">0</span>
-                                <span class="text-xs text-slate-400">วันติดกัน</span>
-                            </div>
-                        </div>
-
-                        <div class="bg-bank-darkcard p-4 rounded-2xl border border-bank-darkborder">
-                            <div class="flex items-center gap-2 text-slate-400 mb-1">
-                                <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <span class="text-[11px]">Active Goals</span>
-                            </div>
-                            <div class="flex items-baseline gap-1">
-                                <span id="dashActiveGoalsVal" class="text-xl font-bold text-white">0</span>
-                                <span class="text-xs text-slate-400">เป้าหมาย</span>
-                            </div>
-                        </div>
-
-                        <div class="col-span-2 sm:col-span-1 bg-bank-darkcard p-4 rounded-2xl border border-bank-darkborder">
-                            <div class="flex items-center gap-2 text-slate-400 mb-1">
-                                <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                <span class="text-[11px]">จำนวนรายการ</span>
-                            </div>
-                            <div class="flex items-baseline gap-1">
-                                <span id="dashTotalTxVal" class="text-xl font-bold text-white">0</span>
-                                <span class="text-xs text-slate-400">ครั้ง</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Recent Transactions Section -->
-                    <div class="bg-bank-darkcard rounded-2xl border border-bank-darkborder p-5">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-sm font-bold text-white">รายการออมล่าสุด</h3>
-                            <button id="viewAllSavingsBtn" class="text-xs text-bank-500 font-medium hover:underline">ดูทั้งหมด</button>
-                        </div>
-                        <div id="recentSavingsList" class="space-y-3">
-                            <!-- Empty State Rendered Dynamically -->
-                        </div>
-                    </div>
-                </section>
-
-                <!-- SECTION 2: SAVINGS HISTORY -->
-                <section id="view-savings" class="view-section hidden space-y-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <h2 class="text-lg font-bold text-white">ประวัติการออมเงินทั้งหมด</h2>
-                        <button id="openAddSavingModalSec" class="py-2.5 px-4 bg-bank-600 hover:bg-bank-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 shadow-md">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                            เพิ่มรายการออม
-                        </button>
-                    </div>
-
-                    <!-- Search & Filter Controls -->
-                    <div class="bg-bank-darkcard p-3.5 rounded-2xl border border-bank-darkborder grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div class="relative">
-                            <input type="text" id="historySearchInput" placeholder="ค้นหาตามโน้ต หรือหมวดหมู่..." class="w-full pl-9 pr-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-bank-500">
-                            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        </div>
-                        <select id="historyCategoryFilter" class="bg-slate-900 border border-slate-700 text-xs text-white rounded-xl px-3 py-2 focus:outline-none">
-                            <option value="ALL">ทุกหมวดหมู่ (All Categories)</option>
-                            <option value="General">ทั่วไป (General)</option>
-                            <option value="Emergency">เงินสำรองฉุกเฉิน</option>
-                            <option value="Investment">เพื่อการลงทุน</option>
-                            <option value="Goal">สำหรับเป้าหมาย</option>
-                        </select>
-                        <select id="historySortFilter" class="bg-slate-900 border border-slate-700 text-xs text-white rounded-xl px-3 py-2 focus:outline-none">
-                            <option value="DESC">วันที่ล่าสุด -> อดีต</option>
-                            <option value="ASC">วันที่อดีต -> ล่าสุด</option>
-                            <option value="AMOUNT_DESC">จำนวนเงิน มาก -> น้อย</option>
-                        </select>
-                    </div>
-
-                    <div id="fullSavingsHistoryList" class="space-y-3">
-                        <!-- History List Rendered Here -->
-                    </div>
-                </section>
-
-                <!-- SECTION 3: SAVING GOALS -->
-                <section id="view-goals" class="view-section hidden space-y-6">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h2 class="text-lg font-bold text-white">เป้าหมายการออม (Saving Goals)</h2>
-                            <p class="text-xs text-slate-400">สร้างและติดตามความคืบหน้าของเป้าหมาย</p>
-                        </div>
-                        <button id="openAddGoalModal" class="py-2.5 px-4 bg-bank-600 hover:bg-bank-500 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-md">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                            สร้างเป้าหมาย
-                        </button>
-                    </div>
-
-                    <!-- Active Goals Grid -->
-                    <div id="activeGoalsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Active Goal Cards -->
-                    </div>
-
-                    <!-- Completed Goal History -->
-                    <div class="bg-bank-darkcard p-5 rounded-2xl border border-bank-darkborder">
-                        <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
-                            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-                            ประวัติเป้าหมายที่สำเร็จแล้ว (Goal History)
-                        </h3>
-                        <div id="completedGoalsList" class="space-y-3">
-                            <!-- Completed items -->
-                        </div>
-                    </div>
-                </section>
-
-                <!-- SECTION 4: ANALYTICS -->
-                <section id="view-analytics" class="view-section hidden space-y-6">
-                    <div>
-                        <h2 class="text-lg font-bold text-white">สถิติและวิเคราะห์การออม (Analytics)</h2>
-                        <p class="text-xs text-slate-400">ภาพรวมแนวโน้มและพฤติกรรมการออมเงินของคุณ</p>
-                    </div>
-
-                    <!-- Chart Canvas Card -->
-                    <div class="bg-bank-darkcard p-5 rounded-2xl border border-bank-darkborder">
-                        <h3 class="text-xs font-semibold text-slate-300 mb-4">แนวโน้มการออมเงิน (Savings Trend)</h3>
-                        <div class="w-full h-56 relative">
-                            <canvas id="savingsTrendChart"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="bg-bank-darkcard p-5 rounded-2xl border border-bank-darkborder">
-                        <h3 class="text-xs font-semibold text-slate-300 mb-4">สัดส่วนตามประเภทการออม</h3>
-                        <div class="w-full h-52 relative flex items-center justify-center">
-                            <canvas id="savingsCategoryChart"></canvas>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- SECTION 5: SAVING PLAN CALCULATOR -->
-                <section id="view-plans" class="view-section hidden space-y-6">
-                    <div>
-                        <h2 class="text-lg font-bold text-white">คำนวณแผนการออมเงิน (Saving Plan)</h2>
-                        <p class="text-xs text-slate-400">วางแผนจำนวนเงินที่ต้องออมต่อวัน สัปดาห์ และเดือน</p>
-                    </div>
-
-                    <div class="bg-bank-darkcard p-5 rounded-2xl border border-bank-darkborder space-y-4">
-                        <div>
-                            <label class="block text-xs text-slate-300 mb-1">เป้าหมายยอดเงินออมที่ต้องการ (บาท)</label>
-                            <input type="number" id="planTargetAmount" placeholder="100000" inputmode="decimal" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-bank-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-300 mb-1">ระยะเวลา (จำนวนวัน)</label>
-                            <input type="number" id="planDays" placeholder="365" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:border-bank-500">
-                        </div>
-                        <button id="calcPlanBtn" class="w-full py-3 bg-bank-600 hover:bg-bank-500 font-bold text-xs text-white rounded-xl shadow-lg">คำนวณแผนการออม</button>
-                    </div>
-
-                    <div id="planResultsCard" class="hidden bg-slate-900/80 p-5 rounded-2xl border border-emerald-500/30 space-y-3">
-                        <h3 class="text-sm font-bold text-emerald-400">สรุปแผนการออมแนะนำ</h3>
-                        <div class="grid grid-cols-3 gap-2 text-center">
-                            <div class="bg-bank-darkcard p-3 rounded-xl border border-slate-800">
-                                <span class="text-[10px] text-slate-400 block">รายวัน (Daily)</span>
-                                <span id="planDailyVal" class="text-sm font-bold text-white">฿0</span>
-                            </div>
-                            <div class="bg-bank-darkcard p-3 rounded-xl border border-slate-800">
-                                <span class="text-[10px] text-slate-400 block">รายสัปดาห์</span>
-                                <span id="planWeeklyVal" class="text-sm font-bold text-white">฿0</span>
-                            </div>
-                            <div class="bg-bank-darkcard p-3 rounded-xl border border-slate-800">
-                                <span class="text-[10px] text-slate-400 block">รายเดือน</span>
-                                <span id="planMonthlyVal" class="text-sm font-bold text-white">฿0</span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- SECTION 6: HEATMAP CALENDAR -->
-                <section id="view-calendar" class="view-section hidden space-y-6">
-                    <div>
-                        <h2 class="text-lg font-bold text-white">ปฏิทินการออม (Savings Calendar)</h2>
-                        <p class="text-xs text-slate-400">ตารางความถี่และระดับความเข้มของการออมในแต่ละวัน</p>
-                    </div>
-
-                    <div class="bg-bank-darkcard p-5 rounded-2xl border border-bank-darkborder">
-                        <div id="calendarGrid" class="grid grid-cols-7 gap-2 text-center text-xs">
-                            <!-- Calendar generated by JS -->
-                        </div>
-                    </div>
-                </section>
-
-                <!-- SECTION 7: SETTINGS -->
-                <section id="view-settings" class="view-section hidden space-y-6">
-                    <div>
-                        <h2 class="text-lg font-bold text-white">ตั้งค่าระบบ (Settings)</h2>
-                        <p class="text-xs text-slate-400">จัดการข้อมูลผู้ใช้และระบบซิงค์ข้อมูลภายนอก</p>
-                    </div>
-
-                    <!-- Theme & Currency Preferences -->
-                    <div class="bg-bank-darkcard p-5 rounded-2xl border border-bank-darkborder space-y-4">
-                        <h3 class="text-sm font-bold text-white border-b border-slate-800 pb-2">การแสดงผล & สกุลเงิน</h3>
-                        <div>
-                            <label class="block text-xs text-slate-300 mb-1">ธีมการแสดงผล (Theme)</label>
-                            <select id="settingThemeSelect" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white">
-                                <option value="dark">Dark Theme (แนะนำ)</option>
-                                <option value="light">Light Theme</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-300 mb-1">สกุลเงินหลัก (Currency)</label>
-                            <select id="settingCurrencySelect" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white">
-                                <option value="THB">THB (฿) - บาทไทย</option>
-                                <option value="USD">USD ($) - US Dollar</option>
-                                <option value="EUR">EUR (€) - Euro</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Sync Status Info (Conceals Sensitive API Keys for Security) -->
-                    <div class="bg-bank-darkcard p-5 rounded-2xl border border-bank-darkborder space-y-3">
-                        <h3 class="text-sm font-bold text-white border-b border-slate-800 pb-2">สถานะการเชื่อมต่อซิงค์ข้อมูล</h3>
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="text-slate-400">สถานะการเชื่อมต่อ:</span>
-                            <span id="syncStatusBadge" class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">เชื่อมต่อแล้ว (Connected)</span>
-                        </div>
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="text-slate-400">ซิงค์ล่าสุด:</span>
-                            <span id="lastSyncTimeVal" class="text-slate-300">เมื่อสักครู่</span>
-                        </div>
-                        <button id="manualSyncBtn" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white rounded-xl border border-slate-700 transition flex items-center justify-center gap-2">
-                            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                            กดซิงค์ข้อมูลกับ Google Sheet ตอนนี้
-                        </button>
-                    </div>
-
-                    <!-- Export / Import Section -->
-                    <div class="bg-bank-darkcard p-5 rounded-2xl border border-bank-darkborder space-y-3">
-                        <h3 class="text-sm font-bold text-white border-b border-slate-800 pb-2">สำรองข้อมูล (Backup / Export)</h3>
-                        <div class="grid grid-cols-2 gap-3">
-                            <button id="exportJsonBtn" class="py-2.5 bg-slate-800 hover:bg-slate-700 text-xs text-white font-medium rounded-xl border border-slate-700">Export JSON</button>
-                            <button id="exportCsvBtn" class="py-2.5 bg-slate-800 hover:bg-slate-700 text-xs text-white font-medium rounded-xl border border-slate-700">Export CSV</button>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </main>
+      <!-- Bell Notification Icon -->
+      <button onclick="switchTab('notifications')" class="relative p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        <span id="notifBadge" class="hidden absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white dark:border-darkbg"></span>
+      </button>
     </div>
+  </header>
 
-    <!-- Mobile Bottom Navigation Bar -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-bank-darkcard/95 backdrop-blur-lg border-t border-bank-darkborder px-2 py-2 safe-bottom">
-        <div class="grid grid-cols-5 gap-1">
-            <button data-target="dashboard" class="mobile-nav-btn active flex flex-col items-center py-1.5 text-bank-500">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                <span class="text-[9px] font-medium mt-1">หน้าแรก</span>
-            </button>
-            <button data-target="savings" class="mobile-nav-btn flex flex-col items-center py-1.5 text-slate-400">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <span class="text-[9px] font-medium mt-1">รายการออม</span>
-            </button>
-            <button data-target="goals" class="mobile-nav-btn flex flex-col items-center py-1.5 text-slate-400">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <span class="text-[9px] font-medium mt-1">เป้าหมาย</span>
-            </button>
-            <button data-target="analytics" class="mobile-nav-btn flex flex-col items-center py-1.5 text-slate-400">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                <span class="text-[9px] font-medium mt-1">วิเคราะห์</span>
-            </button>
-            <button data-target="settings" class="mobile-nav-btn flex flex-col items-center py-1.5 text-slate-400">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                <span class="text-[9px] font-medium mt-1">อื่นๆ/ตั้งค่า</span>
-            </button>
-        </div>
+  <!-- ================= DESKTOP SIDEBAR ================= -->
+  <aside class="hidden md:flex flex-col fixed top-0 left-0 h-full w-64 bg-white dark:bg-darkcard border-r border-slate-200 dark:border-darkborder p-4 z-40">
+    <div class="flex items-center gap-3 px-2 py-4 border-b border-slate-100 dark:border-slate-800 mb-4">
+      <div class="w-8 h-8 rounded-xl bg-brand-600 text-white flex items-center justify-center font-bold">S</div>
+      <span class="font-bold text-lg text-slate-900 dark:text-white">SmartSave</span>
+    </div>
+    <nav class="space-y-1 flex-1">
+      <button onclick="switchTab('dashboard')" class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition" data-target="dashboard">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        หน้าหลัก
+      </button>
+      <button onclick="switchTab('history')" class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition" data-target="history">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        ประวัติการออม
+      </button>
+      <button onclick="switchTab('goals')" class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition" data-target="goals">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        เป้าหมายการออม
+      </button>
+      <button onclick="switchTab('ranks')" class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition" data-target="ranks">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+        Rank การออม
+      </button>
+      <button onclick="switchTab('analytics')" class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition" data-target="analytics">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        วิเคราะห์ & สถิติ
+      </button>
+      <button onclick="switchTab('pending')" class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition" data-target="pending">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        ข้อมูลส่วนดำเนินการ
+        <span id="pendingCountBadge" class="ml-auto px-2 py-0.5 text-xs bg-amber-500/20 text-amber-600 dark:text-amber-400 rounded-full hidden">0</span>
+      </button>
+      <button onclick="switchTab('settings')" class="nav-link w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition" data-target="settings">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        ตั้งค่า
+      </button>
     </nav>
+    <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+      <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        ออกจากระบบ
+      </button>
+    </div>
+  </aside>
 
-    <!-- Add Saving Modal / Bottom Sheet -->
-    <div id="addSavingModal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="w-full max-w-lg bg-bank-darkcard rounded-t-3xl sm:rounded-3xl p-6 border border-bank-darkborder shadow-2xl max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                <h3 class="text-base font-bold text-white">บันทึกเงินออมใหม่ (Add Saving)</h3>
-                <button id="closeAddSavingModal" class="text-slate-400 hover:text-white p-1">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
+  <!-- ================= MAIN CONTENT VIEWS ================= -->
+  <main class="p-4 md:p-8 max-w-5xl mx-auto space-y-6">
+
+    <!-- 1. DASHBOARD VIEW -->
+    <section id="view-dashboard" class="tab-view space-y-6">
+      
+      <!-- DIGITAL BANKING CARD -->
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-600 via-brand-700 to-slate-900 text-white p-6 md:p-8 shadow-xl shadow-brand-600/10">
+        <div class="absolute -right-10 -bottom-10 w-48 h-48 rounded-full bg-white/5 blur-2xl"></div>
+        <div class="flex justify-between items-start mb-6">
+          <div>
+            <span class="text-xs uppercase tracking-wider text-brand-100/80 font-semibold">ยอดเงินออมสะสมรวม</span>
+            <div class="text-3xl md:text-5xl font-bold tracking-tight mt-1" id="dashTotalSavings">฿0.00</div>
+          </div>
+          <button onclick="openAddSavingModal()" class="px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-md rounded-2xl text-xs font-semibold flex items-center gap-2 active:scale-95 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            บันทึกการออม
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 pt-4 border-t border-white/10 text-xs">
+          <div>
+            <p class="text-brand-100/70">เดือนนี้</p>
+            <p class="text-lg font-semibold mt-0.5" id="dashMonthlySavings">+฿0.00</p>
+          </div>
+          <div>
+            <p class="text-brand-100/70">วันนี้</p>
+            <p class="text-lg font-semibold mt-0.5" id="dashTodaySavings">+฿0.00</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATS GRID -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="glass-card p-4 rounded-2xl flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold">🔥</div>
+          <div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Saving Streak</p>
+            <p class="text-lg font-bold text-slate-800 dark:text-white" id="dashStreak">0 วัน</p>
+          </div>
+        </div>
+        <div class="glass-card p-4 rounded-2xl flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold">🎯</div>
+          <div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Active Goals</p>
+            <p class="text-lg font-bold text-slate-800 dark:text-white" id="dashActiveGoals">0</p>
+          </div>
+        </div>
+        <div class="glass-card p-4 rounded-2xl flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center font-bold">🏆</div>
+          <div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Saver Rank</p>
+            <p class="text-sm font-bold text-slate-800 dark:text-white" id="dashRank">Beginner</p>
+          </div>
+        </div>
+        <div class="glass-card p-4 rounded-2xl flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-bold">📈</div>
+          <div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">ออมเฉลี่ย/วัน</p>
+            <p class="text-sm font-bold text-slate-800 dark:text-white" id="dashAvgDaily">฿0.00</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUICK FAVORITES SECTION -->
+      <div class="space-y-3">
+        <div class="flex justify-between items-center">
+          <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">รายการโปรด (Quick Saving)</h3>
+          <button onclick="switchTab('settings')" class="text-xs text-brand-600 dark:text-brand-500 hover:underline">จัดการ</button>
+        </div>
+        <div class="grid grid-cols-3 sm:grid-cols-6 gap-3" id="quickFavoritesList">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- RECENT TRANSACTIONS -->
+      <div class="glass-card rounded-2xl p-5 space-y-4">
+        <div class="flex justify-between items-center">
+          <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">รายการบันทึกล่าสุด</h3>
+          <button onclick="switchTab('history')" class="text-xs text-brand-600 dark:text-brand-500 hover:underline">ดูทั้งหมด</button>
+        </div>
+        <div class="divide-y divide-slate-100 dark:divide-slate-800" id="recentHistoryList">
+          <!-- Empty State by default -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 2. SAVING HISTORY VIEW -->
+    <section id="view-history" class="tab-view hidden space-y-4">
+      <div class="flex flex-col sm:flex-row gap-3 justify-between items-start sm:items-center">
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white">ประวัติการออมเงิน</h2>
+        <!-- Filters -->
+        <div class="flex gap-2 w-full sm:w-auto">
+          <input type="text" id="historySearchInput" oninput="renderHistory()" placeholder="ค้นหารายการ..." class="px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none w-full sm:w-48">
+          <select id="historyCategoryFilter" onchange="renderHistory()" class="px-3 py-2 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none">
+            <option value="ALL">ทุกหมวดหมู่</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4 divide-y divide-slate-100 dark:divide-slate-800" id="fullHistoryList">
+        <!-- History Items -->
+      </div>
+    </section>
+
+    <!-- 3. GOALS VIEW -->
+    <section id="view-goals" class="tab-view hidden space-y-6">
+      <div class="flex justify-between items-center">
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white">เป้าหมายการออมเงิน</h2>
+        <button onclick="openAddGoalModal()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-md">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          สร้างเป้าหมาย
+        </button>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-4" id="activeGoalsGrid">
+        <!-- Goal Cards -->
+      </div>
+
+      <div class="pt-4 border-t border-slate-200 dark:border-darkborder">
+        <h3 class="text-sm font-bold text-slate-700 dark:text-slate-300 mb-3">เป้าหมายที่สำเร็จแล้ว</h3>
+        <div class="space-y-2" id="completedGoalsList">
+          <!-- Completed Goals -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. SAVER RANKS VIEW -->
+    <section id="view-ranks" class="tab-view hidden space-y-6">
+      <div class="text-center space-y-2">
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white">ระดับผู้ใช้ออมเงิน (Saving Ranks)</h2>
+        <p class="text-xs text-slate-500 dark:text-slate-400">ยกระดับวินัยทางการเงินจากยอดออมและ Streak ที่เกิดขึ้นจริง</p>
+      </div>
+
+      <div class="glass-card rounded-3xl p-6 text-center space-y-3 relative overflow-hidden border border-brand-500/30">
+        <div class="w-20 h-20 bg-brand-500/10 text-brand-600 dark:text-brand-500 rounded-full flex items-center justify-center mx-auto text-3xl font-bold" id="currentRankBadge">
+          🌱
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white" id="currentRankTitle">Beginner Saver</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" id="currentRankDesc">จุดเริ่มต้นของเส้นทางการออมเงิน</p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">ลำดับยศการออมทั้งหมด</h3>
+        <div class="space-y-2" id="rankHierarchyList">
+          <!-- Rank Levels list -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. ANALYTICS VIEW -->
+    <section id="view-analytics" class="tab-view hidden space-y-6">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white">วิเคราะห์ & สถิติ</h2>
+
+      <div class="glass-card rounded-2xl p-5 space-y-4">
+        <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">แนวโน้มการออม (Saving Trend)</h3>
+        <!-- Pure CSS/SVG Chart Canvas -->
+        <div class="h-48 w-full flex items-end gap-2 pt-6 border-b border-slate-200 dark:border-slate-700 px-2" id="analyticsChart">
+          <!-- Dynamic Bars -->
+        </div>
+      </div>
+
+      <!-- Calendar Matrix -->
+      <div class="glass-card rounded-2xl p-5 space-y-4">
+        <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">ปฏิทินวินัยการออม (Savings Calendar)</h3>
+        <div class="grid grid-cols-7 gap-1 text-center text-xs text-slate-400 font-medium mb-2">
+          <span>อา</span><span>จ</span><span>อ</span><span>พ</span><span>พฤ</span><span>ศ</span><span>ส</span>
+        </div>
+        <div class="grid grid-cols-7 gap-1.5" id="calendarDaysGrid">
+          <!-- Generated days -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. PENDING QUEUE VIEW (23:00 - 23:30 Maintenance) -->
+    <section id="view-pending" class="tab-view hidden space-y-4">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white">ข้อมูลส่วนดำเนินการ (Pending Queue)</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400">รายการที่ถูกพักไว้ช่วงเวลา 23:00-23:30 น. จะถูกประมวลผลต่อที่นี่</p>
+        </div>
+        <button onclick="processPendingQueue()" class="px-3 py-1.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-semibold">
+          ซิงค์ทันที
+        </button>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4 divide-y divide-slate-100 dark:divide-slate-800" id="pendingQueueList">
+        <!-- Queue items -->
+      </div>
+    </section>
+
+    <!-- 7. NOTIFICATIONS VIEW -->
+    <section id="view-notifications" class="tab-view hidden space-y-4">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white">การแจ้งเตือน</h2>
+      <div class="glass-card rounded-2xl p-4 divide-y divide-slate-100 dark:divide-slate-800" id="notificationsList">
+        <!-- Notifications -->
+      </div>
+    </section>
+
+    <!-- 8. SETTINGS VIEW -->
+    <section id="view-settings" class="tab-view hidden space-y-6">
+      <h2 class="text-xl font-bold text-slate-900 dark:text-white">ตั้งค่าระบบ</h2>
+
+      <!-- Appearance & Preferences -->
+      <div class="glass-card rounded-2xl p-5 space-y-4">
+        <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">รูปลักษณ์และการแสดงผล</h3>
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-slate-600 dark:text-slate-400">ธีมแอพพลิเคชัน</span>
+          <select id="themeSelect" onchange="changeTheme(this.value)" class="px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white outline-none">
+            <option value="system">ระบบ (System)</option>
+            <option value="light">สว่าง (Light)</option>
+            <option value="dark">มืด (Dark)</option>
+          </select>
+        </div>
+        <div class="flex justify-between items-center pt-3 border-t border-slate-100 dark:border-slate-800">
+          <span class="text-xs text-slate-600 dark:text-slate-400">สกุลเงินหลัก</span>
+          <select id="currencySelect" onchange="changeCurrency(this.value)" class="px-3 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white outline-none">
+            <option value="THB">THB (฿)</option>
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="JPY">JPY (¥)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Categories Management -->
+      <div class="glass-card rounded-2xl p-5 space-y-4">
+        <div class="flex justify-between items-center">
+          <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">หมวดหมู่บันทึกการออม</h3>
+          <button onclick="addNewCategoryPrompt()" class="text-xs text-brand-600 dark:text-brand-500 font-semibold hover:underline">+ เพิ่มหมวดหมู่</button>
+        </div>
+        <div class="flex flex-wrap gap-2" id="categoriesTagList">
+          <!-- Editable categories -->
+        </div>
+      </div>
+
+      <!-- Quick Favorites Manager -->
+      <div class="glass-card rounded-2xl p-5 space-y-4">
+        <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">ตั้งค่าปุ่มออมด่วน (Quick Favorites)</h3>
+        <div class="grid grid-cols-3 gap-2" id="favoritesConfigList">
+          <!-- Config options -->
+        </div>
+      </div>
+
+      <!-- Backup & Reset -->
+      <div class="glass-card rounded-2xl p-5 space-y-4">
+        <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">จัดการข้อมูล</h3>
+        <div class="flex gap-2">
+          <button onclick="exportData()" class="flex-1 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-white rounded-xl text-xs font-semibold">ส่งออก JSON</button>
+          <button onclick="importDataPrompt()" class="flex-1 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-white rounded-xl text-xs font-semibold">นำเข้า JSON</button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ================= BOTTOM NAVIGATION (MOBILE) ================= -->
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-darkcard/90 backdrop-blur-md border-t border-slate-200 dark:border-darkborder px-2 py-1.5 z-40 flex justify-around items-center">
+    <button onclick="switchTab('dashboard')" class="nav-link flex flex-col items-center p-1.5 text-brand-600 dark:text-brand-500" data-target="dashboard">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      <span class="text-[10px] font-medium mt-0.5">หน้าหลัก</span>
+    </button>
+    <button onclick="switchTab('history')" class="nav-link flex flex-col items-center p-1.5 text-slate-400" data-target="history">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      <span class="text-[10px] font-medium mt-0.5">ประวัติ</span>
+    </button>
+    <button onclick="openAddSavingModal()" class="flex flex-col items-center -mt-5 p-3 bg-brand-600 text-white rounded-full shadow-lg shadow-brand-600/30 active:scale-90 transition">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+    </button>
+    <button onclick="switchTab('goals')" class="nav-link flex flex-col items-center p-1.5 text-slate-400" data-target="goals">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      <span class="text-[10px] font-medium mt-0.5">เป้าหมาย</span>
+    </button>
+    <button onclick="switchTab('settings')" class="nav-link flex flex-col items-center p-1.5 text-slate-400" data-target="settings">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <span class="text-[10px] font-medium mt-0.5">เมนู</span>
+    </button>
+  </nav>
+
+  <!-- ================= ADD SAVING MODAL (BOTTOM SHEET) ================= -->
+  <div id="addSavingModal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden transition-opacity">
+    <div class="w-full sm:max-w-lg bg-white dark:bg-darkcard rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3">
+        <h3 class="font-bold text-slate-900 dark:text-white">บันทึกเงินออมใหม่</h3>
+        <button onclick="closeAddSavingModal()" class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="addSavingForm" onsubmit="handleSaveSaving(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">จำนวนเงิน</label>
+          <input type="number" step="0.01" min="1" id="saveAmount" required inputmode="decimal" placeholder="0.00" class="w-full text-2xl font-bold px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-brand-600 dark:text-brand-500 focus:ring-2 focus:ring-brand-500 outline-none">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">ประเภทการออม</label>
+            <select id="saveType" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs text-slate-900 dark:text-white outline-none">
+              <option value="Daily Saving">ออมรายวัน</option>
+              <option value="Weekly Saving">ออมรายสัปดาห์</option>
+              <option value="Monthly Saving">ออมรายเดือน</option>
+              <option value="Extra Saving">เงินออมพิเศษ</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">หมวดหมู่</label>
+            <select id="saveCategory" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs text-slate-900 dark:text-white outline-none">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">จัดสรรเข้าเป้าหมาย (Optional)</label>
+          <select id="saveGoalId" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs text-slate-900 dark:text-white outline-none">
+            <option value="">-- ไม่ระบุเป้าหมาย (เงินออมส่วนตัว) --</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">บันทึกเพิ่มเติม</label>
+          <input type="text" id="saveNote" placeholder="เช่น เงินทอนประจำวัน..." class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs text-slate-900 dark:text-white outline-none">
+        </div>
+
+        <button type="submit" class="w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-2xl shadow-lg shadow-brand-500/20 active:scale-[0.98] transition">
+          บันทึกรายการ
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= ADD GOAL MODAL ================= -->
+  <div id="addGoalModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden p-4">
+    <div class="w-full max-w-md bg-white dark:bg-darkcard rounded-3xl p-6 shadow-2xl space-y-4">
+      <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3">
+        <h3 class="font-bold text-slate-900 dark:text-white">สร้างเป้าหมายการออมใหม่</h3>
+        <button onclick="closeAddGoalModal()" class="p-1 text-slate-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="addGoalForm" onsubmit="handleSaveGoal(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">ชื่อเป้าหมาย</label>
+          <input type="text" id="goalName" required placeholder="เช่น กองทุนสำรองฉุกเฉิน" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs text-slate-900 dark:text-white outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">จำนวนเงินเป้าหมาย</label>
+          <input type="number" step="0.01" min="1" id="goalTargetAmount" required placeholder="0.00" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs text-slate-900 dark:text-white outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">วันที่ต้องการสำเร็จ</label>
+          <input type="date" id="goalTargetDate" required class="w-full px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs text-slate-900 dark:text-white outline-none">
+        </div>
+        <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition">
+          สร้างเป้าหมาย
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    /* Global Configuration & Security Setup */
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec";
+
+    // Application State
+    let currentUser = JSON.parse(localStorage.getItem('smart_save_user')) || null;
+    let savingsData = JSON.parse(localStorage.getItem('smart_save_records')) || [];
+    let goalsData = JSON.parse(localStorage.getItem('smart_save_goals')) || [];
+    let pendingQueue = JSON.parse(localStorage.getItem('smart_save_pending')) || [];
+    let categories = JSON.parse(localStorage.getItem('smart_save_categories')) || ['เงินออมทั่วไป', 'เงินออมเพื่อการลงทุน', 'เงินทอนประจำวัน', 'โบนัสพิเศษ'];
+    let favorites = JSON.parse(localStorage.getItem('smart_save_favs')) || [10, 20, 50, 100, 500, 1000];
+    let notifications = JSON.parse(localStorage.getItem('smart_save_notifs')) || [];
+    let mediaStream = null;
+    let capturedImageData = null;
+
+    // Initialization
+    window.onload = function() {
+      initApp();
+      startClock();
+      checkMaintenanceMode();
+      setInterval(checkMaintenanceMode, 30000); // Check every 30 secs
+    };
+
+    function initApp() {
+      if (currentUser) {
+        document.getElementById('authContainer').classList.add('hidden');
+        document.getElementById('headerDisplayName').innerText = currentUser.displayName || currentUser.username;
+        document.getElementById('userAvatar').innerText = (currentUser.displayName || currentUser.username).charAt(0).toUpperCase();
+        renderCategories();
+        renderQuickFavorites();
+        updateDashboard();
+        renderHistory();
+        renderGoals();
+        renderRanks();
+        renderAnalytics();
+        renderPendingQueue();
+        renderNotifications();
+      } else {
+        document.getElementById('authContainer').classList.remove('hidden');
+      }
+    }
+
+    /* REALTIME TIME & MAINTENANCE CONTROLLER (23:00 - 23:30) */
+    function startClock() {
+      setInterval(() => {
+        const now = new Date();
+        document.getElementById('realtimeDate').innerText = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      }, 1000);
+    }
+
+    function isMaintenanceTime() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      return (hours === 23 && minutes >= 0 && minutes <= 30);
+    }
+
+    function checkMaintenanceMode() {
+      const badge = document.getElementById('maintenanceBadge');
+      if (isMaintenanceTime()) {
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+        if (pendingQueue.length > 0) {
+          processPendingQueue();
+        }
+      }
+    }
+
+    /* AUTHENTICATION & FACE VERIFICATION */
+    function toggleAuthMode(mode) {
+      if (mode === 'register') {
+        document.getElementById('loginForm').classList.add('hidden');
+        document.getElementById('registerForm').classList.remove('hidden');
+        document.getElementById('authTitle').innerText = 'ลงทะเบียนสมาชิก';
+      } else {
+        document.getElementById('registerForm').classList.add('hidden');
+        document.getElementById('loginForm').classList.remove('hidden');
+        document.getElementById('authTitle').innerText = 'SmartSave Banking';
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const u = document.getElementById('loginUsername').value;
+      const p = document.getElementById('loginPassword').value;
+      const savedUser = JSON.parse(localStorage.getItem('smart_save_registered_user'));
+
+      if (savedUser && savedUser.username === u && savedUser.password === p) {
+        currentUser = savedUser;
+        localStorage.setItem('smart_save_user', JSON.stringify(currentUser));
+        initApp();
+        addNotification("เข้าสู่ระบบสำเร็จ", "ยินดีต้อนรับกลับเข้าใช้งาน");
+      } else {
+        alert("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง");
+      }
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const displayName = document.getElementById('regDisplayName').value;
+      const username = document.getElementById('regUsername').value;
+      const pass = document.getElementById('regPassword').value;
+      const confirmPass = document.getElementById('regConfirmPassword').value;
+
+      if (pass !== confirmPass) {
+        alert("รหัสผ่านไม่ตรงกัน");
+        return;
+      }
+
+      currentUser = {
+        id: 'usr_' + Date.now(),
+        username,
+        displayName,
+        password: pass,
+        verified: false
+      };
+
+      // Switch to Verification step
+      document.getElementById('registerForm').classList.add('hidden');
+      document.getElementById('verifyStep').classList.remove('hidden');
+      document.getElementById('authTitle').innerText = 'ยืนยันตัวตนครั้งแรก';
+    }
+
+    async function startCamera() {
+      try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+        const video = document.getElementById('webcam');
+        video.srcObject = mediaStream;
+        video.classList.remove('hidden');
+        document.getElementById('cameraPlaceholder').classList.add('hidden');
+        document.getElementById('captureBtn').disabled = false;
+      } catch (err) {
+        alert("ไม่สามารถเปิดกล้องได้: " + err.message);
+      }
+    }
+
+    function capturePhoto() {
+      const video = document.getElementById('webcam');
+      const canvas = document.getElementById('photoCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = video.videoWidth || 200;
+      canvas.height = video.videoHeight || 200;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      
+      capturedImageData = canvas.toDataURL('image/jpeg');
+      canvas.classList.remove('hidden');
+      video.classList.add('hidden');
+      
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+      }
+      document.getElementById('confirmVerifyBtn').disabled = false;
+    }
+
+    function submitVerification() {
+      if (!capturedImageData) return;
+      currentUser.verified = true;
+      currentUser.verifiedAt = new Date().toISOString();
+      
+      localStorage.setItem('smart_save_registered_user', JSON.stringify(currentUser));
+      localStorage.setItem('smart_save_user', JSON.stringify(currentUser));
+
+      // Sync user profile to backend
+      syncToBackend('REGISTER_USER', currentUser);
+
+      initApp();
+      addNotification("ยืนยันตัวตนสำเร็จ", "บัญชีของคุณได้รับการเปิดใช้งานเรียบร้อยแล้ว");
+    }
+
+    function logout() {
+      localStorage.removeItem('smart_save_user');
+      location.reload();
+    }
+
+    /* NAVIGATION CONTROLLER */
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`view-${tabId}`).classList.remove('hidden');
+
+      document.querySelectorAll('.nav-link').forEach(btn => {
+        if (btn.getAttribute('data-target') === tabId) {
+          btn.classList.add('text-brand-600', 'dark:text-brand-500');
+          btn.classList.remove('text-slate-400', 'text-slate-600');
+        } else {
+          btn.classList.remove('text-brand-600', 'dark:text-brand-500');
+          btn.classList.add('text-slate-400');
+        }
+      });
+    }
+
+    /* CALCULATIONS & DASHBOARD UPDATES */
+    function formatMoney(amount) {
+      const currency = localStorage.getItem('smart_save_currency') || 'THB';
+      return new Intl.NumberFormat('th-TH', { style: 'currency', currency }).format(amount);
+    }
+
+    function calculateStreak() {
+      if (savingsData.length === 0) return 0;
+      const dates = [...new Set(savingsData.map(s => s.date.split('T')[0]))].sort().reverse();
+      let streak = 0;
+      let today = new Date().toISOString().split('T')[0];
+      
+      for (let i = 0; i < dates.length; i++) {
+        let expected = new Date();
+        expected.setDate(expected.getDate() - i);
+        let expStr = expected.toISOString().split('T')[0];
+        if (dates.includes(expStr)) {
+          streak++;
+        } else {
+          break;
+        }
+      }
+      return streak;
+    }
+
+    function updateDashboard() {
+      const total = savingsData.reduce((sum, item) => sum + Number(item.amount), 0);
+      
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
+      const todayStr = now.toISOString().split('T')[0];
+
+      const monthlyTotal = savingsData
+        .filter(s => {
+          const d = new Date(s.date);
+          return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+        })
+        .reduce((sum, item) => sum + Number(item.amount), 0);
+
+      const todayTotal = savingsData
+        .filter(s => s.date.split('T')[0] === todayStr)
+        .reduce((sum, item) => sum + Number(item.amount), 0);
+
+      document.getElementById('dashTotalSavings').innerText = formatMoney(total);
+      document.getElementById('dashMonthlySavings').innerText = '+' + formatMoney(monthlyTotal);
+      document.getElementById('dashTodaySavings').innerText = '+' + formatMoney(todayTotal);
+
+      document.getElementById('dashStreak').innerText = `${calculateStreak()} วัน`;
+      document.getElementById('dashActiveGoals').innerText = goalsData.filter(g => g.status !== 'COMPLETED').length;
+
+      // Calculate Rank
+      const rank = calculateRank(total, calculateStreak());
+      document.getElementById('dashRank').innerText = rank.title;
+
+      // Avg Daily
+      const uniqueDays = new Set(savingsData.map(s => s.date.split('T')[0])).size || 1;
+      document.getElementById('dashAvgDaily').innerText = formatMoney(total / uniqueDays);
+
+      renderRecentHistory();
+    }
+
+    /* SAVING TRANSACTIONS HANDLER */
+    function openAddSavingModal(defaultAmount = '') {
+      if (defaultAmount) document.getElementById('saveAmount').value = defaultAmount;
+      
+      const catSelect = document.getElementById('saveCategory');
+      catSelect.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      const goalSelect = document.getElementById('saveGoalId');
+      goalSelect.innerHTML = `<option value="">-- ไม่ระบุเป้าหมาย (เงินออมส่วนตัว) --</option>` + 
+        goalsData.filter(g => g.status !== 'COMPLETED').map(g => `<option value="${g.id}">${g.name}</option>`).join('');
+
+      document.getElementById('addSavingModal').classList.remove('hidden');
+    }
+
+    function closeAddSavingModal() {
+      document.getElementById('addSavingModal').classList.add('hidden');
+      document.getElementById('addSavingForm').reset();
+    }
+
+    function handleSaveSaving(e) {
+      e.preventDefault();
+      const amount = parseFloat(document.getElementById('saveAmount').value);
+      if (isNaN(amount) || amount <= 0) return;
+
+      const record = {
+        id: 'tx_' + Date.now(),
+        amount: amount,
+        type: document.getElementById('saveType').value,
+        category: document.getElementById('saveCategory').value,
+        goalId: document.getElementById('saveGoalId').value || null,
+        note: document.getElementById('saveNote').value || '',
+        date: new Date().toISOString()
+      };
+
+      if (isMaintenanceTime()) {
+        // Intercepted by maintenance control window
+        pendingQueue.push(record);
+        localStorage.setItem('smart_save_pending', JSON.stringify(pendingQueue));
+        renderPendingQueue();
+        alert("ขณะนี้อยู่ในช่วงเวลาพักระบบ (23:00-23:30 น.) ข้อมูลจะถูกจัดเก็บเข้าคิวไว้ในหน้า 'ข้อมูลส่วนดำเนินการ' และจะซิงค์ให้อัตโนมัติเมื่อผ่านพ้นช่วงเวลาดังกล่าว");
+      } else {
+        processRecord(record);
+      }
+
+      closeAddSavingModal();
+    }
+
+    function processRecord(record) {
+      savingsData.unshift(record);
+      localStorage.setItem('smart_save_records', JSON.stringify(savingsData));
+
+      // Update goal progress if assigned
+      if (record.goalId) {
+        const goal = goalsData.find(g => g.id === record.goalId);
+        if (goal) {
+          goal.currentAmount = (Number(goal.currentAmount) || 0) + record.amount;
+          if (goal.currentAmount >= goal.targetAmount) {
+            goal.status = 'COMPLETED';
+            goal.completedAt = new Date().toISOString();
+            addNotification("เป้าหมายบรรลุผล!", `คุณออมเงินครบเป้าหมาย ${goal.name} แล้ว`);
+          }
+          localStorage.setItem('smart_save_goals', JSON.stringify(goalsData));
+        }
+      }
+
+      addNotification("บันทึกเงินออมสำเร็จ", `บันทึกเงินออมจำนวน ${formatMoney(record.amount)} เรียบร้อยแล้ว`);
+      syncToBackend('ADD_SAVING', record);
+
+      updateDashboard();
+      renderHistory();
+      renderGoals();
+      renderAnalytics();
+    }
+
+    /* GOALS HANDLER */
+    function openAddGoalModal() {
+      document.getElementById('addGoalModal').classList.remove('hidden');
+    }
+    function closeAddGoalModal() {
+      document.getElementById('addGoalModal').classList.add('hidden');
+    }
+
+    function handleSaveGoal(e) {
+      e.preventDefault();
+      const newGoal = {
+        id: 'gl_' + Date.now(),
+        name: document.getElementById('goalName').value,
+        targetAmount: parseFloat(document.getElementById('goalTargetAmount').value),
+        currentAmount: 0,
+        targetDate: document.getElementById('goalTargetDate').value,
+        status: 'ACTIVE',
+        createdAt: new Date().toISOString()
+      };
+
+      goalsData.push(newGoal);
+      localStorage.setItem('smart_save_goals', JSON.stringify(goalsData));
+      closeAddGoalModal();
+      renderGoals();
+      updateDashboard();
+      syncToBackend('ADD_GOAL', newGoal);
+    }
+
+    function renderGoals() {
+      const activeGrid = document.getElementById('activeGoalsGrid');
+      const activeGoals = goalsData.filter(g => g.status !== 'COMPLETED');
+
+      if (activeGoals.length === 0) {
+        activeGrid.innerHTML = `<div class="col-span-2 text-center py-8 text-xs text-slate-400">ยังไม่มีเป้าหมายการออมที่กำลังดำเนินการ</div>`;
+      } else {
+        activeGrid.innerHTML = activeGoals.map(g => {
+          const pct = Math.min(100, Math.round((g.currentAmount / g.targetAmount) * 100));
+          return `
+            <div class="glass-card p-5 rounded-2xl space-y-3">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h4 class="font-bold text-sm text-slate-900 dark:text-white">${g.name}</h4>
+                  <p class="text-[11px] text-slate-400 mt-0.5">เป้าหมาย: ${new Date(g.targetDate).toLocaleDateString('th-TH')}</p>
+                </div>
+                <span class="text-xs font-bold text-brand-600 dark:text-brand-500">${pct}%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                <div class="bg-brand-500 h-full rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+              </div>
+              <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 font-medium">
+                <span>${formatMoney(g.currentAmount)}</span>
+                <span>/ ${formatMoney(g.targetAmount)}</span>
+              </div>
             </div>
+          `;
+        }).join('');
+      }
+    }
 
-            <form id="addSavingForm" class="space-y-4 mt-4">
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">จำนวนเงินออม (บาท)</label>
-                    <input type="number" id="savingAmount" step="any" required inputmode="decimal" placeholder="0.00" class="w-full text-2xl font-bold px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-emerald-400 focus:outline-none focus:border-bank-500">
-                </div>
+    /* RANKS LOGIC */
+    const RANKS = [
+      { level: 1, title: 'Beginner Saver', icon: '🌱', minAmount: 0, minStreak: 0, desc: 'จุดเริ่มต้นแห่งวินัยการออม' },
+      { level: 2, title: 'Smart Saver', icon: '⚡', minAmount: 1000, minStreak: 3, desc: 'เริ่มสร้างนิสัยการออมต่อเนื่อง' },
+      { level: 3, title: 'Advanced Saver', icon: '🔥', minAmount: 5000, minStreak: 7, desc: 'มีวินัยในการบริหารจัดการยอดออม' },
+      { level: 4, title: 'Professional Saver', icon: '💎', minAmount: 20000, minStreak: 14, desc: 'นักออมเงินระดับมืออาชีพ' },
+      { level: 5, title: 'Master Saver', icon: '👑', minAmount: 100000, minStreak: 30, desc: 'ผู้เชี่ยวชาญด้านอิสรภาพทางการเงิน' }
+    ];
 
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-medium text-slate-300 mb-1">วันที่</label>
-                        <input type="date" id="savingDate" required class="w-full px-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-300 mb-1">เวลา</label>
-                        <input type="time" id="savingTime" required class="w-full px-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white">
-                    </div>
-                </div>
+    function calculateRank(total, streak) {
+      let current = RANKS[0];
+      for (let r of RANKS) {
+        if (total >= r.minAmount && streak >= r.minStreak) {
+          current = r;
+        }
+      }
+      return current;
+    }
 
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-medium text-slate-300 mb-1">ประเภทการออม</label>
-                        <select id="savingType" class="w-full px-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white">
-                            <option value="Daily Saving">Daily Saving (ประจำวัน)</option>
-                            <option value="Weekly Saving">Weekly Saving (รายสัปดาห์)</option>
-                            <option value="Monthly Saving">Monthly Saving (รายเดือน)</option>
-                            <option value="Extra Saving">Extra Saving (เงินพิเศษ)</option>
-                            <option value="Other">Other (อื่นๆ)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-300 mb-1">หมวดหมู่</label>
-                        <select id="savingCategory" class="w-full px-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white">
-                            <option value="General">ทั่วไป (General)</option>
-                            <option value="Emergency">เงินสำรองฉุกเฉิน</option>
-                            <option value="Investment">เพื่อการลงทุน</option>
-                            <option value="Goal">เพื่อเป้าหมายเฉพาะ</option>
-                        </select>
-                    </div>
-                </div>
+    function renderRanks() {
+      const total = savingsData.reduce((s, i) => s + Number(i.amount), 0);
+      const streak = calculateStreak();
+      const current = calculateRank(total, streak);
 
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">เชื่อมกับเป้าหมาย (Optional)</label>
-                    <select id="savingLinkedGoal" class="w-full px-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white">
-                        <option value="">-- ไม่ระบุ (ออมทั่วไป) --</option>
-                    </select>
-                </div>
+      document.getElementById('currentRankBadge').innerText = current.icon;
+      document.getElementById('currentRankTitle').innerText = current.title;
+      document.getElementById('currentRankDesc').innerText = current.desc;
 
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">บันทึกเพิ่มเติม (Note)</label>
-                    <input type="text" id="savingNote" placeholder="เช่น เงินทอนจากการซื้อของ..." class="w-full px-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white">
-                </div>
-
-                <button type="submit" class="w-full py-3.5 bg-bank-600 hover:bg-bank-500 font-bold text-white text-xs rounded-xl shadow-lg mt-2">
-                    ยืนยันบันทึกเงินออม
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Add Goal Modal -->
-    <div id="addGoalModal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="w-full max-w-md bg-bank-darkcard rounded-3xl p-6 border border-bank-darkborder shadow-2xl">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                <h3 class="text-base font-bold text-white">สร้างเป้าหมายการออม</h3>
-                <button id="closeAddGoalModal" class="text-slate-400 hover:text-white p-1">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
+      document.getElementById('rankHierarchyList').innerHTML = RANKS.map(r => {
+        const isCurrent = r.level === current.level;
+        return `
+          <div class="glass-card p-4 rounded-2xl flex items-center justify-between ${isCurrent ? 'border-2 border-brand-500' : ''}">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">${r.icon}</span>
+              <div>
+                <h4 class="text-sm font-bold text-slate-800 dark:text-slate-200">${r.title}</h4>
+                <p class="text-[11px] text-slate-400">ต้องมียอดออม ${formatMoney(r.minAmount)} & Streak ${r.minStreak} วัน</p>
+              </div>
             </div>
+            ${isCurrent ? '<span class="px-2.5 py-1 bg-brand-500 text-white rounded-full text-[10px] font-bold">ยศปัจจุบัน</span>' : ''}
+          </div>
+        `;
+      }).join('');
+    }
 
-            <form id="addGoalForm" class="space-y-4 mt-4">
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">ชื่อเป้าหมาย</label>
-                    <input type="text" id="goalName" required placeholder="เช่น ซื้อคอมพิวเตอร์ใหม่, กองทุนท่องเที่ยว..." class="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">จำนวนเงินเป้าหมาย (บาท)</label>
-                    <input type="number" id="goalTargetAmount" required placeholder="50000" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-medium text-slate-300 mb-1">วันที่เริ่ม</label>
-                        <input type="date" id="goalStartDate" required class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium text-slate-300 mb-1">วันที่เป้าหมาย</label>
-                        <input type="date" id="goalTargetDate" required class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white">
-                    </div>
-                </div>
+    /* PENDING QUEUE LOGIC */
+    function renderPendingQueue() {
+      const list = document.getElementById('pendingQueueList');
+      const badge = document.getElementById('pendingCountBadge');
+      
+      badge.innerText = pendingQueue.length;
+      if (pendingQueue.length > 0) badge.classList.remove('hidden');
+      else badge.classList.add('hidden');
 
-                <button type="submit" class="w-full py-3.5 bg-bank-600 hover:bg-bank-500 font-bold text-white text-xs rounded-xl shadow-lg mt-2">
-                    สร้างเป้าหมาย
-                </button>
-            </form>
+      if (pendingQueue.length === 0) {
+        list.innerHTML = `<div class="text-center py-6 text-xs text-slate-400">ไม่มีรายการค้างในคิวการประมวลผล</div>`;
+      } else {
+        list.innerHTML = pendingQueue.map(item => `
+          <div class="py-3 flex justify-between items-center text-xs">
+            <div>
+              <p class="font-bold text-slate-800 dark:text-slate-200">${item.type} - ${item.category}</p>
+              <p class="text-slate-400 text-[10px]">${new Date(item.date).toLocaleString('th-TH')}</p>
+            </div>
+            <span class="font-bold text-amber-500">${formatMoney(item.amount)}</span>
+          </div>
+        `).join('');
+      }
+    }
+
+    function processPendingQueue() {
+      if (pendingQueue.length === 0) return;
+      
+      pendingQueue.forEach(item => {
+        processRecord(item);
+      });
+
+      pendingQueue = [];
+      localStorage.removeItem('smart_save_pending');
+      renderPendingQueue();
+      alert("ซิงค์ประมวลผลรายการค้างทั้งหมดเรียบร้อยแล้ว");
+    }
+
+    /* RENDER RECENT & HISTORY */
+    function renderRecentHistory() {
+      const container = document.getElementById('recentHistoryList');
+      if (savingsData.length === 0) {
+        container.innerHTML = `<div class="text-center py-6 text-xs text-slate-400">ยังไม่มีรายการออมเงิน เริ่มบันทึกรายการแรกของคุณ</div>`;
+        return;
+      }
+
+      container.innerHTML = savingsData.slice(0, 5).map(item => `
+        <div class="py-3 flex justify-between items-center">
+          <div>
+            <p class="text-xs font-semibold text-slate-800 dark:text-slate-200">${item.category}</p>
+            <p class="text-[10px] text-slate-400">${new Date(item.date).toLocaleDateString('th-TH')}</p>
+          </div>
+          <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400">+${formatMoney(item.amount)}</span>
         </div>
-    </div>
+      `).join('');
+    }
 
-    <!-- Notification Toast Popup -->
-    <div id="toastNotification" class="fixed top-5 right-5 z-50 transform translate-y-[-150%] transition-transform duration-300 max-w-sm w-full bg-slate-900 border border-bank-500/40 p-4 rounded-2xl shadow-2xl flex items-center gap-3">
-        <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+    function renderHistory() {
+      const container = document.getElementById('fullHistoryList');
+      const search = document.getElementById('historySearchInput').value.toLowerCase();
+      const cat = document.getElementById('historyCategoryFilter').value;
+
+      let filtered = savingsData.filter(s => {
+        const matchesSearch = s.category.toLowerCase().includes(search) || (s.note && s.note.toLowerCase().includes(search));
+        const matchesCat = (cat === 'ALL' || s.category === cat);
+        return matchesSearch && matchesCat;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="text-center py-8 text-xs text-slate-400">ไม่พบรายการที่ค้นหา</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => `
+        <div class="py-3 flex justify-between items-center">
+          <div class="space-y-0.5">
+            <p class="text-xs font-bold text-slate-800 dark:text-slate-200">${item.category} <span class="text-[10px] font-normal text-slate-400">(${item.type})</span></p>
+            <p class="text-[10px] text-slate-400">${new Date(item.date).toLocaleString('th-TH')} ${item.note ? '• ' + item.note : ''}</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400">+${formatMoney(item.amount)}</span>
+            <button onclick="deleteSaving('${item.id}')" class="text-slate-300 hover:text-rose-500 p-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </button>
+          </div>
         </div>
-        <div class="flex-1">
-            <h4 id="toastTitle" class="text-xs font-bold text-white">สำเร็จ</h4>
-            <p id="toastMessage" class="text-[11px] text-slate-300">ทำรายการเรียบร้อยแล้ว</p>
-        </div>
-    </div>
+      `).join('');
+    }
 
-    <script>
-        /**
-         * SmartSave Banking Web App Engine (ES2025 Standard)
-         * Integrated with Local Storage, IndexedDB, and Google Apps Script Background Sync Adapter
-         */
+    function deleteSaving(id) {
+      if (!confirm("คุณต้องการลบรายการนี้ใช่หรือไม่?")) return;
+      savingsData = savingsData.filter(s => s.id !== id);
+      localStorage.setItem('smart_save_records', JSON.stringify(savingsData));
+      updateDashboard();
+      renderHistory();
+      renderAnalytics();
+    }
 
-        const APPS_SCRIPT_ENDPOINT = "https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec";
+    /* QUICK FAVORITES & CATEGORY SETTINGS */
+    function renderQuickFavorites() {
+      const container = document.getElementById('quickFavoritesList');
+      container.innerHTML = favorites.map(amt => `
+        <button onclick="openAddSavingModal(${amt})" class="glass-card py-2.5 px-3 rounded-2xl text-center hover:border-brand-500 transition active:scale-95">
+          <p class="text-[10px] text-slate-400">ออมด่วน</p>
+          <p class="text-xs font-bold text-brand-600 dark:text-brand-500 mt-0.5">฿${amt}</p>
+        </button>
+      `).join('');
 
-        // Global State Store
-        const AppState = {
-            currentUser: null,
-            savings: [],
-            goals: [],
-            notifications: [],
-            currency: 'THB',
-            theme: 'dark'
+      // Config in Settings
+      const cfgContainer = document.getElementById('favoritesConfigList');
+      cfgContainer.innerHTML = favorites.map((amt, idx) => `
+        <input type="number" value="${amt}" onchange="updateFavoriteAmount(${idx}, this.value)" class="px-2 py-1.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white outline-none text-center">
+      `).join('');
+    }
+
+    function updateFavoriteAmount(index, val) {
+      favorites[index] = parseFloat(val) || 0;
+      localStorage.setItem('smart_save_favs', JSON.stringify(favorites));
+      renderQuickFavorites();
+    }
+
+    function renderCategories() {
+      const tagContainer = document.getElementById('categoriesTagList');
+      tagContainer.innerHTML = categories.map((cat, idx) => `
+        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs text-slate-700 dark:text-slate-300 font-medium">
+          ${cat}
+          <button onclick="removeCategory(${idx})" class="hover:text-rose-500">✕</button>
+        </span>
+      `).join('');
+
+      const filterSelect = document.getElementById('historyCategoryFilter');
+      filterSelect.innerHTML = `<option value="ALL">ทุกหมวดหมู่</option>` + categories.map(c => `<option value="${c}">${c}</option>`).join('');
+    }
+
+    function addNewCategoryPrompt() {
+      const name = prompt("กรอกชื่อหมวดหมู่ใหม่:");
+      if (name && !categories.includes(name)) {
+        categories.push(name);
+        localStorage.setItem('smart_save_categories', JSON.stringify(categories));
+        renderCategories();
+      }
+    }
+
+    function removeCategory(index) {
+      categories.splice(index, 1);
+      localStorage.setItem('smart_save_categories', JSON.stringify(categories));
+      renderCategories();
+    }
+
+    /* ANALYTICS CHART & CALENDAR */
+    function renderAnalytics() {
+      // SVG / Bar Chart
+      const chart = document.getElementById('analyticsChart');
+      const days = 7;
+      let maxAmt = 100;
+      let dailySums = [];
+
+      for (let i = days - 1; i >= 0; i--) {
+        let d = new Date();
+        d.setDate(d.getDate() - i);
+        let dateStr = d.toISOString().split('T')[0];
+        let sum = savingsData.filter(s => s.date.split('T')[0] === dateStr).reduce((a, b) => a + Number(b.amount), 0);
+        if (sum > maxAmt) maxAmt = sum;
+        dailySums.push({ label: d.toLocaleDateString('th-TH', { weekday: 'short' }), sum });
+      }
+
+      chart.innerHTML = dailySums.map(d => {
+        let pct = Math.max(10, Math.round((d.sum / maxAmt) * 100));
+        return `
+          <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end">
+            <span class="text-[9px] font-bold text-brand-600 dark:text-brand-500">${d.sum > 0 ? d.sum : ''}</span>
+            <div class="w-full bg-brand-500/20 hover:bg-brand-500 rounded-t-lg transition-all" style="height: ${pct}%"></div>
+            <span class="text-[10px] text-slate-400">${d.label}</span>
+          </div>
+        `;
+      }).join('');
+
+      // Calendar
+      const calGrid = document.getElementById('calendarDaysGrid');
+      const daysInMonth = 30;
+      let calHtml = '';
+      for (let i = 1; i <= daysInMonth; i++) {
+        calHtml += `
+          <div class="aspect-square rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[10px] font-medium text-slate-500">
+            ${i}
+          </div>
+        `;
+      }
+      calGrid.innerHTML = calHtml;
+    }
+
+    /* NOTIFICATION SYSTEM */
+    function addNotification(title, message) {
+      const notif = {
+        id: 'nt_' + Date.now(),
+        title,
+        message,
+        time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }),
+        read: false
+      };
+      notifications.unshift(notif);
+      localStorage.setItem('smart_save_notifs', JSON.stringify(notifications));
+      renderNotifications();
+    }
+
+    function renderNotifications() {
+      const list = document.getElementById('notificationsList');
+      const badge = document.getElementById('notifBadge');
+      const hasUnread = notifications.some(n => !n.read);
+
+      if (hasUnread) badge.classList.remove('hidden');
+      else badge.classList.add('hidden');
+
+      if (notifications.length === 0) {
+        list.innerHTML = `<div class="text-center py-8 text-xs text-slate-400">ไม่มีการแจ้งเตือน</div>`;
+      } else {
+        list.innerHTML = notifications.map(n => `
+          <div class="py-3 space-y-1">
+            <div class="flex justify-between items-center">
+              <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200">${n.title}</h4>
+              <span class="text-[10px] text-slate-400">${n.time}</span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">${n.message}</p>
+          </div>
+        `).join('');
+      }
+    }
+
+    /* BACKEND EXTERNAL SYNC (Adapter Pattern) */
+    async function syncToBackend(action, payload) {
+      try {
+        await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action, payload, userId: currentUser ? currentUser.id : null })
+        });
+      } catch (err) {
+        console.warn("External sync offline/pending:", err);
+      }
+    }
+
+    /* THEME & UTILS */
+    function changeTheme(theme) {
+      if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      localStorage.setItem('smart_save_theme', theme);
+    }
+
+    function changeCurrency(curr) {
+      localStorage.setItem('smart_save_currency', curr);
+      updateDashboard();
+      renderHistory();
+    }
+
+    function exportData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ savingsData, goalsData, categories }));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `SmartSave_Backup_${Date.now()}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importDataPrompt() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'application/json';
+      input.onchange = e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = event => {
+          try {
+            const imported = JSON.parse(event.target.result);
+            if (imported.savingsData) savingsData = imported.savingsData;
+            if (imported.goalsData) goalsData = imported.goalsData;
+            if (imported.categories) categories = imported.categories;
+
+            localStorage.setItem('smart_save_records', JSON.stringify(savingsData));
+            localStorage.setItem('smart_save_goals', JSON.stringify(goalsData));
+            localStorage.setItem('smart_save_categories', JSON.stringify(categories));
+            initApp();
+            alert("นำเข้าข้อมูลเรียบร้อยแล้ว");
+          } catch (err) {
+            alert("รูปแบบไฟล์ไม่ถูกต้อง");
+          }
         };
-
-        // IndexedDB Adapter Implementation
-        class LocalDatabase {
-            constructor() {
-                this.dbName = 'SmartSaveDB';
-                this.dbVersion = 1;
-                this.db = null;
-            }
-
-            async init() {
-                return new Promise((resolve, reject) => {
-                    const request = indexedDB.open(this.dbName, this.dbVersion);
-                    request.onupgradeneeded = (e) => {
-                        const db = e.target.result;
-                        if (!db.objectStoreNames.contains('savings')) {
-                            db.createObjectStore('savings', { keyPath: 'id' });
-                        }
-                        if (!db.objectStoreNames.contains('goals')) {
-                            db.createObjectStore('goals', { keyPath: 'id' });
-                        }
-                    };
-                    request.onsuccess = (e) => {
-                        this.db = e.target.result;
-                        resolve();
-                    };
-                    request.onerror = (e) => reject(e);
-                });
-            }
-
-            async getAll(storeName) {
-                return new Promise((resolve) => {
-                    if (!this.db) { resolve([]); return; }
-                    const tx = this.db.transaction(storeName, 'readonly');
-                    const store = tx.objectStore(storeName);
-                    const req = store.getAll();
-                    req.onsuccess = () => resolve(req.result || []);
-                    req.onerror = () => resolve([]);
-                });
-            }
-
-            async saveItem(storeName, item) {
-                return new Promise((resolve) => {
-                    if (!this.db) { resolve(); return; }
-                    const tx = this.db.transaction(storeName, 'readwrite');
-                    const store = tx.objectStore(storeName);
-                    store.put(item);
-                    tx.oncomplete = () => resolve();
-                });
-            }
-
-            async deleteItem(storeName, id) {
-                return new Promise((resolve) => {
-                    if (!this.db) { resolve(); return; }
-                    const tx = this.db.transaction(storeName, 'readwrite');
-                    const store = tx.objectStore(storeName);
-                    store.delete(id);
-                    tx.oncomplete = () => resolve();
-                });
-            }
-        }
-
-        const dbAdapter = new LocalDatabase();
-
-        // Currency Formatter Utility
-        function formatCurrency(amount, currency = AppState.currency) {
-            return new Intl.NumberFormat('th-TH', {
-                style: 'currency',
-                currency: currency,
-                minimumFractionDigits: 2
-            }).format(amount || 0);
-        }
-
-        // WebRTC Biometric Photo Verification Handler
-        let mediaStream = null;
-        let capturedPhotoData = null;
-
-        const startCameraBtn = document.getElementById('startCameraBtn');
-        const captureSnapBtn = document.getElementById('captureSnapBtn');
-        const webcamVideo = document.getElementById('webcamVideo');
-        const webcamCanvas = document.getElementById('webcamCanvas');
-        const cameraPlaceholder = document.getElementById('cameraPlaceholder');
-        const submitRegisterBtn = document.getElementById('submitRegisterBtn');
-
-        startCameraBtn.addEventListener('click', async () => {
-            try {
-                mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
-                webcamVideo.srcObject = mediaStream;
-                webcamVideo.classList.remove('hidden');
-                cameraPlaceholder.classList.add('hidden');
-                captureSnapBtn.disabled = false;
-            } catch (err) {
-                showToast("ไม่สามารถเปิดกล้องได้", "โปรดอนุญาตการใช้งานกล้องในเบราว์เซอร์");
-            }
-        });
-
-        captureSnapBtn.addEventListener('click', () => {
-            if (!webcamVideo.srcObject) return;
-            webcamCanvas.width = webcamVideo.videoWidth || 320;
-            webcamCanvas.height = webcamVideo.videoHeight || 240;
-            const ctx = webcamCanvas.getContext('2d');
-            ctx.drawImage(webcamVideo, 0, 0, webcamCanvas.width, webcamCanvas.height);
-            capturedPhotoData = webcamCanvas.toDataURL('image/jpeg', 0.8);
-            
-            webcamVideo.classList.add('hidden');
-            webcamCanvas.classList.remove('hidden');
-            submitRegisterBtn.disabled = false;
-            showToast("บันทึกภาพถ่ายแล้ว", "ใบหน้าของคุณได้รับการบันทึกยืนยันตัวตนแล้ว");
-
-            // Stop camera stream
-            if (mediaStream) {
-                mediaStream.getTracks().forEach(track => track.stop());
-            }
-        });
-
-        // Authentication Controller
-        const authOverlay = document.getElementById('authOverlay');
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-        const switchToRegister = document.getElementById('switchToRegister');
-        const switchToLogin = document.getElementById('switchToLogin');
-        const appContainer = document.getElementById('appContainer');
-
-        switchToRegister.addEventListener('click', () => {
-            loginForm.classList.add('hidden');
-            registerForm.classList.remove('hidden');
-            document.getElementById('authTitle').textContent = "ลงทะเบียน SmartSave";
-        });
-
-        switchToLogin.addEventListener('click', () => {
-            registerForm.classList.add('hidden');
-            loginForm.classList.remove('hidden');
-            document.getElementById('authTitle').textContent = "SmartSave Banking";
-        });
-
-        // Register Submission
-        registerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const username = document.getElementById('regUsername').value.trim();
-            const password = document.getElementById('regPassword').value;
-            const confirmPass = document.getElementById('regConfirmPassword').value;
-            const displayName = document.getElementById('regDisplayName').value.trim();
-
-            if (password !== confirmPass) {
-                showToast("รหัสผ่านไม่ตรงกัน", "โปรดตรวจสอบรหัสผ่านอีกครั้ง");
-                return;
-            }
-
-            if (!capturedPhotoData) {
-                showToast("จำเป็นต้องถ่ายภาพ", "กรุณาถ่ายรูปยืนยันตัวตนก่อนลงทะเบียน");
-                return;
-            }
-
-            const newUser = {
-                id: 'USR-' + Date.now(),
-                username,
-                password, // In real backend hashed; local storage demo
-                displayName,
-                avatar: capturedPhotoData,
-                verified: true
-            };
-
-            localStorage.setItem('SSB_USER_' + username, JSON.stringify(newUser));
-            localStorage.setItem('SSB_CURRENT_USER', JSON.stringify(newUser));
-            
-            AppState.currentUser = newUser;
-            initAppSession();
-        });
-
-        // Login Submission
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value;
-
-            const storedUser = localStorage.getItem('SSB_USER_' + username);
-            if (!storedUser) {
-                showToast("ไม่พบบัญชีผู้ใช้", "กรุณาลงทะเบียนใช้งานก่อน");
-                return;
-            }
-
-            const userObj = JSON.parse(storedUser);
-            if (userObj.password !== password) {
-                showToast("รหัสผ่านไม่ถูกต้อง", "โปรดลองใหม่อีกครั้ง");
-                return;
-            }
-
-            localStorage.setItem('SSB_CURRENT_USER', JSON.stringify(userObj));
-            AppState.currentUser = userObj;
-            initAppSession();
-        });
-
-        // Logout
-        function logout() {
-            localStorage.removeItem('SSB_CURRENT_USER');
-            location.reload();
-        }
-        document.getElementById('logoutBtnDesktop').addEventListener('click', logout);
-
-        async function initAppSession() {
-            authOverlay.classList.add('hidden');
-            appContainer.classList.remove('hidden');
-
-            // Render user profile
-            document.getElementById('userNameDesktop').textContent = AppState.currentUser.displayName;
-            document.getElementById('userNameMobile').textContent = AppState.currentUser.displayName;
-            if (AppState.currentUser.avatar) {
-                document.getElementById('userAvatarDesktop').src = AppState.currentUser.avatar;
-                document.getElementById('userAvatarMobile').src = AppState.currentUser.avatar;
-            }
-
-            await dbAdapter.init();
-            AppState.savings = await dbAdapter.getAll('savings');
-            AppState.goals = await dbAdapter.getAll('goals');
-
-            updateDashboardUI();
-            renderSavingsHistory();
-            renderGoalsUI();
-            renderCalendarUI();
-            renderAnalyticsCharts();
-
-            // Background sync with Google Apps Script
-            syncDataWithGoogleScript();
-        }
-
-        // Navigation Switcher
-        function switchTab(targetId) {
-            document.querySelectorAll('.view-section').forEach(sec => sec.classList.add('hidden'));
-            const activeSec = document.getElementById('view-' + targetId);
-            if (activeSec) activeSec.classList.remove('hidden');
-
-            document.querySelectorAll('.nav-btn, .mobile-nav-btn').forEach(btn => {
-                if (btn.dataset.target === targetId) {
-                    btn.classList.add('text-bank-500', 'active');
-                    btn.classList.remove('text-slate-400');
-                } else {
-                    btn.classList.remove('text-bank-500', 'active');
-                    btn.classList.add('text-slate-400');
-                }
-            });
-
-            if (targetId === 'analytics') {
-                renderAnalyticsCharts();
-            }
-        }
-
-        document.querySelectorAll('.nav-btn, .mobile-nav-btn').forEach(btn => {
-            btn.addEventListener('click', () => switchTab(btn.dataset.target));
-        });
-
-        document.getElementById('viewAllSavingsBtn').addEventListener('click', () => switchTab('savings'));
-
-        // Core Financial Calculation Engine
-        function updateDashboardUI() {
-            const total = AppState.savings.reduce((acc, curr) => acc + (parseFloat(curr.amount) || 0), 0);
-            
-            // Current month calculation
-            const now = new Date();
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
-
-            const monthlyTotal = AppState.savings.filter(s => {
-                const d = new Date(s.date);
-                return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
-            }).reduce((acc, curr) => acc + (parseFloat(curr.amount) || 0), 0);
-
-            // Today saving calculation
-            const todayStr = new Date().toISOString().split('T')[0];
-            const todayTotal = AppState.savings.filter(s => s.date === todayStr)
-                .reduce((acc, curr) => acc + (parseFloat(curr.amount) || 0), 0);
-
-            // Streak calculation
-            const streak = calculateSavingStreak();
-
-            // Rank Calculation
-            const rank = calculateRank(total, streak, AppState.savings.length);
-
-            // Render UI Balance Cards
-            document.getElementById('totalSavingsDisplay').textContent = formatCurrency(total);
-            document.getElementById('monthlySavingDisplay').textContent = '+ ' + formatCurrency(monthlyTotal);
-            document.getElementById('todaySavingDisplay').textContent = formatCurrency(todayTotal);
-            document.getElementById('dashStreakVal').textContent = streak;
-            document.getElementById('dashActiveGoalsVal').textContent = AppState.goals.filter(g => g.status !== 'COMPLETED').length;
-            document.getElementById('dashTotalTxVal').textContent = AppState.savings.length;
-            
-            document.getElementById('rankBadge').textContent = rank;
-            document.getElementById('userRankDesktop').textContent = rank;
-
-            renderRecentSavingsList();
-        }
-
-        // Streak Calculation Algorithm
-        function calculateSavingStreak() {
-            if (!AppState.savings.length) return 0;
-            const dates = [...new Set(AppState.savings.map(s => s.date))].sort((a, b) => new Date(b) - new Date(a));
-            let streak = 0;
-            let checkDate = new Date();
-
-            for (let i = 0; i < dates.length; i++) {
-                const dateStr = checkDate.toISOString().split('T')[0];
-                if (dates.includes(dateStr)) {
-                    streak++;
-                    checkDate.setDate(checkDate.getDate() - 1);
-                } else {
-                    break;
-                }
-            }
-            return streak;
-        }
-
-        // Rank Gamification Calculator
-        function calculateRank(total, streak, count) {
-            if (total >= 500000 && streak >= 30) return 'Master Saver';
-            if (total >= 100000 && streak >= 14) return 'Elite Saver';
-            if (total >= 50000 && streak >= 7) return 'Professional Saver';
-            if (total >= 20000) return 'Advanced Saver';
-            if (total >= 5000) return 'Smart Saver';
-            if (count >= 1) return 'Saver';
-            return 'Beginner';
-        }
-
-        function renderRecentSavingsList() {
-            const container = document.getElementById('recentSavingsList');
-            if (AppState.savings.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-6 text-slate-500 text-xs">
-                        <svg class="w-8 h-8 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
-                        ยังไม่มีรายการออมเงินในระบบ<br>เริ่มบันทึกเงินออมรายการแรกของคุณ
-                    </div>
-                `;
-                return;
-            }
-
-            const sorted = [...AppState.savings].sort((a, b) => new Date(b.date + 'T' + b.time) - new Date(a.date + 'T' + a.time)).slice(0, 5);
-            container.innerHTML = sorted.map(item => `
-                <div class="flex items-center justify-between p-3 bg-slate-900/60 border border-slate-800 rounded-xl">
-                    <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 font-bold text-xs">
-                            ฿
-                        </div>
-                        <div>
-                            <p class="text-xs font-semibold text-white">${item.type || 'การออมเงิน'}</p>
-                            <span class="text-[10px] text-slate-400">${item.date} • ${item.time} ${item.note ? '• ' + item.note : ''}</span>
-                        </div>
-                    </div>
-                    <span class="text-xs font-bold text-emerald-400">+ ${formatCurrency(item.amount)}</span>
-                </div>
-            `).join('');
-        }
-
-        function renderSavingsHistory() {
-            const container = document.getElementById('fullSavingsHistoryList');
-            const searchVal = document.getElementById('historySearchInput').value.toLowerCase();
-            const catVal = document.getElementById('historyCategoryFilter').value;
-            const sortVal = document.getElementById('historySortFilter').value;
-
-            let filtered = AppState.savings.filter(s => {
-                const matchSearch = (s.note || '').toLowerCase().includes(searchVal) || (s.type || '').toLowerCase().includes(searchVal);
-                const matchCat = catVal === 'ALL' || s.category === catVal;
-                return matchSearch && matchCat;
-            });
-
-            if (sortVal === 'DESC') {
-                filtered.sort((a, b) => new Date(b.date + 'T' + b.time) - new Date(a.date + 'T' + a.time));
-            } else if (sortVal === 'ASC') {
-                filtered.sort((a, b) => new Date(a.date + 'T' + a.time) - new Date(b.date + 'T' + b.time));
-            } else if (sortVal === 'AMOUNT_DESC') {
-                filtered.sort((a, b) => b.amount - a.amount);
-            }
-
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="text-center py-8 text-slate-500 text-xs">ไม่พบรายการออมที่ตรงกับเงื่อนไข</div>`;
-                return;
-            }
-
-            container.innerHTML = filtered.map(item => `
-                <div class="flex items-center justify-between p-3.5 bg-bank-darkcard border border-bank-darkborder rounded-2xl">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-bank-600/10 text-bank-500 border border-bank-500/20 flex items-center justify-center font-bold text-xs">
-                            ${item.category ? item.category[0] : 'S'}
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <span class="text-xs font-bold text-white">${item.type}</span>
-                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">${item.category}</span>
-                            </div>
-                            <span class="text-[10px] text-slate-400 block mt-0.5">${item.date} เวลา ${item.time} ${item.note ? '• Note: ' + item.note : ''}</span>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-xs font-bold text-emerald-400 block">+ ${formatCurrency(item.amount)}</span>
-                        <button onclick="deleteSavingItem('${item.id}')" class="text-[10px] text-red-400 hover:underline mt-1">ลบรายการ</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        document.getElementById('historySearchInput').addEventListener('input', renderSavingsHistory);
-        document.getElementById('historyCategoryFilter').addEventListener('change', renderSavingsHistory);
-        document.getElementById('historySortFilter').addEventListener('change', renderSavingsHistory);
-
-        async function deleteSavingItem(id) {
-            AppState.savings = AppState.savings.filter(s => s.id !== id);
-            await dbAdapter.deleteItem('savings', id);
-            updateDashboardUI();
-            renderSavingsHistory();
-            showToast("ลบรายการแล้ว", "รายการออมถูกนำออกจากระบบแล้ว");
-        }
-
-        // Add Saving Form Handler
-        const addSavingModal = document.getElementById('addSavingModal');
-        document.getElementById('openAddSavingModal').addEventListener('click', () => populateGoalDropdownAndOpen());
-        document.getElementById('openAddSavingModalSec').addEventListener('click', () => populateGoalDropdownAndOpen());
-        document.getElementById('closeAddSavingModal').addEventListener('click', () => addSavingModal.classList.add('hidden'));
-
-        function populateGoalDropdownAndOpen() {
-            const select = document.getElementById('savingLinkedGoal');
-            select.innerHTML = '<option value="">-- ไม่ระบุ (ออมทั่วไป) --</option>' + 
-                AppState.goals.filter(g => g.status !== 'COMPLETED').map(g => `<option value="${g.id}">${g.name}</option>`).join('');
-            
-            // Set current date & time defaults
-            const now = new Date();
-            document.getElementById('savingDate').value = now.toISOString().split('T')[0];
-            document.getElementById('savingTime').value = now.toTimeString().split(' ')[0].substring(0, 5);
-            addSavingModal.classList.remove('hidden');
-        }
-
-        document.getElementById('addSavingForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const amount = parseFloat(document.getElementById('savingAmount').value);
-            if (!amount || amount <= 0) {
-                showToast("จำนวนเงินไม่ถูกต้อง", "กรุณาระบุจำนวนเงินออมที่มากกว่า 0");
-                return;
-            }
-
-            const newTx = {
-                id: 'SAV-' + Date.now(),
-                amount: amount,
-                currency: AppState.currency,
-                date: document.getElementById('savingDate').value,
-                time: document.getElementById('savingTime').value,
-                type: document.getElementById('savingType').value,
-                category: document.getElementById('savingCategory').value,
-                linkedGoalId: document.getElementById('savingLinkedGoal').value,
-                note: document.getElementById('savingNote').value,
-                createdAt: new Date().toISOString()
-            };
-
-            // If linked to goal, update goal progress
-            if (newTx.linkedGoalId) {
-                const goal = AppState.goals.find(g => g.id === newTx.linkedGoalId);
-                if (goal) {
-                    goal.currentAmount = (parseFloat(goal.currentAmount) || 0) + amount;
-                    if (goal.currentAmount >= goal.targetAmount) {
-                        goal.status = 'COMPLETED';
-                        goal.completedAt = new Date().toISOString();
-                        showToast("🎉 เป้าหมายสำเร็จ!", `คุณออมเงินบรรลุเป้าหมาย "${goal.name}" แล้ว`);
-                    }
-                    await dbAdapter.saveItem('goals', goal);
-                }
-            }
-
-            AppState.savings.push(newTx);
-            await dbAdapter.saveItem('savings', newTx);
-
-            addSavingModal.classList.add('hidden');
-            document.getElementById('addSavingForm').reset();
-
-            updateDashboardUI();
-            renderSavingsHistory();
-            renderGoalsUI();
-            renderCalendarUI();
-            showToast("บันทึกสำเร็จ", `บันทึกเงินออม ${formatCurrency(amount)} เรียบร้อยแล้ว`);
-            syncDataWithGoogleScript();
-        });
-
-        // Saving Goals Controller
-        const addGoalModal = document.getElementById('addGoalModal');
-        document.getElementById('openAddGoalModal').addEventListener('click', () => {
-            document.getElementById('goalStartDate').value = new Date().toISOString().split('T')[0];
-            addGoalModal.classList.remove('hidden');
-        });
-        document.getElementById('closeAddGoalModal').addEventListener('click', () => addGoalModal.classList.add('hidden'));
-
-        document.getElementById('addGoalForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const newGoal = {
-                id: 'GOL-' + Date.now(),
-                name: document.getElementById('goalName').value,
-                targetAmount: parseFloat(document.getElementById('goalTargetAmount').value),
-                currentAmount: 0,
-                currency: AppState.currency,
-                startDate: document.getElementById('goalStartDate').value,
-                targetDate: document.getElementById('goalTargetDate').value,
-                status: 'ACTIVE',
-                createdAt: new Date().toISOString()
-            };
-
-            AppState.goals.push(newGoal);
-            await dbAdapter.saveItem('goals', newGoal);
-
-            addGoalModal.classList.add('hidden');
-            document.getElementById('addGoalForm').reset();
-
-            renderGoalsUI();
-            updateDashboardUI();
-            showToast("สร้างเป้าหมายสำเร็จ", `เริ่มต้นเป้าหมาย ${newGoal.name}`);
-        });
-
-        function renderGoalsUI() {
-            const activeGrid = document.getElementById('activeGoalsGrid');
-            const completedList = document.getElementById('completedGoalsList');
-
-            const active = AppState.goals.filter(g => g.status !== 'COMPLETED');
-            const completed = AppState.goals.filter(g => g.status === 'COMPLETED');
-
-            activeGrid.innerHTML = active.length === 0 ? `<div class="col-span-full text-center py-6 text-slate-500 text-xs">ยังไม่มีเป้าหมายที่กำลังดำเนินการ</div>` :
-                active.map(g => {
-                    const pct = Math.min(100, Math.round((g.currentAmount / g.targetAmount) * 100)) || 0;
-                    return `
-                        <div class="bg-bank-darkcard p-5 rounded-2xl border border-bank-darkborder relative overflow-hidden space-y-3">
-                            <div class="flex items-center justify-between">
-                                <h4 class="font-bold text-white text-sm">${g.name}</h4>
-                                <span class="text-xs font-bold text-emerald-400">${pct}%</span>
-                            </div>
-                            <div class="text-xs text-slate-400">
-                                ${formatCurrency(g.currentAmount)} / <span class="text-white">${formatCurrency(g.targetAmount)}</span>
-                            </div>
-                            <div class="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
-                                <div class="h-full bg-gradient-to-r from-emerald-500 to-bank-500 rounded-full" style="width: ${pct}%"></div>
-                            </div>
-                            <div class="flex justify-between text-[10px] text-slate-500">
-                                <span>เริ่ม: ${g.startDate}</span>
-                                <span>เป้าหมาย: ${g.targetDate}</span>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-
-            completedList.innerHTML = completed.length === 0 ? `<div class="text-center py-4 text-slate-500 text-xs">ยังไม่มีเป้าหมายที่สำเร็จ</div>` :
-                completed.map(g => `
-                    <div class="flex items-center justify-between p-3 bg-emerald-950/20 border border-emerald-500/30 rounded-xl">
-                        <div>
-                            <span class="text-xs font-bold text-emerald-300">${g.name}</span>
-                            <span class="text-[10px] text-slate-400 block">สำเร็จเมื่อ ${g.completedAt ? g.completedAt.split('T')[0] : 'เมื่อเร็วๆ นี้'}</span>
-                        </div>
-                        <span class="text-xs font-bold text-white">${formatCurrency(g.targetAmount)}</span>
-                    </div>
-                `).join('');
-        }
-
-        // Saving Plan Calculator Handler
-        document.getElementById('calcPlanBtn').addEventListener('click', () => {
-            const target = parseFloat(document.getElementById('planTargetAmount').value);
-            const days = parseInt(document.getElementById('planDays').value);
-
-            if (!target || !days || days <= 0) {
-                showToast("ข้อมูลไม่ถูกต้อง", "กรุณากรอกยอดเป้าหมายและจำนวนวันให้ถูกต้อง");
-                return;
-            }
-
-            const daily = target / days;
-            const weekly = daily * 7;
-            const monthly = daily * 30.41;
-
-            document.getElementById('planDailyVal').textContent = formatCurrency(daily);
-            document.getElementById('planWeeklyVal').textContent = formatCurrency(weekly);
-            document.getElementById('planMonthlyVal').textContent = formatCurrency(monthly);
-
-            document.getElementById('planResultsCard').classList.remove('hidden');
-        });
-
-        // Savings Heatmap Calendar Generator
-        function renderCalendarUI() {
-            const grid = document.getElementById('calendarGrid');
-            grid.innerHTML = '';
-            
-            const days = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'];
-            days.forEach(d => grid.innerHTML += `<div class="font-bold text-slate-400 py-1">${d}</div>`);
-
-            const now = new Date();
-            const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-
-            const savingsMap = {};
-            AppState.savings.forEach(s => {
-                savingsMap[s.date] = (savingsMap[s.date] || 0) + parseFloat(s.amount);
-            });
-
-            for (let i = 1; i <= daysInMonth; i++) {
-                const dateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
-                const amount = savingsMap[dateStr] || 0;
-                
-                let bgClass = 'bg-slate-900 text-slate-500';
-                if (amount > 5000) bgClass = 'bg-emerald-500 text-white font-bold';
-                else if (amount > 1000) bgClass = 'bg-emerald-600/80 text-white';
-                else if (amount > 0) bgClass = 'bg-emerald-800/60 text-emerald-200';
-
-                grid.innerHTML += `
-                    <div class="h-10 rounded-lg ${bgClass} flex flex-col items-center justify-center p-1 border border-slate-800/50">
-                        <span class="text-[10px]">${i}</span>
-                        ${amount > 0 ? `<span class="text-[8px] truncate">฿${Math.round(amount)}</span>` : ''}
-                    </div>
-                `;
-            }
-        }
-
-        // Analytics Canvas Charts Implementation
-        function renderAnalyticsCharts() {
-            // Savings Trend Canvas Line Chart
-            const canvasTrend = document.getElementById('savingsTrendChart');
-            if (!canvasTrend) return;
-            const ctx = canvasTrend.getContext('2d');
-            canvasTrend.width = canvasTrend.parentElement.clientWidth;
-            canvasTrend.height = canvasTrend.parentElement.clientHeight;
-
-            ctx.clearRect(0, 0, canvasTrend.width, canvasTrend.height);
-
-            // Mock Data for canvas rendering smooth line
-            const points = [10, 25, 40, 35, 60, 80, 100];
-            const w = canvasTrend.width;
-            const h = canvasTrend.height;
-            const step = w / (points.length - 1);
-
-            ctx.beginPath();
-            ctx.strokeStyle = '#10b981';
-            ctx.lineWidth = 3;
-
-            points.forEach((p, idx) => {
-                const x = idx * step;
-                const y = h - (p / 100) * (h - 40) - 20;
-                if (idx === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-            });
-            ctx.stroke();
-
-            // Category Distribution Canvas Donut Chart
-            const canvasCat = document.getElementById('savingsCategoryChart');
-            if (!canvasCat) return;
-            const ctxCat = canvasCat.getContext('2d');
-            canvasCat.width = canvasCat.parentElement.clientWidth;
-            canvasCat.height = canvasCat.parentElement.clientHeight;
-
-            ctxCat.clearRect(0, 0, canvasCat.width, canvasCat.height);
-            const centerX = canvasCat.width / 2;
-            const centerY = canvasCat.height / 2;
-            const radius = Math.min(centerX, centerY) - 20;
-
-            const slices = [
-                { color: '#10b981', pct: 0.5 },
-                { color: '#3b82f6', pct: 0.3 },
-                { color: '#f59e0b', pct: 0.2 }
-            ];
-
-            let startAngle = 0;
-            slices.forEach(slice => {
-                const angle = slice.pct * Math.PI * 2;
-                ctxCat.beginPath();
-                ctxCat.fillStyle = slice.color;
-                ctxCat.moveTo(centerX, centerY);
-                ctxCat.arc(centerX, centerY, radius, startAngle, startAngle + angle);
-                ctxCat.closePath();
-                ctxCat.fill();
-                startAngle += angle;
-            });
-
-            // Inner hole for Donut
-            ctxCat.beginPath();
-            ctxCat.fillStyle = '#151c2c';
-            ctxCat.arc(centerX, centerY, radius * 0.6, 0, Math.PI * 2);
-            ctxCat.fill();
-        }
-
-        // Sync Adapter for Google Apps Script Web App Endpoint
-        async function syncDataWithGoogleScript() {
-            const syncStatusBadge = document.getElementById('syncStatusBadge');
-            const lastSyncTimeVal = document.getElementById('lastSyncTimeVal');
-            
-            if (syncStatusBadge) {
-                syncStatusBadge.textContent = "กำลังซิงค์... (Syncing)";
-                syncStatusBadge.className = "px-2.5 py-1 rounded-full text-[10px] font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30";
-            }
-
-            try {
-                const payload = {
-                    user: AppState.currentUser ? AppState.currentUser.username : 'Guest',
-                    savings: AppState.savings,
-                    goals: AppState.goals,
-                    timestamp: new Date().toISOString()
-                };
-
-                // Non-blocking fetch to Apps Script Endpoint
-                await fetch(APPS_SCRIPT_ENDPOINT, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (syncStatusBadge) {
-                    syncStatusBadge.textContent = "เชื่อมต่อแล้ว (Synced)";
-                    syncStatusBadge.className = "px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
-                }
-                if (lastSyncTimeVal) {
-                    lastSyncTimeVal.textContent = new Date().toLocaleTimeString('th-TH');
-                }
-            } catch (err) {
-                if (syncStatusBadge) {
-                    syncStatusBadge.textContent = "โหมดออฟไลน์ (Offline Mode)";
-                    syncStatusBadge.className = "px-2.5 py-1 rounded-full text-[10px] font-semibold bg-slate-500/20 text-slate-400 border border-slate-500/30";
-                }
-            }
-        }
-
-        document.getElementById('manualSyncBtn').addEventListener('click', () => {
-            syncDataWithGoogleScript();
-            showToast("ส่งคำขอซิงค์แล้ว", "ระบบกำลังส่งข้อมูลอัปเดตไปยัง Google Sheet");
-        });
-
-        // Toast Helper Function
-        function showToast(title, message) {
-            const toast = document.getElementById('toastNotification');
-            document.getElementById('toastTitle').textContent = title;
-            document.getElementById('toastMessage').textContent = message;
-
-            toast.classList.remove('translate-y-[-150%]');
-            setTimeout(() => {
-                toast.classList.add('translate-y-[-150%]');
-            }, 3000);
-        }
-
-        // Check active session on load
-        window.onload = () => {
-            const savedUser = localStorage.getItem('SSB_CURRENT_USER');
-            if (savedUser) {
-                AppState.currentUser = JSON.parse(savedUser);
-                initAppSession();
-            }
-        };
-    </script>
+        reader.readAsText(file);
+      };
+      input.click();
+    }
+  </script>
 </body>
 </html>
