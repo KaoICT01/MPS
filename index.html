@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking v5.2.0</title>
+  <title>SmartSave Banking v5.4.0</title>
   <style>
     :root {
       --bg: #090d16;
@@ -61,7 +61,7 @@
     .b-nav-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-secondary); font-size: 11px; background: none; border: none; cursor: pointer; flex: 1; }
     .b-nav-btn.active { color: var(--primary); font-weight: 600; }
     
-    /* Components */
+    /* Banking Cards */
     .card { background: var(--surface-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
     .balance-card { background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: #fff; border: none; }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; min-height: 44px; }
@@ -101,7 +101,7 @@
     /* Chat Interfaces */
     .chat-container { display: flex; flex-direction: column; height: 60vh; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); overflow: hidden; }
     .chat-messages { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-    .chat-bubble { max-width: 85%; padding: 12px 16px; border-radius: 14px; font-size: 14px; line-height: 1.4; }
+    .chat-bubble { max-width: 85%; padding: 12px 16px; border-radius: 14px; font-size: 14px; line-height: 1.4; white-space: pre-line; }
     .chat-bubble.ai { align-self: flex-start; background: var(--surface-secondary); color: var(--text); border-bottom-left-radius: 2px; }
     .chat-bubble.user { align-self: flex-end; background: var(--primary); color: #fff; border-bottom-right-radius: 2px; }
     .chat-actions { padding: 12px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 8px; background: var(--surface-card); }
@@ -118,13 +118,13 @@
   <!-- Instant Toast Container -->
   <div class="toast-container" id="toastBox"></div>
 
-  <!-- AUTH SCREEN (No Navigation Tabs) -->
+  <!-- AUTH SCREEN (No Navigation Menus) -->
   <div id="authContainer" style="display: flex; min-height: 100vh; align-items: center; justify-content: center; padding: 20px;">
     <div class="card" style="width: 100%; max-width: 420px;">
       <div style="text-align: center; margin-bottom: 24px;">
         <svg style="width: 48px; height: 48px; color: var(--primary);"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         <h2 style="margin-top: 8px;" id="authTitle">SmartSave Banking</h2>
-        <p style="color: var(--text-secondary); font-size: 13px;" id="authSub">ระบบบริหารเงินออมอัจฉริยะ v5.2.0</p>
+        <p style="color: var(--text-secondary); font-size: 13px;" id="authSub">ระบบบริหารเงินออมอัจฉริยะ v5.4.0</p>
       </div>
 
       <div id="authForms">
@@ -152,9 +152,9 @@
         <button id="authToggleBtn" class="btn btn-outline" style="width: 100%; margin-top: 8px;">ลงทะเบียนผู้ใช้ใหม่</button>
       </div>
 
-      <!-- Photo KYC Screen -->
+      <!-- Photo KYC Verification (Strict 1 User) -->
       <div id="kycContainer" style="display: none; text-align: center;">
-        <h3 style="margin-bottom: 8px;" id="lblKycTitle">ยืนยันตัวตนด้วยใบหน้า</h3>
+        <h3 style="margin-bottom: 8px;" id="lblKycTitle">ยืนยันตัวตนด้วยใบหน้า (Photo KYC)</h3>
         <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;" id="lblKycSub">ถ่ายรูปยืนยันตัวตนเพื่อเปิดบัญชี (1 บัญชีต่อ 1 User)</p>
         <video id="kycVideo" autoplay playsinline style="width: 100%; height: 220px; object-fit: cover; border-radius: 12px; background: #000; margin-bottom: 10px;"></video>
         <canvas id="kycCanvas" style="display: none;"></canvas>
@@ -187,7 +187,7 @@
     </aside>
 
     <div class="main-wrapper">
-      <!-- Top Bar -->
+      <!-- Top Bar (Auto DateTime Display) -->
       <header class="top-bar">
         <div style="display: flex; align-items: center; gap: 10px;">
           <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--surface-secondary); display: flex; align-items: center; justify-content: center; overflow: hidden;" id="topUserAvatar">
@@ -285,7 +285,7 @@
         <section id="viewAiPlanning" class="view-section">
           <div class="card">
             <h2>AI วางแผน & วิเคราะห์การออม</h2>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">วิเคราะห์แนวโน้มและคำนวณแผนการออมเงินแบบกดปุ่มเลือกคำสั่ง</p>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">วิเคราะห์แนวโน้มและคำนวณแผนการออมเงินแบบกดปุ่มเลือกคำสั่ง (ไม่ต้องพิมพ์)</p>
             
             <div class="chat-container">
               <div class="chat-messages" id="planningChatMessages">
@@ -305,7 +305,7 @@
         <section id="viewAiHelp" class="view-section">
           <div class="card">
             <h2>AI ศูนย์ช่วยเหลือ & ดำเนินการบัญชี</h2>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">จัดการความปลอดภัย บัญชีผู้ใช้ และตั้งค่าเสียงผ่าน AI ทันที</p>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">จัดการความปลอดภัย เปลี่ยนภาษา และออกจากระบบผ่าน AI ทันที</p>
             
             <div class="chat-container">
               <div class="chat-messages" id="helpChatMessages">
@@ -313,7 +313,7 @@
               </div>
               <div class="chat-actions">
                 <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnForgotPass">เปลี่ยนรหัสผ่าน (1ครั้ง/วัน)</button>
-                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnInstantLang">เปลี่ยนภาษาของระบบ (1ครั้ง/วัน)</button>
+                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnInstantLang">สลับภาษา TH / EN (1ครั้ง/วัน)</button>
                 <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnSoundConfig">ตั้งค่าเสียงแจ้งเตือน (10 เสียง)</button>
                 <button class="btn btn-danger" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnDeleteAllData">ลบข้อมูลทั้งหมด (30 วิ)</button>
                 <button class="btn btn-outline" style="font-size: 12px; padding: 6px 12px; min-height: 36px; border-color: var(--danger); color: var(--danger);" id="aiBtnLogout">ออกจากระบบทันที (Logout)</button>
@@ -501,8 +501,8 @@
     const CONFIG = {
       GAS_ENDPOINT: 'https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec',
       SHEET_ID: '1nXTCNdVJRpDuIunPLnjqMkUzmOA87gtUqoclBIgNObk',
-      DB_NAME: 'SmartSaveDB_v520',
-      DB_VERSION: 1
+      DB_NAME: 'SmartSaveDB_Master',
+      DB_VERSION: 2 // Auto Version Migration (Non-destructive)
     };
 
     const I18N_DICT = {
@@ -544,7 +544,7 @@
       }
     };
 
-    /* 1. SYNTHESIZED SOUND ENGINE (10 Tones) */
+    /* 1. SYNTHESIZED SOUND ENGINE (10 Web Audio Tones) */
     const SoundEngine = {
       ctx: null,
       init() {
@@ -581,12 +581,12 @@
           osc.start(now);
           osc.stop(now + (f.length * 0.08) + 0.2);
         } catch (e) {
-          console.warn('Audio play restricted:', e);
+          console.warn('Audio restricted:', e);
         }
       }
     };
 
-    /* 2. INDEXEDDB ADAPTER */
+    /* 2. NON-DESTRUCTIVE INDEXEDDB ADAPTER (Migration Engine) */
     const StorageAdapter = {
       db: null,
       async init() {
@@ -594,6 +594,7 @@
           const req = indexedDB.open(CONFIG.DB_NAME, CONFIG.DB_VERSION);
           req.onupgradeneeded = (e) => {
             const db = e.target.result;
+            // Create object stores safely without dropping existing ones
             if (!db.objectStoreNames.contains('savings')) db.createObjectStore('savings', { keyPath: 'id' });
             if (!db.objectStoreNames.contains('goals')) db.createObjectStore('goals', { keyPath: 'id' });
             if (!db.objectStoreNames.contains('pending')) db.createObjectStore('pending', { keyPath: 'id' });
@@ -657,7 +658,7 @@
       }
     };
 
-    /* 4. ENGINE */
+    /* 4. CALCULATION ENGINE */
     const Engine = {
       isDelayedWindow() {
         const now = new Date();
@@ -771,7 +772,7 @@
         const badge = document.getElementById('bellBadge');
         if (badge) badge.style.display = 'block';
         
-        // Instant Toast
+        // Instant Toast Display
         const toastBox = document.getElementById('toastBox');
         const toast = document.createElement('div');
         toast.className = 'toast show';
@@ -1219,7 +1220,6 @@
           alert('ไม่มีการแจ้งเตือนค้างอยู่');
         });
 
-        // Bind AI Views
         this.bindAiPlanningCommands();
         this.bindAiHelpCommands();
       },
@@ -1324,7 +1324,7 @@
 
         // 2. Instant Language Switch (1 time / day)
         document.getElementById('aiBtnInstantLang')?.addEventListener('click', () => {
-          appendChat('user', 'เปลี่ยนภาษาของระบบ');
+          appendChat('user', 'สลับภาษาไทย / อังกฤษ');
           const today = new Date().toISOString().split('T')[0];
           if (AppState.rateLimits.lastLangChangeDate === today) {
             setTimeout(() => appendChat('ai', '⚠️ สามารถเปลี่ยนภาษาของระบบได้ 1 ครั้งต่อวันเท่านั้น'), 300);
@@ -1338,11 +1338,11 @@
           UI.applyLanguage(nextLang);
           setTimeout(() => {
             appendChat('ai', `สลับภาษาของระบบเป็น [${nextLang.toUpperCase()}] สำเร็จทันที`);
-            UI.notify(`สลับภาษาเป็น ${nextLang.toUpperCase()} เรียบร้อย`);
+            UI.notify(`Language switched to ${nextLang.toUpperCase()}`);
           }, 300);
         });
 
-        // 3. Sound Configuration (10 Tones)
+        // 3. Sound Configuration (10 Choices)
         document.getElementById('aiBtnSoundConfig')?.addEventListener('click', () => {
           appendChat('user', 'ตั้งค่าเสียงแจ้งเตือน (10 เสียง)');
           const choice = prompt('เลือกเสียงแจ้งเตือนลำดับที่ (1 - 10):', AppState.settings.soundTone);
@@ -1352,7 +1352,7 @@
             localStorage.setItem('sm_settings', JSON.stringify(AppState.settings));
             SoundEngine.play(num);
             setTimeout(() => {
-              appendChat('ai', `บันทึกเสียงแจ้งเตือนโทน [${num}] เรียบร้อย พร้อมทดสอบเสียงทันที`);
+              appendChat('ai', `บันทึกเสียงแจ้งเตือนโทน [${num}] เรียบร้อย พร้อมทดสอบเสียง`);
               UI.notify(`ตั้งค่าเสียงโทน ${num} สำเร็จ`);
             }, 300);
           }
@@ -1381,7 +1381,7 @@
           }, 5000);
         });
 
-        // 5. Logout via AI (Instant Process)
+        // 5. Instant AI Logout
         document.getElementById('aiBtnLogout')?.addEventListener('click', () => {
           appendChat('user', 'ออกจากระบบทันที (Logout)');
           setTimeout(() => {
@@ -1530,7 +1530,7 @@
       }
     };
 
-    /* 7. LIFECYCLE BOOTSTRAPPER */
+    /* 7. LIFECYCLE BOOTSTRAPPER (Version Migration Safe) */
     window.addEventListener('DOMContentLoaded', async () => {
       await StorageAdapter.init();
       AppState.savings = await StorageAdapter.getAll('savings');
