@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking</title>
+  <title>SmartSave Banking v5.2.0</title>
   <style>
     :root {
       --bg: #090d16;
@@ -39,30 +39,29 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font); -webkit-tap-highlight-color: transparent; }
     body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
-    svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; display: inline-block; vertical-align: middle; }
+    svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; display: inline-block; vertical-align: middle; }
     
     /* Layout */
     .app-container { display: flex; width: 100%; min-height: 100vh; }
-    .sidebar { width: 260px; background: var(--surface); border-right: 1px solid var(--border); display: none; flex-direction: column; padding: 24px 16px; gap: 8px; }
+    .sidebar { width: 270px; background: var(--surface); border-right: 1px solid var(--border); display: none; flex-direction: column; padding: 24px 16px; gap: 6px; }
     .main-wrapper { flex: 1; display: flex; flex-direction: column; min-width: 0; max-width: 100%; }
     .top-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 40; }
-    .content-area { flex: 1; padding: 16px; max-width: 1200px; margin: 0 auto; width: 100%; padding-bottom: 90px; }
+    .content-area { flex: 1; padding: 16px; max-width: 1200px; margin: 0 auto; width: 100%; padding-bottom: 95px; }
     
-    /* Navigation Desktop */
     @media (min-width: 768px) {
       .sidebar { display: flex; }
       .bottom-nav { display: none !important; }
       .content-area { padding-bottom: 24px; }
     }
-    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: var(--text-secondary); text-decoration: none; cursor: pointer; transition: 0.2s; font-size: 14px; font-weight: 500; }
+    
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 11px 16px; border-radius: 12px; color: var(--text-secondary); text-decoration: none; cursor: pointer; transition: 0.2s; font-size: 13.5px; font-weight: 500; }
     .nav-item:hover, .nav-item.active { background: var(--surface-secondary); color: var(--primary); }
     
-    /* Bottom Navigation Mobile */
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0 calc(8px + env(safe-area-inset-bottom)); z-index: 50; }
     .b-nav-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-secondary); font-size: 11px; background: none; border: none; cursor: pointer; flex: 1; }
     .b-nav-btn.active { color: var(--primary); font-weight: 600; }
     
-    /* Cards & Components */
+    /* Components */
     .card { background: var(--surface-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
     .balance-card { background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: #fff; border: none; }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; min-height: 44px; }
@@ -72,15 +71,17 @@
     .btn-danger { background: var(--danger); color: #fff; }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
     
-    /* Inputs */
     .form-group { margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
     .form-group label { font-size: 13px; color: var(--text-secondary); }
     input, select, textarea { width: 100%; padding: 12px 14px; background: var(--surface-secondary); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 15px; outline: none; }
     input:focus, select:focus { border-color: var(--primary); }
     
-    /* Notification Badge */
+    /* Bell Badge & Toast */
     .bell-wrapper { position: relative; cursor: pointer; }
     .bell-badge { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: var(--danger); border-radius: 50%; display: none; }
+    .toast-container { position: fixed; top: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+    .toast { background: var(--surface); color: var(--text); border: 1px solid var(--primary); border-left: 5px solid var(--primary); padding: 12px 16px; border-radius: 8px; box-shadow: var(--shadow); font-size: 13px; font-weight: 500; transform: translateY(-20px); opacity: 0; transition: 0.3s; pointer-events: auto; }
+    .toast.show { transform: translateY(0); opacity: 1; }
     
     /* Modals & Bottom Sheets */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: 0.2s; }
@@ -97,15 +98,14 @@
     .view-section { display: none; }
     .view-section.active { display: block; }
     
-    /* Chat AI Interface */
-    .chat-container { display: flex; flex-direction: column; height: 65vh; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); overflow: hidden; }
+    /* Chat Interfaces */
+    .chat-container { display: flex; flex-direction: column; height: 60vh; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); overflow: hidden; }
     .chat-messages { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-    .chat-bubble { max-width: 80%; padding: 12px 16px; border-radius: 14px; font-size: 14px; line-height: 1.4; }
+    .chat-bubble { max-width: 85%; padding: 12px 16px; border-radius: 14px; font-size: 14px; line-height: 1.4; }
     .chat-bubble.ai { align-self: flex-start; background: var(--surface-secondary); color: var(--text); border-bottom-left-radius: 2px; }
     .chat-bubble.user { align-self: flex-end; background: var(--primary); color: #fff; border-bottom-right-radius: 2px; }
     .chat-actions { padding: 12px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 8px; background: var(--surface-card); }
     
-    /* Grid Helpers */
     .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     @media(min-width: 600px) { .grid-4 { grid-template-columns: repeat(4, 1fr); } }
@@ -115,35 +115,36 @@
 </head>
 <body>
 
-  <!-- AUTH SCREEN (Login/Register/KYC) -->
+  <!-- Instant Toast Container -->
+  <div class="toast-container" id="toastBox"></div>
+
+  <!-- AUTH SCREEN (No Navigation Tabs) -->
   <div id="authContainer" style="display: flex; min-height: 100vh; align-items: center; justify-content: center; padding: 20px;">
     <div class="card" style="width: 100%; max-width: 420px;">
       <div style="text-align: center; margin-bottom: 24px;">
         <svg style="width: 48px; height: 48px; color: var(--primary);"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        <h2 style="margin-top: 8px;">SmartSave Banking</h2>
-        <p style="color: var(--text-secondary); font-size: 13px;">ระบบบริหารเงินออมอัจฉริยะ</p>
+        <h2 style="margin-top: 8px;" id="authTitle">SmartSave Banking</h2>
+        <p style="color: var(--text-secondary); font-size: 13px;" id="authSub">ระบบบริหารเงินออมอัจฉริยะ v5.2.0</p>
       </div>
 
-      <!-- Auth Forms -->
       <div id="authForms">
         <div class="form-group">
-          <label>ชื่อผู้ใช้งาน (Username)</label>
-          <input type="text" id="authUsername" placeholder="กรอกชื่อผู้ใช้">
+          <label id="lblUsername">ชื่อผู้ใช้งาน (Username)</label>
+          <input type="text" id="authUsername" placeholder="Username">
         </div>
         <div class="form-group">
-          <label>รหัสผ่าน (Password)</label>
-          <input type="password" id="authPassword" placeholder="กรอกรหัสผ่าน">
+          <label id="lblPassword">รหัสผ่าน (Password)</label>
+          <input type="password" id="authPassword" placeholder="Password">
         </div>
         
-        <!-- Registration Fields -->
         <div id="regExtraFields" style="display: none;">
           <div class="form-group">
-            <label>ยืนยันรหัสผ่าน</label>
-            <input type="password" id="authConfirmPassword" placeholder="ยืนยันรหัสผ่าน">
+            <label id="lblConfirmPass">ยืนยันรหัสผ่าน</label>
+            <input type="password" id="authConfirmPassword" placeholder="Confirm Password">
           </div>
           <div class="form-group">
-            <label>ชื่อที่ใช้แสดง (Display Name)</label>
-            <input type="text" id="authDisplayName" placeholder="กรอกชื่อ-นามสกุล">
+            <label id="lblDisplayName">ชื่อที่ใช้แสดง (Display Name)</label>
+            <input type="text" id="authDisplayName" placeholder="Display Name">
           </div>
         </div>
 
@@ -151,10 +152,10 @@
         <button id="authToggleBtn" class="btn btn-outline" style="width: 100%; margin-top: 8px;">ลงทะเบียนผู้ใช้ใหม่</button>
       </div>
 
-      <!-- Mandatory Photo KYC Form (First Registration) -->
+      <!-- Photo KYC Screen -->
       <div id="kycContainer" style="display: none; text-align: center;">
-        <h3 style="margin-bottom: 8px;">ยืนยันตัวตนด้วยใบหน้า</h3>
-        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">ถ่ายรูปยืนยันตัวตนเพื่อความปลอดภัย (1 บัญชีผู้ใช้)</p>
+        <h3 style="margin-bottom: 8px;" id="lblKycTitle">ยืนยันตัวตนด้วยใบหน้า</h3>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;" id="lblKycSub">ถ่ายรูปยืนยันตัวตนเพื่อเปิดบัญชี (1 บัญชีต่อ 1 User)</p>
         <video id="kycVideo" autoplay playsinline style="width: 100%; height: 220px; object-fit: cover; border-radius: 12px; background: #000; margin-bottom: 10px;"></video>
         <canvas id="kycCanvas" style="display: none;"></canvas>
         <div id="kycPreview" style="display: none; margin-bottom: 10px;">
@@ -168,20 +169,21 @@
 
   <!-- MAIN APP CONTAINER -->
   <div id="appInterface" class="app-container" style="display: none;">
-    <!-- Desktop Sidebar -->
+    <!-- Desktop Sidebar Navigation -->
     <aside class="sidebar">
       <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
         <svg style="color: var(--primary);"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         <span style="font-weight: 700; font-size: 18px;">SmartSave</span>
       </div>
-      <a class="nav-item active" data-view="dashboard"><svg><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>แดชบอร์ด</a>
-      <a class="nav-item" data-view="savings"><svg><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>บันทึกเงินออม</a>
-      <a class="nav-item" data-view="goals"><svg><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>เป้าหมายการออม</a>
-      <a class="nav-item" data-view="aiChat"><svg><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>AI บริหารการออม & ช่วยเหลือ</a>
-      <a class="nav-item" data-view="rank"><svg><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>ระดับการออม (Rank)</a>
-      <a class="nav-item" data-view="analysis"><svg><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>วิเคราะห์สถิติ</a>
-      <a class="nav-item" data-view="pending"><svg><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>ข้อมูลส่วนดำเนินการ</a>
-      <a class="nav-item" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>ตั้งค่าระบบ</a>
+      <a class="nav-item active" data-view="dashboard"><svg><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="i18n-dash">แดชบอร์ด</span></a>
+      <a class="nav-item" data-view="savings"><svg><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg><span class="i18n-savings">บันทึกเงินออม</span></a>
+      <a class="nav-item" data-view="goals"><svg><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span class="i18n-goals">เป้าหมายการออม</span></a>
+      <a class="nav-item" data-view="aiPlanning"><svg><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" x2="12" y1="22.08" y2="12"/></svg><span class="i18n-ai-plan">AI วางแผนการออม</span></a>
+      <a class="nav-item" data-view="aiHelp"><svg><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="i18n-ai-help">AI ช่วยเหลือ & บัญชี</span></a>
+      <a class="nav-item" data-view="rank"><svg><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="i18n-rank">ระดับการออม</span></a>
+      <a class="nav-item" data-view="analysis"><svg><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg><span class="i18n-analysis">วิเคราะห์สถิติ</span></a>
+      <a class="nav-item" data-view="pending"><svg><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="i18n-pending">ข้อมูลส่วนดำเนินการ</span></a>
+      <a class="nav-item" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="i18n-settings">ตั้งค่าระบบ</span></a>
     </aside>
 
     <div class="main-wrapper">
@@ -192,7 +194,7 @@
             <svg style="width: 18px; height: 18px;"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           </div>
           <div>
-            <div style="font-size: 14px; font-weight: 600;" id="topUserName">ผู้ใช้งาน</div>
+            <div style="font-size: 14px; font-weight: 600;" id="topUserName">User</div>
             <div style="font-size: 11px; color: var(--text-secondary);" id="topDateTime">--:--:--</div>
           </div>
         </div>
@@ -201,7 +203,6 @@
             <svg><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
             <div class="bell-badge" id="bellBadge"></div>
           </div>
-          <button id="logoutBtn" class="btn btn-outline" style="padding: 6px 10px; min-height: 36px;"><svg style="width: 16px; height: 16px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg></button>
         </div>
       </header>
 
@@ -211,56 +212,51 @@
         <!-- 1. DASHBOARD VIEW -->
         <section id="viewDashboard" class="view-section active">
           <div class="card balance-card">
-            <div style="font-size: 13px; opacity: 0.85;">ยอดเงินออมทั้งหมด (Total Savings)</div>
+            <div style="font-size: 13px; opacity: 0.85;" class="i18n-total-lbl">ยอดเงินออมทั้งหมด (Total Savings)</div>
             <h1 style="font-size: 32px; margin: 10px 0 16px;" id="dashTotalSavings">฿0.00</h1>
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <div>
-                <span style="font-size: 12px; opacity: 0.85;">เดือนนี้: </span>
+                <span style="font-size: 12px; opacity: 0.85;" class="i18n-month-lbl">เดือนนี้: </span>
                 <span style="font-weight: 600;" id="dashMonthlySavings">+฿0.00</span>
               </div>
               <button class="btn" style="background: #ffffff; color: var(--primary);" id="openAddSavingModalBtn">
-                <svg style="color: var(--primary);"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> ออมเงิน
+                <svg style="color: var(--primary);"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> <span class="i18n-add-saving-btn">ออมเงิน</span>
               </button>
             </div>
           </div>
 
-          <!-- Quick Metrics -->
           <div class="grid-4">
-            <div class="card"><div style="font-size: 12px; color: var(--text-secondary);">ออมวันนี้</div><div style="font-size: 18px; font-weight: 700; margin-top: 4px;" id="dashTodaySavings">฿0.00</div></div>
-            <div class="card"><div style="font-size: 12px; color: var(--text-secondary);">เป้าหมายคงอยู่</div><div style="font-size: 18px; font-weight: 700; margin-top: 4px;" id="dashActiveGoals">0</div></div>
-            <div class="card"><div style="font-size: 12px; color: var(--text-secondary);">Streak ออมต่อเนื่อง</div><div style="font-size: 18px; font-weight: 700; margin-top: 4px;" id="dashStreak">0 วัน</div></div>
-            <div class="card"><div style="font-size: 12px; color: var(--text-secondary);">ระดับการออม</div><div style="font-size: 16px; font-weight: 700; margin-top: 4px; color: var(--accent);" id="dashRank">Beginner</div></div>
+            <div class="card"><div style="font-size: 12px; color: var(--text-secondary);" class="i18n-today-lbl">ออมวันนี้</div><div style="font-size: 18px; font-weight: 700; margin-top: 4px;" id="dashTodaySavings">฿0.00</div></div>
+            <div class="card"><div style="font-size: 12px; color: var(--text-secondary);" class="i18n-goals-lbl">เป้าหมายคงอยู่</div><div style="font-size: 18px; font-weight: 700; margin-top: 4px;" id="dashActiveGoals">0</div></div>
+            <div class="card"><div style="font-size: 12px; color: var(--text-secondary);" class="i18n-streak-lbl">Streak ออมต่อเนื่อง</div><div style="font-size: 18px; font-weight: 700; margin-top: 4px;" id="dashStreak">0 วัน</div></div>
+            <div class="card"><div style="font-size: 12px; color: var(--text-secondary);" class="i18n-rank-lbl">ระดับการออม</div><div style="font-size: 16px; font-weight: 700; margin-top: 4px; color: var(--accent);" id="dashRank">Beginner</div></div>
           </div>
 
           <!-- Favorite Categories (รายการโปรด) -->
           <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-              <h3 style="font-size: 15px;">รายการโปรด / หมวดหมู่ออมด่วน</h3>
-            </div>
-            <div id="favoritesList" style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;">
-              <!-- Dynamic Quick Buttons -->
-            </div>
+            <h3 style="font-size: 15px; margin-bottom: 12px;" class="i18n-fav-lbl">รายการโปรด / หมวดหมู่ออมด่วน</h3>
+            <div id="favoritesList" style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;"></div>
           </div>
 
           <!-- Recent Transactions -->
           <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-              <h3 style="font-size: 15px;">รายการออมล่าสุด</h3>
-              <a style="font-size: 12px; color: var(--primary); cursor: pointer;" id="gotoSavingsHistory">ดูทั้งหมด</a>
+              <h3 style="font-size: 15px;" class="i18n-recent-lbl">รายการออมล่าสุด</h3>
+              <a style="font-size: 12px; color: var(--primary); cursor: pointer;" id="gotoSavingsHistory" class="i18n-viewall">ดูทั้งหมด</a>
             </div>
             <div id="dashRecentTransactions"></div>
           </div>
         </section>
 
-        <!-- 2. SAVINGS VIEW (Full History & Filter) -->
+        <!-- 2. SAVINGS VIEW -->
         <section id="viewSavings" class="view-section">
           <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-              <h2>ประวัติการออมทั้งหมด</h2>
-              <button class="btn btn-primary" id="openAddSavingModalBtn2"><svg><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> เพิ่มรายการ</button>
+              <h2 class="i18n-savings-hist">ประวัติการออมทั้งหมด</h2>
+              <button class="btn btn-primary" id="openAddSavingModalBtn2"><svg><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> <span class="i18n-add-record">เพิ่มรายการ</span></button>
             </div>
             <div class="grid-2" style="margin-bottom: 12px;">
-              <input type="text" id="savingSearch" placeholder="ค้นหารายการ, บันทึก...">
+              <input type="text" id="savingSearch" placeholder="ค้นหารายการ...">
               <select id="savingCategoryFilter">
                 <option value="">ทุกหมวดหมู่</option>
               </select>
@@ -273,44 +269,63 @@
         <section id="viewGoals" class="view-section">
           <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-              <h2>เป้าหมายการออม (Saving Goals)</h2>
-              <button class="btn btn-primary" id="openAddGoalModalBtn"><svg><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> สร้างเป้าหมาย</button>
+              <h2 class="i18n-goals-head">เป้าหมายการออม (Saving Goals)</h2>
+              <button class="btn btn-primary" id="openAddGoalModalBtn"><svg><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> <span class="i18n-create-goal">สร้างเป้าหมาย</span></button>
             </div>
             <div id="goalsContainer"></div>
           </div>
 
           <div class="card">
-            <h3 style="font-size: 16px; margin-bottom: 12px;">เป้าหมายที่สำเร็จแล้ว (Goal History)</h3>
+            <h3 style="font-size: 16px; margin-bottom: 12px;" class="i18n-goals-done">เป้าหมายที่สำเร็จแล้ว (Goal History)</h3>
             <div id="completedGoalsContainer"></div>
           </div>
         </section>
 
-        <!-- 4. AI CHAT & FAST HELP VIEW -->
-        <section id="viewAiChat" class="view-section">
+        <!-- 4. PAGE: AI SAVING PLANNING & ANALYSIS (หน้าแชท AI การออมแบบแผน/วิเคราะห์) -->
+        <section id="viewAiPlanning" class="view-section">
           <div class="card">
-            <h2>AI บริหารการออม & ศูนย์ช่วยเหลือ</h2>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">วิเคราะห์ วางแผน และจัดการบัญชีด้วยระบบอัจฉริยะแบบวันคลิก</p>
+            <h2>AI วางแผน & วิเคราะห์การออม</h2>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">วิเคราะห์แนวโน้มและคำนวณแผนการออมเงินแบบกดปุ่มเลือกคำสั่ง</p>
             
             <div class="chat-container">
-              <div class="chat-messages" id="chatMessages">
-                <div class="chat-bubble ai">สวัสดีครับ! ผมคือ AI SmartSave ผู้ช่วยบริหารเงินออมและการจัดการระบบ คุณสามารถกดปุ่มคำสั่งด้านล่างได้ทันทีโดยไม่ต้องพิมพ์ครับ</div>
+              <div class="chat-messages" id="planningChatMessages">
+                <div class="chat-bubble ai">ยินดีต้อนรับสู่ AI Planning! กรุณาเลือกรายการที่ต้องการให้ประเมินด้านล่างได้ทันทีครับ</div>
               </div>
               <div class="chat-actions">
-                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnPlan">📊 วางแผนออมเงิน</button>
-                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnAnalyze">📈 วิเคราะห์พฤติกรรม</button>
-                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnForgotPass">🔑 ขอเปลี่ยนรหัสผ่าน (1ครั้ง/วัน)</button>
-                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnLang">🌐 เปลี่ยนภาษา (1ครั้ง/วัน)</button>
-                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnSounds">🔔 ตั้งค่าเสียงเตือน (10 เสียง)</button>
-                <button class="btn btn-danger" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnDeleteAll">⚠️ ลบข้อมูลทั้งหมด (30 วิ)</button>
+                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnPlanDaily">แผนออมรายวัน (365 วัน)</button>
+                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnPlanMonthly">แผนออมรายเดือน (12 เดือน)</button>
+                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnAnalyzeBehavior">วิเคราะห์พฤติกรรมการออม</button>
+                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnGoalForecast">ประเมินวันบรรลุเป้าหมาย</button>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- 5. RANK VIEW -->
+        <!-- 5. PAGE: AI HELP & SYSTEM OPERATIONS (หน้า AI ศูนย์ช่วยเหลือ/จัดการระบบ & Logout) -->
+        <section id="viewAiHelp" class="view-section">
+          <div class="card">
+            <h2>AI ศูนย์ช่วยเหลือ & ดำเนินการบัญชี</h2>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">จัดการความปลอดภัย บัญชีผู้ใช้ และตั้งค่าเสียงผ่าน AI ทันที</p>
+            
+            <div class="chat-container">
+              <div class="chat-messages" id="helpChatMessages">
+                <div class="chat-bubble ai">ศูนย์ช่วยเหลือ SmartSave AI พร้อมให้บริการ กดเลือกคำสั่งด่วนด้านล่างได้ทันที:</div>
+              </div>
+              <div class="chat-actions">
+                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnForgotPass">เปลี่ยนรหัสผ่าน (1ครั้ง/วัน)</button>
+                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnInstantLang">เปลี่ยนภาษาของระบบ (1ครั้ง/วัน)</button>
+                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnSoundConfig">ตั้งค่าเสียงแจ้งเตือน (10 เสียง)</button>
+                <button class="btn btn-danger" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnDeleteAllData">ลบข้อมูลทั้งหมด (30 วิ)</button>
+                <button class="btn btn-outline" style="font-size: 12px; padding: 6px 12px; min-height: 36px; border-color: var(--danger); color: var(--danger);" id="aiBtnLogout">ออกจากระบบทันที (Logout)</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. RANK VIEW -->
         <section id="viewRank" class="view-section">
           <div class="card" style="text-align: center;">
-            <h2>ระดับสถานะการออม (Saving Rank)</h2>
+            <h2 class="i18n-rank-head">ระดับสถานะการออม (Saving Rank)</h2>
             <div style="margin: 20px 0;">
               <div style="font-size: 40px; font-weight: 800; color: var(--primary);" id="rankTitle">Beginner</div>
               <p style="color: var(--text-secondary); font-size: 13px; margin-top: 4px;" id="rankDesc">เริ่มต้นเส้นทางการออมเงิน</p>
@@ -330,7 +345,7 @@
           </div>
         </section>
 
-        <!-- 6. ANALYSIS VIEW (Mobile Menu -> More) -->
+        <!-- 7. ANALYSIS VIEW -->
         <section id="viewAnalysis" class="view-section">
           <div class="card">
             <h2>วิเคราะห์สถิติและการออม</h2>
@@ -344,19 +359,19 @@
           </div>
         </section>
 
-        <!-- 7. PENDING / BATCH VIEW (ข้อมูลส่วนดำเนินการ) -->
+        <!-- 8. PENDING VIEW (ข้อมูลส่วนดำเนินการ) -->
         <section id="viewPending" class="view-section">
           <div class="card">
-            <h2>ข้อมูลส่วนดำเนินการ (Pending / Delayed Queue)</h2>
+            <h2>ข้อมูลส่วนดำเนินการ (Pending Queue)</h2>
             <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
-              รายการที่ถูกบันทึกในช่วงเวลา 23:00 น. - 23:30 น. จะถูกพักไว้ที่นี่เพื่อความปลอดภัยของฐานข้อมูลและจะซิงค์ให้อัตโนมัติหลังช่วงเวลาดังกล่าว
+              รายการที่ถูกบันทึกในช่วง 23:00 น. - 23:30 น. จะถูกพักไว้ที่นี่เพื่อความปลอดภัย และจะซิงค์ให้อัตโนมัติหลังช่วงเวลาดังกล่าว
             </p>
             <div id="pendingList"></div>
             <button class="btn btn-outline" style="width: 100%; margin-top: 12px;" id="forceProcessPendingBtn">ประมวลผลทันที (เมื่ออยู่นอกเวลา 23:00-23:30)</button>
           </div>
         </section>
 
-        <!-- 8. SETTINGS VIEW -->
+        <!-- 9. SETTINGS VIEW -->
         <section id="viewSettings" class="view-section">
           <div class="card">
             <h2>ตั้งค่าระบบ</h2>
@@ -370,10 +385,10 @@
             <div class="form-group">
               <label>สกุลเงินหลัก (Currency)</label>
               <select id="settingCurrency">
-                <option value="THB">THB (฿) - บาทไทย</option>
-                <option value="USD">USD ($) - ดอลลาร์สหรัฐ</option>
-                <option value="EUR">EUR (€) - ยูโร</option>
-                <option value="JPY">JPY (¥) - เยน</option>
+                <option value="THB">THB (฿) - Thai Baht</option>
+                <option value="USD">USD ($) - US Dollar</option>
+                <option value="EUR">EUR (€) - Euro</option>
+                <option value="JPY">JPY (¥) - Japanese Yen</option>
               </select>
             </div>
             
@@ -387,20 +402,20 @@
 
             <hr style="border: 0; border-top: 1px solid var(--border); margin: 16px 0;">
             <h3>การจัดการหน่วยความจำ</h3>
-            <button class="btn btn-outline" style="width: 100%; margin-top: 8px;" id="clearCacheBtn">🧹 ล้างแคชระบบ (Clear Cache)</button>
+            <button class="btn btn-outline" style="width: 100%; margin-top: 8px;" id="clearCacheBtn">ล้างแคชระบบ (Clear Cache)</button>
           </div>
         </section>
 
       </main>
     </div>
 
-    <!-- Mobile Bottom Navigation (5 Core Items) -->
+    <!-- Mobile Bottom Navigation (5 Core Buttons) -->
     <nav class="bottom-nav">
-      <button class="b-nav-btn active" data-view="dashboard"><svg><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>หน้าหลัก</button>
-      <button class="b-nav-btn" data-view="savings"><svg><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>การออม</button>
-      <button class="b-nav-btn" data-view="goals"><svg><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>เป้าหมาย</button>
-      <button class="b-nav-btn" data-view="aiChat"><svg><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>AI แชท</button>
-      <button class="b-nav-btn" id="mobileMoreBtn"><svg><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>เมนูอื่นๆ</button>
+      <button class="b-nav-btn active" data-view="dashboard"><svg><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="i18n-dash">หน้าหลัก</span></button>
+      <button class="b-nav-btn" data-view="savings"><svg><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg><span class="i18n-savings">การออม</span></button>
+      <button class="b-nav-btn" data-view="goals"><svg><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span class="i18n-goals">เป้าหมาย</span></button>
+      <button class="b-nav-btn" data-view="aiPlanning"><svg><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><span>AI แผนออม</span></button>
+      <button class="b-nav-btn" id="mobileMoreBtn"><svg><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg><span class="i18n-more">อื่นๆ</span></button>
     </nav>
   </div>
 
@@ -449,7 +464,7 @@
       <h3 style="margin-bottom: 16px;">สร้างเป้าหมายการออม</h3>
       <div class="form-group">
         <label>ชื่อเป้าหมาย</label>
-        <input type="text" id="goalName" placeholder="เช่น เงินสำรองฉุกเฉิน, ซื้อคอนโด">
+        <input type="text" id="goalName" placeholder="เช่น เงินสำรองฉุกเฉิน, ซื้อบ้าน">
       </div>
       <div class="form-group">
         <label>ยอดเป้าหมาย (Target Amount)</label>
@@ -471,6 +486,7 @@
     <div class="modal-sheet">
       <h3 style="margin-bottom: 16px;">เมนูเพิ่มเติม</h3>
       <div style="display: flex; flex-direction: column; gap: 8px;">
+        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="aiHelp"><svg><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> AI ช่วยเหลือ & ออกจากระบบ</button>
         <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="rank"><svg><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> ระดับการออม (Rank)</button>
         <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="analysis"><svg><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg> วิเคราะห์สถิติ (Analysis)</button>
         <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="pending"><svg><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ข้อมูลส่วนดำเนินการ (Pending Queue)</button>
@@ -480,16 +496,34 @@
     </div>
   </div>
 
-  <!-- APPLICATION LOGIC (ES2025+ MODULAR ARCHITECTURE) -->
+  <!-- APPLICATION LOGIC (ES2025+) -->
   <script>
-    /* ==========================================================================
-       1. CONFIGURATION & STATE
-       ========================================================================== */
     const CONFIG = {
       GAS_ENDPOINT: 'https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec',
       SHEET_ID: '1nXTCNdVJRpDuIunPLnjqMkUzmOA87gtUqoclBIgNObk',
-      DB_NAME: 'SmartSaveDB',
+      DB_NAME: 'SmartSaveDB_v520',
       DB_VERSION: 1
+    };
+
+    const I18N_DICT = {
+      th: {
+        dash: "แดชบอร์ด", savings: "บันทึกเงินออม", goals: "เป้าหมายการออม",
+        aiPlan: "AI วางแผนการออม", aiHelp: "AI ช่วยเหลือ & บัญชี", rank: "ระดับการออม",
+        analysis: "วิเคราะห์สถิติ", pending: "ข้อมูลส่วนดำเนินการ", settings: "ตั้งค่าระบบ",
+        totalLbl: "ยอดเงินออมทั้งหมด (Total Savings)", monthLbl: "เดือนนี้: ",
+        addSavingBtn: "ออมเงิน", todayLbl: "ออมวันนี้", goalsLbl: "เป้าหมายคงอยู่",
+        streakLbl: "Streak ออมต่อเนื่อง", rankLbl: "ระดับการออม", favLbl: "รายการโปรด / หมวดหมู่ออมด่วน",
+        recentLbl: "รายการออมล่าสุด", viewall: "ดูทั้งหมด", more: "อื่นๆ"
+      },
+      en: {
+        dash: "Dashboard", savings: "Savings", goals: "Goals",
+        aiPlan: "AI Planning", aiHelp: "AI Help & Ops", rank: "Rank",
+        analysis: "Analysis", pending: "Pending Queue", settings: "Settings",
+        totalLbl: "Total Savings", monthLbl: "This Month: ",
+        addSavingBtn: "Add Saving", todayLbl: "Today's Saving", goalsLbl: "Active Goals",
+        streakLbl: "Saving Streak", rankLbl: "Saving Rank", favLbl: "Favorites / Quick Save",
+        recentLbl: "Recent Transactions", viewall: "View All", more: "More"
+      }
     };
 
     const AppState = {
@@ -510,9 +544,7 @@
       }
     };
 
-    /* ==========================================================================
-       2. WEB AUDIO API SYNTHESIZER (10 Custom Sound Tones)
-       ========================================================================== */
+    /* 1. SYNTHESIZED SOUND ENGINE (10 Tones) */
     const SoundEngine = {
       ctx: null,
       init() {
@@ -521,7 +553,7 @@
           this.ctx = new AudioContext();
         }
       },
-      play(toneIndex = 1) {
+      play(tone = 1) {
         try {
           this.init();
           if (this.ctx.state === 'suspended') this.ctx.resume();
@@ -531,40 +563,30 @@
           gain.connect(this.ctx.destination);
 
           const now = this.ctx.currentTime;
-          const tones = {
-            1: [440, 880], // Simple Bell
-            2: [523.25, 659.25], // Modern Chime
-            3: [587.33, 880], // Success Pop
-            4: [659.25, 523.25], // Neo Drop
-            5: [329.63, 440, 659.25], // Triple Cash
-            6: [880, 1174.66], // Crystal High
-            7: [261.63, 329.63, 392.00, 523.25], // Major Arp
-            8: [783.99, 1046.50], // Soft Ping
-            9: [440, 554.37, 659.25], // Uplift
-            10: [1046.50, 1318.51] // Banking Confirmation
+          const toneList = {
+            1: [523.25, 659.25], 2: [440, 880], 3: [587.33, 880],
+            4: [659.25, 523.25], 5: [329.63, 440, 659.25], 6: [880, 1174.66],
+            7: [261.63, 329.63, 523.25], 8: [783.99, 1046.50], 9: [440, 554.37, 659.25],
+            10: [1046.50, 1318.51]
           };
 
-          const freqs = tones[toneIndex] || tones[1];
+          const f = toneList[tone] || toneList[1];
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(freqs[0], now);
-          freqs.forEach((f, i) => {
-            osc.frequency.setValueAtTime(f, now + i * 0.08);
-          });
+          osc.frequency.setValueAtTime(f[0], now);
+          f.forEach((fr, i) => osc.frequency.setValueAtTime(fr, now + i * 0.08));
 
           gain.gain.setValueAtTime(0.3, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + (freqs.length * 0.08) + 0.2);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + (f.length * 0.08) + 0.2);
 
           osc.start(now);
-          osc.stop(now + (freqs.length * 0.08) + 0.2);
+          osc.stop(now + (f.length * 0.08) + 0.2);
         } catch (e) {
           console.warn('Audio play restricted:', e);
         }
       }
     };
 
-    /* ==========================================================================
-       3. INDEXEDDB ADAPTER (Local Persistence)
-       ========================================================================== */
+    /* 2. INDEXEDDB ADAPTER */
     const StorageAdapter = {
       db: null,
       async init() {
@@ -576,36 +598,30 @@
             if (!db.objectStoreNames.contains('goals')) db.createObjectStore('goals', { keyPath: 'id' });
             if (!db.objectStoreNames.contains('pending')) db.createObjectStore('pending', { keyPath: 'id' });
           };
-          req.onsuccess = (e) => {
-            this.db = e.target.result;
-            resolve(this.db);
-          };
+          req.onsuccess = (e) => { this.db = e.target.result; resolve(this.db); };
           req.onerror = (e) => reject(e);
         });
       },
-      async getAll(storeName) {
+      async getAll(store) {
         return new Promise((resolve, reject) => {
-          const tx = this.db.transaction(storeName, 'readonly');
-          const store = tx.objectStore(storeName);
-          const req = store.getAll();
+          const tx = this.db.transaction(store, 'readonly');
+          const req = tx.objectStore(store).getAll();
           req.onsuccess = () => resolve(req.result || []);
           req.onerror = () => reject(req.error);
         });
       },
-      async put(storeName, item) {
+      async put(store, item) {
         return new Promise((resolve, reject) => {
-          const tx = this.db.transaction(storeName, 'readwrite');
-          const store = tx.objectStore(storeName);
-          store.put(item);
+          const tx = this.db.transaction(store, 'readwrite');
+          tx.objectStore(store).put(item);
           tx.oncomplete = () => resolve();
           tx.onerror = () => reject(tx.error);
         });
       },
-      async delete(storeName, key) {
+      async delete(store, key) {
         return new Promise((resolve, reject) => {
-          const tx = this.db.transaction(storeName, 'readwrite');
-          const store = tx.objectStore(storeName);
-          store.delete(key);
+          const tx = this.db.transaction(store, 'readwrite');
+          tx.objectStore(store).delete(key);
           tx.oncomplete = () => resolve();
           tx.onerror = () => reject(tx.error);
         });
@@ -622,37 +638,26 @@
       }
     };
 
-    /* ==========================================================================
-       4. EXTERNAL SYNC ADAPTER (Google Apps Script)
-       ========================================================================== */
+    /* 3. SYNC ADAPTER */
     const SyncAdapter = {
       async syncRecord(type, data) {
         if (!navigator.onLine) return false;
         try {
-          const payload = {
-            action: 'SYNC_TRANSACTION',
-            sheetId: CONFIG.SHEET_ID,
-            type: type,
-            data: data,
-            timestamp: new Date().toISOString()
-          };
-          await fetch(CONFIG.GAS_ENDPOINT, {
+          fetch(CONFIG.GAS_ENDPOINT, {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({ action: 'SYNC_TRANSACTION', sheetId: CONFIG.SHEET_ID, type, data, timestamp: new Date().toISOString() })
           });
           return true;
         } catch (err) {
-          console.warn('Sync failed, kept local:', err);
+          console.warn('Sync kept local:', err);
           return false;
         }
       }
     };
 
-    /* ==========================================================================
-       5. CORE BUSINESS LOGIC & CALCULATION ENGINE
-       ========================================================================== */
+    /* 4. ENGINE */
     const Engine = {
       isDelayedWindow() {
         const now = new Date();
@@ -661,7 +666,7 @@
         return (hrs === 23 && mins >= 0 && mins <= 30);
       },
       formatCurrency(amount, currency = AppState.settings.currency) {
-        return new Intl.NumberFormat('th-TH', {
+        return new Intl.NumberFormat(AppState.settings.language === 'th' ? 'th-TH' : 'en-US', {
           style: 'currency',
           currency: currency,
           minimumFractionDigits: 2
@@ -672,42 +677,31 @@
       },
       calculateMonthlySavings() {
         const now = new Date();
-        const currentMonth = now.getMonth();
-        const currentYear = now.getFullYear();
+        const m = now.getMonth();
+        const y = now.getFullYear();
         return AppState.savings
-          .filter(s => {
-            const d = new Date(s.date);
-            return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
-          })
+          .filter(s => { const d = new Date(s.date); return d.getMonth() === m && d.getFullYear() === y; })
           .reduce((acc, curr) => acc + Number(curr.amount || 0), 0);
       },
       calculateTodaySavings() {
         const todayStr = new Date().toISOString().split('T')[0];
-        return AppState.savings
-          .filter(s => s.date === todayStr)
-          .reduce((acc, curr) => acc + Number(curr.amount || 0), 0);
+        return AppState.savings.filter(s => s.date === todayStr).reduce((acc, curr) => acc + Number(curr.amount || 0), 0);
       },
       calculateStreak() {
         if (!AppState.savings.length) return 0;
         const uniqueDates = [...new Set(AppState.savings.map(s => s.date))].sort().reverse();
         const todayStr = new Date().toISOString().split('T')[0];
         const yesterday = new Date(Date.now() - 864e5).toISOString().split('T')[0];
-        
-        if (!uniqueDates.includes(todayStr) && !uniqueDates.includes(yesterday)) {
-          return 0;
-        }
+        if (!uniqueDates.includes(todayStr) && !uniqueDates.includes(yesterday)) return 0;
 
         let streak = 0;
         let checkDate = new Date(uniqueDates[0]);
         for (let i = 0; i < uniqueDates.length; i++) {
           const d = new Date(uniqueDates[i]);
-          const diffDays = Math.round((checkDate - d) / 864e5);
-          if (diffDays <= 1) {
+          if (Math.round((checkDate - d) / 864e5) <= 1) {
             streak++;
             checkDate = d;
-          } else {
-            break;
-          }
+          } else break;
         }
         return streak;
       },
@@ -715,7 +709,6 @@
         const total = this.calculateTotalSavings();
         const streak = this.calculateStreak();
         const completedGoals = AppState.goals.filter(g => g.status === 'completed').length;
-
         if (total >= 500000 && streak >= 60) return { title: 'Master Saver', desc: 'ยอดออมระดับสูงสุด วินัยทางการเงินสมบูรณ์แบบ' };
         if (total >= 250000 && completedGoals >= 3) return { title: 'Elite Saver', desc: 'ผู้บริหารเงินออมชั้นยอด บรรลุหลายเป้าหมาย' };
         if (total >= 100000 && streak >= 30) return { title: 'Professional Saver', desc: 'นักออมเงินมืออาชีพ วินัยต่อเนื่องสม่ำเสมอ' };
@@ -726,20 +719,20 @@
       }
     };
 
-    /* ==========================================================================
-       6. UI CONTROLLER & VIEW ROUTER
-       ========================================================================== */
+    /* 5. UI CONTROLLER */
     const UI = {
       init() {
         this.bindEvents();
         this.startClock();
         this.applyTheme(AppState.settings.theme);
+        this.applyLanguage(AppState.settings.language);
       },
       startClock() {
         setInterval(() => {
           const now = new Date();
-          const timeString = now.toLocaleTimeString('th-TH');
-          const dateString = now.toLocaleDateString('th-TH', { day: 'numeric', month: 'short' });
+          const locale = AppState.settings.language === 'th' ? 'th-TH' : 'en-US';
+          const timeString = now.toLocaleTimeString(locale);
+          const dateString = now.toLocaleDateString(locale, { day: 'numeric', month: 'short' });
           const elem = document.getElementById('topDateTime');
           if (elem) elem.innerText = `${dateString} ${timeString}`;
         }, 1000);
@@ -749,17 +742,56 @@
         AppState.settings.theme = theme;
         localStorage.setItem('sm_settings', JSON.stringify(AppState.settings));
       },
+      applyLanguage(lang) {
+        AppState.settings.language = lang;
+        const d = I18N_DICT[lang] || I18N_DICT.th;
+        document.querySelectorAll('.i18n-dash').forEach(el => el.innerText = d.dash);
+        document.querySelectorAll('.i18n-savings').forEach(el => el.innerText = d.savings);
+        document.querySelectorAll('.i18n-goals').forEach(el => el.innerText = d.goals);
+        document.querySelectorAll('.i18n-ai-plan').forEach(el => el.innerText = d.aiPlan);
+        document.querySelectorAll('.i18n-ai-help').forEach(el => el.innerText = d.aiHelp);
+        document.querySelectorAll('.i18n-rank').forEach(el => el.innerText = d.rank);
+        document.querySelectorAll('.i18n-analysis').forEach(el => el.innerText = d.analysis);
+        document.querySelectorAll('.i18n-pending').forEach(el => el.innerText = d.pending);
+        document.querySelectorAll('.i18n-settings').forEach(el => el.innerText = d.settings);
+        document.querySelectorAll('.i18n-total-lbl').forEach(el => el.innerText = d.totalLbl);
+        document.querySelectorAll('.i18n-month-lbl').forEach(el => el.innerText = d.monthLbl);
+        document.querySelectorAll('.i18n-add-saving-btn').forEach(el => el.innerText = d.addSavingBtn);
+        document.querySelectorAll('.i18n-today-lbl').forEach(el => el.innerText = d.todayLbl);
+        document.querySelectorAll('.i18n-goals-lbl').forEach(el => el.innerText = d.goalsLbl);
+        document.querySelectorAll('.i18n-streak-lbl').forEach(el => el.innerText = d.streakLbl);
+        document.querySelectorAll('.i18n-rank-lbl').forEach(el => el.innerText = d.rankLbl);
+        document.querySelectorAll('.i18n-fav-lbl').forEach(el => el.innerText = d.favLbl);
+        document.querySelectorAll('.i18n-recent-lbl').forEach(el => el.innerText = d.recentLbl);
+        document.querySelectorAll('.i18n-viewall').forEach(el => el.innerText = d.viewall);
+        document.querySelectorAll('.i18n-more').forEach(el => el.innerText = d.more);
+        this.renderDashboard();
+      },
+      notify(msg) {
+        const badge = document.getElementById('bellBadge');
+        if (badge) badge.style.display = 'block';
+        
+        // Instant Toast
+        const toastBox = document.getElementById('toastBox');
+        const toast = document.createElement('div');
+        toast.className = 'toast show';
+        toast.innerText = msg;
+        toastBox.appendChild(toast);
+        SoundEngine.play(AppState.settings.soundTone);
+
+        setTimeout(() => {
+          toast.classList.remove('show');
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      },
       switchView(viewName) {
         document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
         const targetView = document.getElementById(`view${viewName.charAt(0).toUpperCase() + viewName.slice(1)}`);
         if (targetView) targetView.classList.add('active');
 
         document.querySelectorAll('.nav-item, .b-nav-btn').forEach(btn => {
-          if (btn.getAttribute('data-view') === viewName) {
-            btn.classList.add('active');
-          } else {
-            btn.classList.remove('active');
-          }
+          if (btn.getAttribute('data-view') === viewName) btn.classList.add('active');
+          else btn.classList.remove('active');
         });
 
         if (viewName === 'analysis') this.renderChart();
@@ -776,7 +808,7 @@
         document.getElementById('dashMonthlySavings').innerText = `+${Engine.formatCurrency(monthly)}`;
         document.getElementById('dashTodaySavings').innerText = Engine.formatCurrency(today);
         document.getElementById('dashActiveGoals').innerText = activeGoals;
-        document.getElementById('dashStreak').innerText = `${streak} วัน`;
+        document.getElementById('dashStreak').innerText = `${streak} ${AppState.settings.language === 'th' ? 'วัน' : 'Days'}`;
         document.getElementById('dashRank').innerText = rank.title;
         document.getElementById('rankTitle').innerText = rank.title;
         document.getElementById('rankDesc').innerText = rank.desc;
@@ -785,7 +817,7 @@
         const container = document.getElementById('dashRecentTransactions');
         const recent = [...AppState.savings].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
         if (!recent.length) {
-          container.innerHTML = `<div style="text-align: center; padding: 24px; color: var(--text-secondary); font-size: 13px;">ยังไม่มีรายการออม เริ่มบันทึกเงินออมรายการแรกของคุณ</div>`;
+          container.innerHTML = `<div style="text-align: center; padding: 24px; color: var(--text-secondary); font-size: 13px;">ยังไม่มีรายการออม เริ่มบันทึกรายการแรกของคุณ</div>`;
         } else {
           container.innerHTML = recent.map(item => `
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border);">
@@ -919,24 +951,18 @@
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // Group by last 7 days
         const days = [];
         for (let i = 6; i >= 0; i--) {
-          const d = new Date(Date.now() - i * 864e5).toISOString().split('T')[0];
-          days.push(d);
+          days.push(new Date(Date.now() - i * 864e5).toISOString().split('T')[0]);
         }
 
-        const amounts = days.map(d => {
-          return AppState.savings.filter(s => s.date === d).reduce((a, c) => a + Number(c.amount), 0);
-        });
-
+        const amounts = days.map(d => AppState.savings.filter(s => s.date === d).reduce((a, c) => a + Number(c.amount), 0));
         const maxVal = Math.max(...amounts, 1000);
         const padding = 30;
         const chartWidth = canvas.width - padding * 2;
         const chartHeight = canvas.height - padding * 2;
         const step = chartWidth / (days.length - 1);
 
-        // Draw Line
         ctx.beginPath();
         ctx.strokeStyle = '#3b82f6';
         ctx.lineWidth = 3;
@@ -949,13 +975,12 @@
         });
         ctx.stroke();
 
-        // Draw Dots & Labels
         amounts.forEach((amt, i) => {
           const x = padding + i * step;
           const y = canvas.height - padding - (amt / maxVal) * chartHeight;
           ctx.beginPath();
           ctx.fillStyle = '#3b82f6';
-          ctx.arc(x, y, 5, 0, Math.PI * 2);
+          ctx.arc(x, y, 4, 0, Math.PI * 2);
           ctx.fill();
 
           ctx.fillStyle = '#94a3b8';
@@ -964,22 +989,15 @@
           ctx.fillText(days[i].slice(5), x, canvas.height - 10);
         });
       },
-      notify(msg) {
-        const badge = document.getElementById('bellBadge');
-        if (badge) badge.style.display = 'block';
-        SoundEngine.play(AppState.settings.soundTone);
-      },
       bindEvents() {
-        // Navigation Click Routing
         document.querySelectorAll('[data-view]').forEach(el => {
-          el.addEventListener('click', (e) => {
+          el.addEventListener('click', () => {
             const target = el.getAttribute('data-view');
             this.switchView(target);
             document.getElementById('moreMenuModal').classList.remove('active');
           });
         });
 
-        // Mobile 'More' Modal
         document.getElementById('mobileMoreBtn')?.addEventListener('click', () => {
           document.getElementById('moreMenuModal').classList.add('active');
         });
@@ -987,7 +1005,7 @@
           document.getElementById('moreMenuModal').classList.remove('active');
         });
 
-        // Add Saving Modal Handlers
+        // Modals
         const openSaving = () => {
           const now = new Date();
           document.getElementById('saveDate').value = now.toISOString().split('T')[0];
@@ -1002,7 +1020,6 @@
           document.getElementById('addSavingModal').classList.remove('active');
         });
 
-        // Add Goal Modal Handlers
         document.getElementById('openAddGoalModalBtn')?.addEventListener('click', () => {
           document.getElementById('goalName').value = '';
           document.getElementById('goalTargetAmount').value = '';
@@ -1013,7 +1030,7 @@
           document.getElementById('addGoalModal').classList.remove('active');
         });
 
-        // Form Submit: Saving
+        // Submit Saving
         document.getElementById('submitSavingBtn')?.addEventListener('click', async () => {
           const amount = parseFloat(document.getElementById('saveAmount').value);
           const category = document.getElementById('saveCategory').value;
@@ -1029,19 +1046,16 @@
 
           const record = {
             id: 'TX_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-            amount,
-            category,
-            type,
+            amount, category, type,
             date: date || new Date().toISOString().split('T')[0],
             time: time || new Date().toTimeString().slice(0, 5),
-            note,
-            createdAt: new Date().toISOString()
+            note, createdAt: new Date().toISOString()
           };
 
           if (Engine.isDelayedWindow()) {
             AppState.pendingSavings.push(record);
             await StorageAdapter.put('pending', record);
-            alert('บันทึกในช่วง 23:00-23:30 น. ข้อมูลถูกนำเข้าคิวส่วนดำเนินการและจะประมวลผลอัตโนมัติ');
+            alert('บันทึกในช่วง 23:00-23:30 น. ข้อมูลจะถูกเก็บไว้ที่หน้าข้อมูลส่วนดำเนินการเพื่อรอประมวลผล');
             UI.renderPendingQueue();
           } else {
             AppState.savings.push(record);
@@ -1052,10 +1066,10 @@
           document.getElementById('addSavingModal').classList.remove('active');
           UI.renderDashboard();
           UI.renderSavingsList();
-          UI.notify('บันทึกเงินออมสำเร็จ');
+          UI.notify('บันทึกเงินออมเรียบร้อยแล้ว');
         });
 
-        // Form Submit: Goal
+        // Submit Goal
         document.getElementById('submitGoalBtn')?.addEventListener('click', async () => {
           const name = document.getElementById('goalName').value;
           const targetAmount = parseFloat(document.getElementById('goalTargetAmount').value);
@@ -1068,12 +1082,8 @@
 
           const goal = {
             id: 'GL_' + Date.now(),
-            name,
-            targetAmount,
-            currentAmount: 0,
-            targetDate,
-            status: 'in_progress',
-            createdAt: new Date().toISOString()
+            name, targetAmount, currentAmount: 0,
+            targetDate, status: 'in_progress', createdAt: new Date().toISOString()
           };
 
           AppState.goals.push(goal);
@@ -1086,7 +1096,11 @@
           UI.notify('สร้างเป้าหมายสำเร็จ');
         });
 
-        // Quick Save from Dashboard Favorites
+        // Search & Filters
+        document.getElementById('savingSearch')?.addEventListener('input', () => UI.renderSavingsList());
+        document.getElementById('savingCategoryFilter')?.addEventListener('change', () => UI.renderSavingsList());
+
+        // Quick Save
         document.addEventListener('click', (e) => {
           if (e.target.closest('.quick-save-btn')) {
             const cat = e.target.closest('.quick-save-btn').getAttribute('data-category');
@@ -1095,14 +1109,14 @@
           }
         });
 
-        // Add Funds to Goal
+        // Add funds to Goal
         document.addEventListener('click', async (e) => {
           if (e.target.closest('.add-goal-fund-btn')) {
             const id = e.target.closest('.add-goal-fund-btn').getAttribute('data-id');
             const goal = AppState.goals.find(g => g.id === id);
             if (!goal) return;
 
-            const inputAmt = prompt(`ระบุจำนวนเงินที่ต้องการจัดสรรเข้า "${goal.name}":`);
+            const inputAmt = prompt(`ระบุจำนวนเงินฝากเข้า "${goal.name}":`);
             const amt = parseFloat(inputAmt);
             if (!amt || amt <= 0) return;
 
@@ -1120,7 +1134,7 @@
           }
         });
 
-        // Delete Saving Item
+        // Delete Saving
         document.addEventListener('click', async (e) => {
           if (e.target.closest('.del-saving-btn')) {
             if (!confirm('ยืนยันลบรายการนี้?')) return;
@@ -1129,10 +1143,11 @@
             await StorageAdapter.delete('savings', id);
             UI.renderDashboard();
             UI.renderSavingsList();
+            UI.notify('ลบรายการสำเร็จ');
           }
         });
 
-        // Manage Categories
+        // Categories Manager
         document.getElementById('addCategoryBtn')?.addEventListener('click', () => {
           const val = document.getElementById('newCategoryInput').value.trim();
           if (!val) return;
@@ -1155,11 +1170,7 @@
           }
         });
 
-        // Search & Filter
-        document.getElementById('savingSearch')?.addEventListener('input', () => UI.renderSavingsList());
-        document.getElementById('savingCategoryFilter')?.addEventListener('change', () => UI.renderSavingsList());
-
-        // Process Pending Button
+        // Pending Queue Manual Process
         document.getElementById('forceProcessPendingBtn')?.addEventListener('click', async () => {
           if (Engine.isDelayedWindow()) {
             alert('ยังอยู่ในช่วงเวลา 23:00 - 23:30 น. ไม่สามารถประมวลผลได้');
@@ -1179,7 +1190,7 @@
           UI.renderPendingQueue();
           UI.renderDashboard();
           UI.renderSavingsList();
-          alert('ประมวลผลรายการตกค้างเข้าสู่ระบบสำเร็จ');
+          UI.notify('ประมวลผลรายการตกค้างเข้าสู่ระบบสำเร็จ');
         });
 
         // Settings Listeners
@@ -1194,73 +1205,104 @@
 
         // Clear Cache
         document.getElementById('clearCacheBtn')?.addEventListener('click', () => {
-          if (confirm('ยืนยันล้างแคชของระบบ? ข้อมูลการเงินหลักในเครื่องจะไม่สูญหาย')) {
+          if (confirm('ยืนยันล้างแคชระบบ?')) {
             if ('caches' in window) {
-              caches.keys().then(names => {
-                names.forEach(name => caches.delete(name));
-              });
+              caches.keys().then(names => names.forEach(n => caches.delete(n)));
             }
-            alert('ล้างแคชระบบเรียบร้อยแล้ว');
+            UI.notify('ล้างแคชระบบเรียบร้อยแล้ว');
           }
         });
 
-        // Bell Click
+        // Bell
         document.getElementById('bellIcon')?.addEventListener('click', () => {
           document.getElementById('bellBadge').style.display = 'none';
           alert('ไม่มีการแจ้งเตือนค้างอยู่');
         });
 
-        // Logout
-        document.getElementById('logoutBtn')?.addEventListener('click', () => {
-          if (confirm('ต้องการออกจากระบบ?')) {
-            sessionStorage.removeItem('sm_session');
-            window.location.reload();
-          }
-        });
-
-        // AI FAST CHAT COMMANDS
-        this.bindAiChatCommands();
+        // Bind AI Views
+        this.bindAiPlanningCommands();
+        this.bindAiHelpCommands();
       },
-      bindAiChatCommands() {
-        const chatBox = document.getElementById('chatMessages');
+
+      /* PAGE 4: AI SAVING PLANNING & ANALYSIS */
+      bindAiPlanningCommands() {
+        const box = document.getElementById('planningChatMessages');
         const appendChat = (sender, text) => {
           const div = document.createElement('div');
           div.className = `chat-bubble ${sender}`;
           div.innerText = text;
-          chatBox.appendChild(div);
-          chatBox.scrollTop = chatBox.scrollHeight;
+          box.appendChild(div);
+          box.scrollTop = box.scrollHeight;
         };
 
-        // 1. Plan
-        document.getElementById('aiBtnPlan')?.addEventListener('click', () => {
-          appendChat('user', '📊 ขอแผนการออมเงินอัจฉริยะ');
+        document.getElementById('aiBtnPlanDaily')?.addEventListener('click', () => {
+          appendChat('user', 'ขอแผนออมเงินรายวัน (365 วัน)');
           const total = Engine.calculateTotalSavings();
           const target = 100000;
           const remain = Math.max(0, target - total);
           const daily = Math.round(remain / 365);
-          const monthly = Math.round(remain / 12);
           setTimeout(() => {
-            appendChat('ai', `📈 วิเคราะห์แผนออมสู่ ฿100,000:\n• คงเหลือที่ต้องออม: ${Engine.formatCurrency(remain)}\n• แผนรายวัน (365 วัน): ${Engine.formatCurrency(daily)}/วัน\n• แผนรายเดือน (12 เดือน): ${Engine.formatCurrency(monthly)}/เดือน`);
-          }, 400);
+            appendChat('ai', `แผนออมรายวันสู่เป้าหมาย ฿100,000:\n• ยอดคงเหลือที่ต้องออม: ${Engine.formatCurrency(remain)}\n• แนะนำให้ออมวันละ: ${Engine.formatCurrency(daily)}/วัน ติดต่อกัน 365 วัน`);
+            UI.notify('ประมวลผลแผนรายวันสำเร็จ');
+          }, 300);
         });
 
-        // 2. Analyze
-        document.getElementById('aiBtnAnalyze')?.addEventListener('click', () => {
-          appendChat('user', '📈 วิเคราะห์พฤติกรรมการออมของฉัน');
+        document.getElementById('aiBtnPlanMonthly')?.addEventListener('click', () => {
+          appendChat('user', 'ขอแผนออมเงินรายเดือน (12 เดือน)');
+          const total = Engine.calculateTotalSavings();
+          const target = 100000;
+          const remain = Math.max(0, target - total);
+          const monthly = Math.round(remain / 12);
+          setTimeout(() => {
+            appendChat('ai', `แผนออมรายเดือนสู่เป้าหมาย ฿100,000:\n• ยอดคงเหลือที่ต้องออม: ${Engine.formatCurrency(remain)}\n• แนะนำให้ออมเดือนละ: ${Engine.formatCurrency(monthly)}/เดือน ภายใน 1 ปี`);
+            UI.notify('ประมวลผลแผนรายเดือนสำเร็จ');
+          }, 300);
+        });
+
+        document.getElementById('aiBtnAnalyzeBehavior')?.addEventListener('click', () => {
+          appendChat('user', 'วิเคราะห์พฤติกรรมการออมเงิน');
           const streak = Engine.calculateStreak();
           const total = Engine.calculateTotalSavings();
           const rank = Engine.determineRank();
           setTimeout(() => {
-            appendChat('ai', `💡 ผลการประเมิน:\n• สถานะปัจจุบัน: ${rank.title}\n• ความต่อเนื่อง: ${streak} วัน\n• ยอดออมสะสม: ${Engine.formatCurrency(total)}\n• คำแนะนำ: ออมสม่ำเสมอในเวลาเดิมทุกวันเพื่อเพิ่มคะแนนวินัย`);
-          }, 400);
+            appendChat('ai', `ผลวิเคราะห์ความสม่ำเสมอ:\n• ระดับ: ${rank.title}\n• ความต่อเนื่อง: ${streak} วัน\n• ยอดออมสะสม: ${Engine.formatCurrency(total)}\n• สรุป: การออมสม่ำเสมอช่วยเพิ่มอัตราความสำเร็จของเป้าหมายได้ 40%`);
+            UI.notify('วิเคราะห์พฤติกรรมสำเร็จ');
+          }, 300);
         });
 
-        // 3. Forgot Password (Rate Limit: 1 time/day)
+        document.getElementById('aiBtnGoalForecast')?.addEventListener('click', () => {
+          appendChat('user', 'ประเมินวันบรรลุเป้าหมาย');
+          const activeGoals = AppState.goals.filter(g => g.status !== 'completed');
+          setTimeout(() => {
+            if (!activeGoals.length) {
+              appendChat('ai', 'คุณยังไม่มีเป้าหมายที่กำลังดำเนินการ กรุณาสร้างเป้าหมายก่อนทำการประเมินครับ');
+            } else {
+              const g = activeGoals[0];
+              const diff = g.targetAmount - g.currentAmount;
+              appendChat('ai', `เป้าหมาย "${g.name}":\n• ยอดคงเหลือ: ${Engine.formatCurrency(diff)}\n• วันครบกำหนด: ${g.targetDate}\n• สถานะ: ดำเนินการไปแล้ว ${Math.round((g.currentAmount/g.targetAmount)*100)}%`);
+            }
+            UI.notify('ประเมินเป้าหมายสำเร็จ');
+          }, 300);
+        });
+      },
+
+      /* PAGE 5: AI HELP & SYSTEM OPERATIONS */
+      bindAiHelpCommands() {
+        const box = document.getElementById('helpChatMessages');
+        const appendChat = (sender, text) => {
+          const div = document.createElement('div');
+          div.className = `chat-bubble ${sender}`;
+          div.innerText = text;
+          box.appendChild(div);
+          box.scrollTop = box.scrollHeight;
+        };
+
+        // 1. Forgot Password (1 time / day)
         document.getElementById('aiBtnForgotPass')?.addEventListener('click', () => {
-          appendChat('user', '🔑 ขอเปลี่ยนรหัสผ่าน');
+          appendChat('user', 'ขอเปลี่ยนรหัสผ่านประจำวัน');
           const today = new Date().toISOString().split('T')[0];
           if (AppState.rateLimits.lastForgotPassDate === today) {
-            setTimeout(() => appendChat('ai', '⚠️ คุณได้ใช้สิทธิ์เปลี่ยนรหัสผ่านประจำวันไปแล้ว (จำกัด 1 ครั้งต่อวัน)'), 400);
+            setTimeout(() => appendChat('ai', '⚠️ คุณได้ใช้สิทธิ์เปลี่ยนรหัสผ่านประจำวันไปแล้ว (จำกัด 1 ครั้งต่อวัน)'), 300);
             return;
           }
           const newPass = prompt('ระบุรหัสผ่านใหม่:');
@@ -1271,48 +1313,56 @@
             AppState.rateLimits.lastForgotPassDate = today;
             localStorage.setItem('sm_limits', JSON.stringify(AppState.rateLimits));
             setTimeout(() => {
-              appendChat('ai', '✅ เปลี่ยนรหัสผ่านสำเร็จแล้ว ระบบจะนำท่านไปหน้า Login ทันที');
+              appendChat('ai', 'เปลี่ยนรหัสผ่านสำเร็จ! AI กำลังนำท่านไปหน้าเข้าสู่ระบบทันที...');
               setTimeout(() => {
                 sessionStorage.removeItem('sm_session');
                 window.location.reload();
-              }, 1500);
-            }, 400);
+              }, 1200);
+            }, 300);
           }
         });
 
-        // 4. Change Language (Rate Limit: 1 time/day)
-        document.getElementById('aiBtnLang')?.addEventListener('click', () => {
-          appendChat('user', '🌐 เปลี่ยนภาษาของระบบ');
+        // 2. Instant Language Switch (1 time / day)
+        document.getElementById('aiBtnInstantLang')?.addEventListener('click', () => {
+          appendChat('user', 'เปลี่ยนภาษาของระบบ');
           const today = new Date().toISOString().split('T')[0];
           if (AppState.rateLimits.lastLangChangeDate === today) {
-            setTimeout(() => appendChat('ai', '⚠️ สามารถเปลี่ยนภาษาได้ 1 ครั้งต่อวันเท่านั้น'), 400);
+            setTimeout(() => appendChat('ai', '⚠️ สามารถเปลี่ยนภาษาของระบบได้ 1 ครั้งต่อวันเท่านั้น'), 300);
             return;
           }
-          AppState.settings.language = AppState.settings.language === 'th' ? 'en' : 'th';
+          const nextLang = AppState.settings.language === 'th' ? 'en' : 'th';
+          AppState.settings.language = nextLang;
           AppState.rateLimits.lastLangChangeDate = today;
           localStorage.setItem('sm_limits', JSON.stringify(AppState.rateLimits));
           localStorage.setItem('sm_settings', JSON.stringify(AppState.settings));
-          setTimeout(() => appendChat('ai', `🌐 สลับภาษาของระบบเป็น [${AppState.settings.language.toUpperCase()}] สำเร็จ`), 400);
+          UI.applyLanguage(nextLang);
+          setTimeout(() => {
+            appendChat('ai', `สลับภาษาของระบบเป็น [${nextLang.toUpperCase()}] สำเร็จทันที`);
+            UI.notify(`สลับภาษาเป็น ${nextLang.toUpperCase()} เรียบร้อย`);
+          }, 300);
         });
 
-        // 5. Sound Tones (10 Choices)
-        document.getElementById('aiBtnSounds')?.addEventListener('click', () => {
-          appendChat('user', '🔔 เลือกตั้งค่าเสียงแจ้งเตือน (10 เสียง)');
-          const choice = prompt('เลือกเสียงแจ้งเตือน (1 ถึง 10):', AppState.settings.soundTone);
+        // 3. Sound Configuration (10 Tones)
+        document.getElementById('aiBtnSoundConfig')?.addEventListener('click', () => {
+          appendChat('user', 'ตั้งค่าเสียงแจ้งเตือน (10 เสียง)');
+          const choice = prompt('เลือกเสียงแจ้งเตือนลำดับที่ (1 - 10):', AppState.settings.soundTone);
           const num = parseInt(choice);
           if (num >= 1 && num <= 10) {
             AppState.settings.soundTone = num;
             localStorage.setItem('sm_settings', JSON.stringify(AppState.settings));
             SoundEngine.play(num);
-            setTimeout(() => appendChat('ai', `🔔 บันทึกเสียงแจ้งเตือนลำดับที่ [${num}] เรียบร้อย`), 400);
+            setTimeout(() => {
+              appendChat('ai', `บันทึกเสียงแจ้งเตือนโทน [${num}] เรียบร้อย พร้อมทดสอบเสียงทันที`);
+              UI.notify(`ตั้งค่าเสียงโทน ${num} สำเร็จ`);
+            }, 300);
           }
         });
 
-        // 6. Delete All Data (30 Seconds Countdown -> Re-KYC)
-        document.getElementById('aiBtnDeleteAll')?.addEventListener('click', () => {
+        // 4. Delete All Data (30s Countdown -> Re-KYC)
+        document.getElementById('aiBtnDeleteAllData')?.addEventListener('click', () => {
           if (!confirm('⚠️ คำเตือน: ข้อมูลทั้งหมดจะถูกลบถาวรและไม่สามารถกู้คืนได้ ต้องการดำเนินการหรือไม่?')) return;
-          appendChat('user', '⚠️ ยืนยันการลบข้อมูลทั้งหมด');
-          appendChat('ai', '⏳ กำลังเริ่มกระบวนการทำลายข้อมูลถาวรใน 30 วินาที...');
+          appendChat('user', 'ยืนยันการลบข้อมูลทั้งหมด');
+          appendChat('ai', '⏳ AI เริ่มกระบวนการทำลายข้อมูลถาวรภายใน 30 วินาที...');
 
           let timeLeft = 30;
           const timer = setInterval(() => {
@@ -1324,18 +1374,28 @@
               StorageAdapter.clearAllStores().then(() => {
                 localStorage.clear();
                 sessionStorage.clear();
-                alert('ข้อมูลทั้งหมดถูกลบเรียบร้อยแล้ว ระบบจะนำคุณไปสู่ขั้นตอนลงทะเบียนและยืนยันตัวตนใหม่');
+                alert('ข้อมูลทั้งหมดถูกลบถาวรแล้ว ระบบจะนำคุณไปสู่ขั้นตอนลงทะเบียนและยืนยันตัวตนใหม่');
                 window.location.reload();
               });
             }
           }, 5000);
         });
+
+        // 5. Logout via AI (Instant Process)
+        document.getElementById('aiBtnLogout')?.addEventListener('click', () => {
+          appendChat('user', 'ออกจากระบบทันที (Logout)');
+          setTimeout(() => {
+            appendChat('ai', 'AI กำลังประมวลผลตัดการเชื่อมต่อเซสชันความปลอดภัย...');
+            setTimeout(() => {
+              sessionStorage.removeItem('sm_session');
+              window.location.reload();
+            }, 800);
+          }, 200);
+        });
       }
     };
 
-    /* ==========================================================================
-       7. AUTHENTICATION & MANDATORY PHOTO KYC CONTROLLER
-       ========================================================================== */
+    /* 6. AUTHENTICATION & MANDATORY PHOTO KYC */
     const AuthManager = {
       isRegisterMode: false,
       videoStream: null,
@@ -1392,15 +1452,13 @@
               alert('รหัสผ่านไม่ตรงกัน');
               return;
             }
-            // Switch to KYC Step
             document.getElementById('authForms').style.display = 'none';
             document.getElementById('kycContainer').style.display = 'block';
             this.startCamera();
           } else {
-            // Login Validation
             const stored = localStorage.getItem('sm_user');
             if (!stored) {
-              alert('ไม่พบบัญชีผู้ใช้งาน กรุณาลงทะเบียน');
+              alert('ไม่พบบัญชีผู้ใช้งาน กรุณาลงทะเบียนใหม่');
               return;
             }
             const userData = JSON.parse(stored);
@@ -1414,7 +1472,7 @@
           }
         });
 
-        // KYC Camera Controls
+        // KYC Controls
         document.getElementById('kycCaptureBtn')?.addEventListener('click', () => {
           const video = document.getElementById('kycVideo');
           const canvas = document.getElementById('kycCanvas');
@@ -1459,7 +1517,7 @@
           this.videoStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
           document.getElementById('kycVideo').srcObject = this.videoStream;
         } catch (err) {
-          alert('ไม่สามารถเปิดกล้องได้ ระบบจะใช้ภาพแทนสำหรับการยืนยันตัวตน');
+          alert('ไม่สามารถเปิดกล้องได้ ระบบจะใช้ภาพเริ่มต้นสำหรับการยืนยันตัวตน');
           this.capturedPhotoData = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" fill="%233b82f6"/></svg>';
           document.getElementById('kycSubmitBtn').style.display = 'block';
           document.getElementById('kycCaptureBtn').style.display = 'none';
@@ -1472,14 +1530,9 @@
       }
     };
 
-    /* ==========================================================================
-       8. APP BOOTSTRAPPER (Lifecycle Loader)
-       ========================================================================== */
+    /* 7. LIFECYCLE BOOTSTRAPPER */
     window.addEventListener('DOMContentLoaded', async () => {
-      // 1. Initialize IndexedDB
       await StorageAdapter.init();
-
-      // 2. Load Local Data
       AppState.savings = await StorageAdapter.getAll('savings');
       AppState.goals = await StorageAdapter.getAll('goals');
       AppState.pendingSavings = await StorageAdapter.getAll('pending');
@@ -1493,7 +1546,6 @@
       const savedLimits = localStorage.getItem('sm_limits');
       if (savedLimits) AppState.rateLimits = JSON.parse(savedLimits);
 
-      // 3. Boot UI & Auth
       UI.init();
       AuthManager.init();
     });
