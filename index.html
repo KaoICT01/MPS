@@ -3,35 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking v6.2.0</title>
+  <title>SmartSave Banking v6.4.0</title>
   <style>
     :root {
-      --bg: #090d16;
-      --surface: #111726;
-      --surface-secondary: #1a233a;
-      --surface-card: #151d30;
-      --border: #23304d;
+      --bg: #070b14;
+      --surface: #0f172a;
+      --surface-secondary: #1e293b;
+      --surface-card: #131d35;
+      --border: #1e293b;
+      --border-focus: #3b82f6;
       --text: #f8fafc;
       --text-secondary: #94a3b8;
-      --primary: #3b82f6;
-      --primary-hover: #2563eb;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-glow: rgba(37, 99, 235, 0.25);
       --success: #10b981;
       --danger: #ef4444;
       --warning: #f59e0b;
       --accent: #6366f1;
-      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+      --shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
       --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
     [data-theme="light"] {
-      --bg: #f1f5f9;
+      --bg: #f8fafc;
       --surface: #ffffff;
-      --surface-secondary: #e2e8f0;
+      --surface-secondary: #f1f5f9;
       --surface-card: #ffffff;
-      --border: #cbd5e1;
+      --border: #e2e8f0;
+      --border-focus: #2563eb;
       --text: #0f172a;
       --text-secondary: #64748b;
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
+      --primary-glow: rgba(37, 99, 235, 0.15);
       --success: #059669;
       --danger: #dc2626;
       --warning: #d97706;
@@ -63,7 +67,7 @@
     
     /* Banking Cards */
     .card { background: var(--surface-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
-    .balance-card { background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: #fff; border: none; }
+    .balance-card { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #fff; border: none; box-shadow: 0 12px 30px var(--primary-glow); }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; min-height: 44px; }
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-primary:hover { background: var(--primary-hover); }
@@ -74,24 +78,26 @@
     .form-group { margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
     .form-group label { font-size: 13px; color: var(--text-secondary); }
     input, select, textarea { width: 100%; padding: 12px 14px; background: var(--surface-secondary); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 15px; outline: none; }
-    input:focus, select:focus { border-color: var(--primary); }
+    input:focus, select:focus { border-color: var(--border-focus); }
     
-    /* Toast & Badge */
+    /* Toast & Top Bar Actions */
+    .action-icon-btn { background: none; border: none; color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; transition: 0.2s; }
+    .action-icon-btn:hover { background: var(--surface-secondary); }
     .bell-wrapper { position: relative; cursor: pointer; display: flex; align-items: center; }
-    .bell-badge { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: var(--danger); border-radius: 50%; display: none; }
+    .bell-badge { position: absolute; top: 2px; right: 2px; width: 8px; height: 8px; background: var(--danger); border-radius: 50%; display: none; }
     .toast-container { position: fixed; top: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
     .toast { background: var(--surface); color: var(--text); border: 1px solid var(--primary); border-left: 5px solid var(--primary); padding: 12px 16px; border-radius: 8px; box-shadow: var(--shadow); font-size: 13px; font-weight: 500; transform: translateY(-20px); opacity: 0; transition: 0.3s; pointer-events: auto; }
     .toast.show { transform: translateY(0); opacity: 1; }
     
     /* PIN Keypad */
-    .pin-dots { display: flex; justify-content: center; gap: 12px; margin: 20px 0; }
-    .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border); background: transparent; }
-    .pin-dot.filled { background: var(--primary); border-color: var(--primary); }
-    .pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 280px; margin: 0 auto; }
+    .pin-dots { display: flex; justify-content: center; gap: 14px; margin: 24px 0; }
+    .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border-focus); background: transparent; }
+    .pin-dot.filled { background: var(--primary); }
+    .pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 280px; margin: 0 auto; }
     .pin-btn { height: 55px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface-secondary); color: var(--text); font-size: 20px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .pin-btn:active { background: var(--primary); color: #fff; }
 
-    /* Modals & Bottom Sheets */
+    /* Modals */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: 0.2s; }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
     .modal-sheet { background: var(--surface); width: 100%; max-width: 500px; border-radius: 20px 20px 0 0; padding: 24px; max-height: 90vh; overflow-y: auto; transform: translateY(100%); transition: 0.3s cubic-bezier(0.1, 0.9, 0.2, 1); }
@@ -102,11 +108,9 @@
       .modal-overlay.active .modal-sheet { transform: scale(1); }
     }
     
-    /* Views */
+    /* Views & Chat */
     .view-section { display: none; }
     .view-section.active { display: block; }
-    
-    /* Chat Interfaces */
     .chat-container { display: flex; flex-direction: column; height: 60vh; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); overflow: hidden; }
     .chat-messages { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
     .chat-bubble { max-width: 85%; padding: 12px 16px; border-radius: 14px; font-size: 14px; line-height: 1.5; white-space: pre-line; }
@@ -132,7 +136,7 @@
       <div style="text-align: center; margin-bottom: 24px;">
         <svg style="width: 48px; height: 48px; color: var(--primary);"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         <h2 style="margin-top: 8px;" id="authTitle">SmartSave Banking</h2>
-        <p style="color: var(--text-secondary); font-size: 13px;" id="authSub">ระบบบริหารเงินออมอัจฉริยะ v6.2.0</p>
+        <p style="color: var(--text-secondary); font-size: 13px;" id="authSub">ระบบบริหารเงินออมอัจฉริยะ v6.4.0</p>
       </div>
 
       <!-- Login / Register Forms -->
@@ -236,13 +240,13 @@
           </div>
         </div>
         
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <!-- Refresh Screen / F5 Button (Non-destructive) -->
-          <button id="refreshScreenBtn" title="รีโหลดหน้าจอ (F5)" style="background: none; border: none; color: var(--text); cursor: pointer; display: flex; align-items: center; padding: 4px;">
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <!-- Refresh Screen / F5 Button (Navigates to Dashboard instantly) -->
+          <button id="refreshScreenBtn" class="action-icon-btn" title="รีโหลดหน้าจอ (F5)">
             <svg><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
           </button>
           
-          <div class="bell-wrapper" id="bellIcon">
+          <div class="bell-wrapper action-icon-btn" id="bellIcon">
             <svg><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
             <div class="bell-badge" id="bellBadge"></div>
           </div>
@@ -778,7 +782,7 @@
       }
     };
 
-    /* 5. UI CONTROLLER, AI STATS & 5GB CACHE GUARDIAN */
+    /* 5. UI CONTROLLER & AI STATS */
     const UI = {
       init() {
         this.bindEvents();
@@ -1074,15 +1078,16 @@
           `• การประเมิน: การออมของคุณอยู่ในเกณฑ์ดีเยี่ยม ระบบแนะนำให้ออมสม่ำเสมอในหมวด ${topCat[0]} ต่อไปเพื่อรักษา Streak ครับ`;
       },
       bindEvents() {
-        // Refresh Screen Button (F5)
+        // Refresh Screen Button (Navigates to Dashboard instantly & updates data)
         document.getElementById('refreshScreenBtn')?.addEventListener('click', () => {
-          this.notify('กำลังรีเฟรชข้อมูลหน้าจอ...');
+          this.switchView('dashboard');
           this.renderDashboard();
           this.renderSavingsList();
           this.renderGoals();
           this.renderPendingQueue();
           this.renderAIAnalytics();
           this.checkCacheSizeAndClean();
+          this.notify('รีโหลดข้อมูลหน้าจอและกลับสู่แดชบอร์ดแล้ว');
         });
 
         document.querySelectorAll('[data-view]').forEach(el => {
@@ -1518,7 +1523,7 @@
       }
     };
 
-    /* 6. AUTHENTICATION & MANDATORY PIN & PHOTO KYC */
+    /* 6. AUTHENTICATION, MANDATORY PIN & PHOTO KYC */
     const AuthManager = {
       isRegisterMode: false,
       videoStream: null,
@@ -1704,7 +1709,7 @@
           document.getElementById('kycVideo').srcObject = this.videoStream;
         } catch (err) {
           alert('ไม่สามารถเปิดกล้องได้ ระบบจะใช้ภาพจำลองเริ่มต้น');
-          this.capturedPhotoData = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" fill="%233b82f6"/></svg>';
+          this.capturedPhotoData = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" fill="%232563eb"/></svg>';
           document.getElementById('kycSubmitBtn').style.display = 'block';
           document.getElementById('kycCaptureBtn').style.display = 'none';
         }
@@ -1716,7 +1721,7 @@
       }
     };
 
-    /* 7. BOOTSTRAPPER */
+    /* 7. LIFECYCLE BOOTSTRAPPER */
     window.addEventListener('DOMContentLoaded', async () => {
       await StorageAdapter.init();
 
