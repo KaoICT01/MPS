@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking v5.8.0</title>
+  <title>SmartSave Banking v6.2.0</title>
   <style>
     :root {
       --bg: #090d16;
@@ -77,12 +77,20 @@
     input:focus, select:focus { border-color: var(--primary); }
     
     /* Toast & Badge */
-    .bell-wrapper { position: relative; cursor: pointer; }
+    .bell-wrapper { position: relative; cursor: pointer; display: flex; align-items: center; }
     .bell-badge { position: absolute; top: -2px; right: -2px; width: 8px; height: 8px; background: var(--danger); border-radius: 50%; display: none; }
     .toast-container { position: fixed; top: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
     .toast { background: var(--surface); color: var(--text); border: 1px solid var(--primary); border-left: 5px solid var(--primary); padding: 12px 16px; border-radius: 8px; box-shadow: var(--shadow); font-size: 13px; font-weight: 500; transform: translateY(-20px); opacity: 0; transition: 0.3s; pointer-events: auto; }
     .toast.show { transform: translateY(0); opacity: 1; }
     
+    /* PIN Keypad */
+    .pin-dots { display: flex; justify-content: center; gap: 12px; margin: 20px 0; }
+    .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border); background: transparent; }
+    .pin-dot.filled { background: var(--primary); border-color: var(--primary); }
+    .pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 280px; margin: 0 auto; }
+    .pin-btn { height: 55px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface-secondary); color: var(--text); font-size: 20px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .pin-btn:active { background: var(--primary); color: #fff; }
+
     /* Modals & Bottom Sheets */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: 0.2s; }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
@@ -124,9 +132,10 @@
       <div style="text-align: center; margin-bottom: 24px;">
         <svg style="width: 48px; height: 48px; color: var(--primary);"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         <h2 style="margin-top: 8px;" id="authTitle">SmartSave Banking</h2>
-        <p style="color: var(--text-secondary); font-size: 13px;" id="authSub">ระบบบริหารเงินออมอัจฉริยะ v5.8.0</p>
+        <p style="color: var(--text-secondary); font-size: 13px;" id="authSub">ระบบบริหารเงินออมอัจฉริยะ v6.2.0</p>
       </div>
 
+      <!-- Login / Register Forms -->
       <div id="authForms">
         <div class="form-group">
           <label id="lblUsername">ชื่อผู้ใช้งาน (Username)</label>
@@ -146,6 +155,10 @@
             <label id="lblDisplayName">ชื่อที่ใช้แสดง (Display Name)</label>
             <input type="text" id="authDisplayName" placeholder="Display Name">
           </div>
+          <div class="form-group">
+            <label id="lblPin">ตั้งรหัส PIN 6 หลัก (ตั้งครั้งเดียว ไม่สามารถแก้ไขได้)</label>
+            <input type="password" id="authPin" maxlength="6" inputmode="numeric" placeholder="PIN 6 หลัก">
+          </div>
         </div>
 
         <button id="authPrimaryBtn" class="btn btn-primary" style="width: 100%; margin-top: 10px;">เข้าสู่ระบบ</button>
@@ -163,6 +176,30 @@
         </div>
         <button id="kycCaptureBtn" class="btn btn-primary" style="width: 100%;">ถ่ายภาพยืนยัน</button>
         <button id="kycSubmitBtn" class="btn btn-success" style="width: 100%; display: none; margin-top: 8px;">ยืนยันและเปิดบัญชี</button>
+      </div>
+
+      <!-- PIN Verification Screen (Mandatory Every Login) -->
+      <div id="pinContainer" style="display: none; text-align: center;">
+        <h3>กรุณาระบุ PIN 6 หลัก</h3>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">ความปลอดภัยขั้นสูงเฉพาะบัญชีของคุณ</p>
+        <div class="pin-dots" id="pinDots">
+          <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+          <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+        </div>
+        <div class="pin-pad">
+          <button class="pin-btn" data-val="1">1</button>
+          <button class="pin-btn" data-val="2">2</button>
+          <button class="pin-btn" data-val="3">3</button>
+          <button class="pin-btn" data-val="4">4</button>
+          <button class="pin-btn" data-val="5">5</button>
+          <button class="pin-btn" data-val="6">6</button>
+          <button class="pin-btn" data-val="7">7</button>
+          <button class="pin-btn" data-val="8">8</button>
+          <button class="pin-btn" data-val="9">9</button>
+          <button class="pin-btn" id="pinCancelBtn" style="font-size: 13px;">ยกเลิก</button>
+          <button class="pin-btn" data-val="0">0</button>
+          <button class="pin-btn" id="pinDelBtn"><svg style="width: 16px; height: 16px;"><polyline points="21 4 7 4 2 12 7 20 21 20 21 4"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg></button>
+        </div>
       </div>
     </div>
   </div>
@@ -183,11 +220,11 @@
       <a class="nav-item" data-view="rank"><svg><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="i18n-rank">ระดับการออม</span></a>
       <a class="nav-item" data-view="analysis"><svg><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg><span class="i18n-analysis">AI วิเคราะห์สถิติ</span></a>
       <a class="nav-item" data-view="pending"><svg><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="i18n-pending">ข้อมูลส่วนดำเนินการ</span></a>
-      <a class="nav-item" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="i18n-settings">ตั้งค่าระบบ</span></a>
+      <a class="nav-item" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="i18n-settings">ตั้งค่าระบบ</span></a>
     </aside>
 
     <div class="main-wrapper">
-      <!-- Top Bar -->
+      <!-- Top Bar with Refresh F5 and Bell -->
       <header class="top-bar">
         <div style="display: flex; align-items: center; gap: 10px;">
           <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--surface-secondary); display: flex; align-items: center; justify-content: center; overflow: hidden;" id="topUserAvatar">
@@ -198,7 +235,13 @@
             <div style="font-size: 11px; color: var(--text-secondary);" id="topDateTime">--:--:--</div>
           </div>
         </div>
-        <div style="display: flex; align-items: center; gap: 14px;">
+        
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <!-- Refresh Screen / F5 Button (Non-destructive) -->
+          <button id="refreshScreenBtn" title="รีโหลดหน้าจอ (F5)" style="background: none; border: none; color: var(--text); cursor: pointer; display: flex; align-items: center; padding: 4px;">
+            <svg><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          </button>
+          
           <div class="bell-wrapper" id="bellIcon">
             <svg><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
             <div class="bell-badge" id="bellBadge"></div>
@@ -311,7 +354,7 @@
                 <div class="chat-bubble ai">ศูนย์ช่วยเหลือ SmartSave AI พร้อมให้บริการ กดเลือกคำสั่งด่วนด้านล่างได้ทันที:</div>
               </div>
               <div class="chat-actions">
-                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnForgotPass">เปลี่ยนรหัสผ่าน (1ครั้ง/วัน)</button>
+                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnForgotPass">เปลี่ยนรหัสผ่าน & ชื่อผู้ใช้ (1ครั้ง/วัน)</button>
                 <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnInstantLang">สลับภาษา TH / EN (1ครั้ง/วัน)</button>
                 <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnSoundConfig">ตั้งค่าเสียงแจ้งเตือน (10 เสียง)</button>
                 <button class="btn btn-danger" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnDeleteAllData">ลบข้อมูลทั้งหมด (30 วิ)</button>
@@ -514,7 +557,7 @@
       GAS_ENDPOINT: 'https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec',
       SHEET_ID: '1nXTCNdVJRpDuIunPLnjqMkUzmOA87gtUqoclBIgNObk',
       DB_NAME: 'SmartSaveDB_Master',
-      DB_VERSION: 2,
+      DB_VERSION: 3,
       CACHE_THRESHOLD_BYTES: 5 * 1024 * 1024 * 1024 // 5 GB
     };
 
@@ -599,7 +642,7 @@
       }
     };
 
-    /* 2. PERSISTENT INDEXEDDB ADAPTER (Non-destructive Upgrades) */
+    /* 2. STRICT 1-USER ISOLATED INDEXEDDB ADAPTER */
     const StorageAdapter = {
       db: null,
       async init() {
@@ -615,11 +658,14 @@
           req.onerror = (e) => reject(e);
         });
       },
-      async getAll(store) {
+      async getAllForUser(store, userId) {
         return new Promise((resolve, reject) => {
           const tx = this.db.transaction(store, 'readonly');
           const req = tx.objectStore(store).getAll();
-          req.onsuccess = () => resolve(req.result || []);
+          req.onsuccess = () => {
+            const all = req.result || [];
+            resolve(all.filter(item => item.userId === userId));
+          };
           req.onerror = () => reject(req.error);
         });
       },
@@ -670,7 +716,7 @@
       }
     };
 
-    /* 4. BUSINESS LOGIC ENGINE */
+    /* 4. CALCULATION ENGINE */
     const Engine = {
       isDelayedWindow() {
         const now = new Date();
@@ -752,7 +798,6 @@
           if (elem) elem.innerText = `${dateString} ${timeString}`;
         }, 1000);
       },
-      /* 5GB Cache Limit Monitor and Cleanup */
       async checkCacheSizeAndClean() {
         if ('storage' in navigator && 'estimate' in navigator.storage) {
           try {
@@ -764,7 +809,7 @@
             }
 
             if (usage && usage >= CONFIG.CACHE_THRESHOLD_BYTES) {
-              console.warn('Cache reached 5GB threshold! Cleaning system caches...');
+              console.warn('Cache reached 5GB threshold! Cleaning caches...');
               if ('caches' in window) {
                 const keys = await caches.keys();
                 for (const k of keys) await caches.delete(k);
@@ -776,7 +821,6 @@
           }
         }
       },
-      /* Auto Background Sync for Delayed Window */
       startAutoSyncMonitor() {
         setInterval(async () => {
           if (!Engine.isDelayedWindow() && AppState.pendingSavings.length > 0) {
@@ -830,7 +874,6 @@
         const badge = document.getElementById('bellBadge');
         if (badge) badge.style.display = 'block';
         
-        // Instant Toast
         const toastBox = document.getElementById('toastBox');
         const toast = document.createElement('div');
         toast.className = 'toast show';
@@ -1000,7 +1043,6 @@
           </div>
         `).join('');
       },
-      /* 7. FULL AI-POWERED ANALYTICS REPORTING */
       renderAIAnalytics() {
         const initialMsg = document.getElementById('analysisInitialAiMsg');
         if (!initialMsg) return;
@@ -1017,7 +1059,6 @@
         }
 
         const avgPerTx = total / count;
-        // Group Categories
         const catMap = {};
         AppState.savings.forEach(s => {
           catMap[s.category] = (catMap[s.category] || 0) + Number(s.amount);
@@ -1033,6 +1074,17 @@
           `• การประเมิน: การออมของคุณอยู่ในเกณฑ์ดีเยี่ยม ระบบแนะนำให้ออมสม่ำเสมอในหมวด ${topCat[0]} ต่อไปเพื่อรักษา Streak ครับ`;
       },
       bindEvents() {
+        // Refresh Screen Button (F5)
+        document.getElementById('refreshScreenBtn')?.addEventListener('click', () => {
+          this.notify('กำลังรีเฟรชข้อมูลหน้าจอ...');
+          this.renderDashboard();
+          this.renderSavingsList();
+          this.renderGoals();
+          this.renderPendingQueue();
+          this.renderAIAnalytics();
+          this.checkCacheSizeAndClean();
+        });
+
         document.querySelectorAll('[data-view]').forEach(el => {
           el.addEventListener('click', () => {
             const target = el.getAttribute('data-view');
@@ -1073,7 +1125,7 @@
           document.getElementById('addGoalModal').classList.remove('active');
         });
 
-        // Submit Saving (Auto updates Analytics immediately)
+        // Submit Saving
         document.getElementById('submitSavingBtn')?.addEventListener('click', async () => {
           const amount = parseFloat(document.getElementById('saveAmount').value);
           const category = document.getElementById('saveCategory').value;
@@ -1089,6 +1141,7 @@
 
           const record = {
             id: 'TX_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+            userId: AppState.user.id,
             amount, category, type,
             date: date || new Date().toISOString().split('T')[0],
             time: time || new Date().toTimeString().slice(0, 5),
@@ -1127,6 +1180,7 @@
 
           const goal = {
             id: 'GL_' + Date.now(),
+            userId: AppState.user.id,
             name, targetAmount, currentAmount: 0,
             targetDate, status: 'in_progress', createdAt: new Date().toISOString()
           };
@@ -1312,23 +1366,25 @@
           box.scrollTop = box.scrollHeight;
         };
 
-        // 1. Forgot Password (1 time / day)
+        // 1. Forgot Password & Username (1 time / day)
         document.getElementById('aiBtnForgotPass')?.addEventListener('click', () => {
-          appendChat('user', 'ขอเปลี่ยนรหัสผ่านประจำวัน');
+          appendChat('user', 'ขอเปลี่ยนรหัสผ่านและชื่อผู้ใช้งานประจำวัน');
           const today = new Date().toISOString().split('T')[0];
           if (AppState.rateLimits.lastForgotPassDate === today) {
-            setTimeout(() => appendChat('ai', '⚠️ คุณได้ใช้สิทธิ์เปลี่ยนรหัสผ่านประจำวันไปแล้ว (จำกัด 1 ครั้งต่อวัน)'), 300);
+            setTimeout(() => appendChat('ai', '⚠️ คุณได้ใช้สิทธิ์เปลี่ยนข้อมูลประจำวันไปแล้ว (จำกัด 1 ครั้งต่อวัน)'), 300);
             return;
           }
+          const newUsername = prompt('ระบุชื่อผู้ใช้ใหม่ (Username):', AppState.user.username);
           const newPass = prompt('ระบุรหัสผ่านใหม่:');
-          if (newPass) {
+          if (newUsername && newPass) {
             const user = JSON.parse(localStorage.getItem('sm_user') || '{}');
-            user.password = btoa(newPass);
+            user.username = newUsername.trim();
+            user.password = btoa(newPass.trim());
             localStorage.setItem('sm_user', JSON.stringify(user));
             AppState.rateLimits.lastForgotPassDate = today;
             localStorage.setItem('sm_limits', JSON.stringify(AppState.rateLimits));
             setTimeout(() => {
-              appendChat('ai', 'เปลี่ยนรหัสผ่านสำเร็จ! AI กำลังนำท่านไปหน้าเข้าสู่ระบบทันที...');
+              appendChat('ai', 'เปลี่ยนข้อมูลเข้าสู่ระบบสำเร็จ! AI กำลังนำท่านไปหน้าเข้าสู่ระบบทันที...');
               setTimeout(() => {
                 sessionStorage.removeItem('sm_session');
                 window.location.reload();
@@ -1462,11 +1518,12 @@
       }
     };
 
-    /* 6. AUTHENTICATION & MANDATORY PHOTO KYC */
+    /* 6. AUTHENTICATION & MANDATORY PIN & PHOTO KYC */
     const AuthManager = {
       isRegisterMode: false,
       videoStream: null,
       capturedPhotoData: null,
+      enteredPin: '',
 
       init() {
         this.bindEvents();
@@ -1477,10 +1534,15 @@
         const user = localStorage.getItem('sm_user');
         if (session && user) {
           AppState.user = JSON.parse(user);
-          this.launchApp();
+          this.loadUserDataAndLaunch();
         }
       },
-      launchApp() {
+      async loadUserDataAndLaunch() {
+        // Strict 1-User Data Isolation
+        AppState.savings = await StorageAdapter.getAllForUser('savings', AppState.user.id);
+        AppState.goals = await StorageAdapter.getAllForUser('goals', AppState.user.id);
+        AppState.pendingSavings = await StorageAdapter.getAllForUser('pending', AppState.user.id);
+
         document.getElementById('authContainer').style.display = 'none';
         document.getElementById('appInterface').style.display = 'flex';
         document.getElementById('topUserName').innerText = AppState.user.displayName || AppState.user.username;
@@ -1517,10 +1579,17 @@
           if (this.isRegisterMode) {
             const cp = document.getElementById('authConfirmPassword').value.trim();
             const dn = document.getElementById('authDisplayName').value.trim();
+            const pin = document.getElementById('authPin').value.trim();
+
             if (p !== cp) {
               alert('รหัสผ่านไม่ตรงกัน');
               return;
             }
+            if (!/^\d{6}$/.test(pin)) {
+              alert('กรุณาตั้งรหัส PIN ตัวเลข 6 หลักให้ถูกต้อง');
+              return;
+            }
+
             document.getElementById('authForms').style.display = 'none';
             document.getElementById('kycContainer').style.display = 'block';
             this.startCamera();
@@ -1533,12 +1602,39 @@
             const userData = JSON.parse(stored);
             if (userData.username === u && userData.password === btoa(p)) {
               AppState.user = userData;
-              sessionStorage.setItem('sm_session', 'ACTIVE');
-              this.launchApp();
+              // Open Mandatory PIN Check
+              document.getElementById('authForms').style.display = 'none';
+              document.getElementById('pinContainer').style.display = 'block';
+              this.enteredPin = '';
+              this.renderPinDots();
             } else {
               alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
             }
           }
+        });
+
+        // PIN Keypad Handlers
+        document.querySelectorAll('.pin-btn[data-val]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (this.enteredPin.length < 6) {
+              this.enteredPin += btn.getAttribute('data-val');
+              this.renderPinDots();
+              if (this.enteredPin.length === 6) {
+                this.verifyPin();
+              }
+            }
+          });
+        });
+
+        document.getElementById('pinDelBtn')?.addEventListener('click', () => {
+          this.enteredPin = this.enteredPin.slice(0, -1);
+          this.renderPinDots();
+        });
+
+        document.getElementById('pinCancelBtn')?.addEventListener('click', () => {
+          this.enteredPin = '';
+          document.getElementById('pinContainer').style.display = 'none';
+          document.getElementById('authForms').style.display = 'block';
         });
 
         // KYC Controls
@@ -1563,12 +1659,14 @@
           const u = document.getElementById('authUsername').value.trim();
           const p = document.getElementById('authPassword').value.trim();
           const dn = document.getElementById('authDisplayName').value.trim();
+          const pin = document.getElementById('authPin').value.trim();
 
           const newUser = {
             id: 'USR_' + Date.now(),
             username: u,
             password: btoa(p),
             displayName: dn || u,
+            pin: btoa(pin), // Permanent PIN 1 user
             kycPhoto: this.capturedPhotoData,
             verified: true,
             registeredAt: new Date().toISOString()
@@ -1578,15 +1676,34 @@
           AppState.user = newUser;
           sessionStorage.setItem('sm_session', 'ACTIVE');
           alert('ลงทะเบียนและยืนยันตัวตนสำเร็จ!');
-          this.launchApp();
+          this.loadUserDataAndLaunch();
         });
+      },
+      renderPinDots() {
+        const dots = document.querySelectorAll('.pin-dot');
+        dots.forEach((dot, idx) => {
+          if (idx < this.enteredPin.length) dot.classList.add('filled');
+          else dot.classList.remove('filled');
+        });
+      },
+      verifyPin() {
+        setTimeout(() => {
+          if (btoa(this.enteredPin) === AppState.user.pin) {
+            sessionStorage.setItem('sm_session', 'ACTIVE');
+            this.loadUserDataAndLaunch();
+          } else {
+            alert('รหัส PIN ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง');
+            this.enteredPin = '';
+            this.renderPinDots();
+          }
+        }, 100);
       },
       async startCamera() {
         try {
           this.videoStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
           document.getElementById('kycVideo').srcObject = this.videoStream;
         } catch (err) {
-          alert('ไม่สามารถเปิดกล้องได้ ระบบจะใช้ภาพเริ่มต้นสำหรับการยืนยันตัวตน');
+          alert('ไม่สามารถเปิดกล้องได้ ระบบจะใช้ภาพจำลองเริ่มต้น');
           this.capturedPhotoData = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" fill="%233b82f6"/></svg>';
           document.getElementById('kycSubmitBtn').style.display = 'block';
           document.getElementById('kycCaptureBtn').style.display = 'none';
@@ -1599,12 +1716,9 @@
       }
     };
 
-    /* 7. LIFECYCLE BOOTSTRAPPER */
+    /* 7. BOOTSTRAPPER */
     window.addEventListener('DOMContentLoaded', async () => {
       await StorageAdapter.init();
-      AppState.savings = await StorageAdapter.getAll('savings');
-      AppState.goals = await StorageAdapter.getAll('goals');
-      AppState.pendingSavings = await StorageAdapter.getAll('pending');
 
       const savedCategories = localStorage.getItem('sm_categories');
       if (savedCategories) AppState.categories = JSON.parse(savedCategories);
