@@ -89,7 +89,7 @@
     .toast { background: var(--surface); color: var(--text); border: 1px solid var(--primary); border-left: 5px solid var(--primary); padding: 12px 16px; border-radius: 8px; box-shadow: var(--shadow); font-size: 13px; font-weight: 500; transform: translateY(-20px); opacity: 0; transition: 0.3s; pointer-events: auto; }
     .toast.show { transform: translateY(0); opacity: 1; }
     
-    /* PIN Keypad */
+    /* PIN Keypad & Dots */
     .pin-dots { display: flex; justify-content: center; gap: 14px; margin: 24px 0; }
     .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border-focus); background: transparent; }
     .pin-dot.filled { background: var(--primary); }
@@ -160,7 +160,7 @@
             <input type="text" id="authDisplayName" placeholder="Display Name">
           </div>
           <div class="form-group">
-            <label id="lblPin">ตั้งรหัส PIN 6 หลัก (ตั้งครั้งเดียว ไม่สามารถแก้ไขได้)</label>
+            <label id="lblPin">ตั้งรหัส PIN 6 หลัก (ใช้ยืนยันเมื่อบันทึกข้อมูล - แก้ไขไม่ได้)</label>
             <input type="password" id="authPin" maxlength="6" inputmode="numeric" placeholder="PIN 6 หลัก">
           </div>
         </div>
@@ -181,30 +181,6 @@
         <button id="kycCaptureBtn" class="btn btn-primary" style="width: 100%;">ถ่ายภาพยืนยัน</button>
         <button id="kycSubmitBtn" class="btn btn-success" style="width: 100%; display: none; margin-top: 8px;">ยืนยันและเปิดบัญชี</button>
       </div>
-
-      <!-- PIN Verification Screen (Mandatory Every Login) -->
-      <div id="pinContainer" style="display: none; text-align: center;">
-        <h3>กรุณาระบุ PIN 6 หลัก</h3>
-        <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">ความปลอดภัยขั้นสูงเฉพาะบัญชีของคุณ</p>
-        <div class="pin-dots" id="pinDots">
-          <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
-          <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
-        </div>
-        <div class="pin-pad">
-          <button class="pin-btn" data-val="1">1</button>
-          <button class="pin-btn" data-val="2">2</button>
-          <button class="pin-btn" data-val="3">3</button>
-          <button class="pin-btn" data-val="4">4</button>
-          <button class="pin-btn" data-val="5">5</button>
-          <button class="pin-btn" data-val="6">6</button>
-          <button class="pin-btn" data-val="7">7</button>
-          <button class="pin-btn" data-val="8">8</button>
-          <button class="pin-btn" data-val="9">9</button>
-          <button class="pin-btn" id="pinCancelBtn" style="font-size: 13px;">ยกเลิก</button>
-          <button class="pin-btn" data-val="0">0</button>
-          <button class="pin-btn" id="pinDelBtn"><svg style="width: 16px; height: 16px;"><polyline points="21 4 7 4 2 12 7 20 21 20 21 4"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg></button>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -224,7 +200,7 @@
       <a class="nav-item" data-view="rank"><svg><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="i18n-rank">ระดับการออม</span></a>
       <a class="nav-item" data-view="analysis"><svg><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg><span class="i18n-analysis">AI วิเคราะห์สถิติ</span></a>
       <a class="nav-item" data-view="pending"><svg><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="i18n-pending">ข้อมูลส่วนดำเนินการ</span></a>
-      <a class="nav-item" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="i18n-settings">ตั้งค่าระบบ</span></a>
+      <a class="nav-item" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="i18n-settings">ตั้งค่าระบบ</span></a>
     </aside>
 
     <div class="main-wrapper">
@@ -347,7 +323,7 @@
           </div>
         </section>
 
-        <!-- 5. PAGE: AI HELP & OPERATIONS (Logout & Settings Inside) -->
+        <!-- 5. PAGE: AI HELP & OPERATIONS (Logout Inside) -->
         <section id="viewAiHelp" class="view-section">
           <div class="card">
             <h2>AI ศูนย์ช่วยเหลือ & ดำเนินการบัญชี</h2>
@@ -540,6 +516,34 @@
     </div>
   </div>
 
+  <!-- MODAL: MANDATORY PIN 6-DIGIT VERIFICATION FOR RECORDING -->
+  <div class="modal-overlay" id="pinVerifyModal">
+    <div class="modal-sheet" style="text-align: center;">
+      <h3>ยืนยันรหัส PIN 6 หลัก</h3>
+      <p style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">กรุณากรอกรหัส PIN เพื่อยืนยันการทำรายการ</p>
+      
+      <div class="pin-dots" id="modalPinDots">
+        <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+        <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+      </div>
+      
+      <div class="pin-pad">
+        <button class="pin-btn" data-val="1">1</button>
+        <button class="pin-btn" data-val="2">2</button>
+        <button class="pin-btn" data-val="3">3</button>
+        <button class="pin-btn" data-val="4">4</button>
+        <button class="pin-btn" data-val="5">5</button>
+        <button class="pin-btn" data-val="6">6</button>
+        <button class="pin-btn" data-val="7">7</button>
+        <button class="pin-btn" data-val="8">8</button>
+        <button class="pin-btn" data-val="9">9</button>
+        <button class="pin-btn" id="pinCancelActionBtn" style="font-size: 13px;">ยกเลิก</button>
+        <button class="pin-btn" data-val="0">0</button>
+        <button class="pin-btn" id="pinDelActionBtn"><svg style="width: 16px; height: 16px;"><polyline points="21 4 7 4 2 12 7 20 21 20 21 4"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg></button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: MOBILE 'MORE' MENU -->
   <div class="modal-overlay" id="moreMenuModal">
     <div class="modal-sheet">
@@ -549,7 +553,7 @@
         <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="rank"><svg><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> ระดับการออม (Rank)</button>
         <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="analysis"><svg><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg> AI วิเคราะห์สถิติ (Analysis)</button>
         <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="pending"><svg><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ข้อมูลส่วนดำเนินการ (Pending Queue)</button>
-        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> ตั้งค่าระบบ (Settings)</button>
+        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> ตั้งค่าระบบ (Settings)</button>
       </div>
       <button class="btn btn-outline" style="width: 100%; margin-top: 14px;" id="closeMoreMenuBtn">ปิด</button>
     </div>
@@ -784,6 +788,9 @@
 
     /* 5. UI CONTROLLER & AI STATS */
     const UI = {
+      pendingActionCallback: null,
+      currentModalPin: '',
+
       init() {
         this.bindEvents();
         this.startClock();
@@ -1077,6 +1084,37 @@
           `• วินัยออมต่อเนื่อง: ${streak} วัน (สถานะ: ${rank.title})\n` +
           `• การประเมิน: การออมของคุณอยู่ในเกณฑ์ดีเยี่ยม ระบบแนะนำให้ออมสม่ำเสมอในหมวด ${topCat[0]} ต่อไปเพื่อรักษา Streak ครับ`;
       },
+
+      /* PIN 6-DIGIT VERIFICATION WORKFLOW */
+      requestPinVerification(onSuccessCallback) {
+        this.pendingActionCallback = onSuccessCallback;
+        this.currentModalPin = '';
+        this.renderModalPinDots();
+        document.getElementById('pinVerifyModal').classList.add('active');
+      },
+      renderModalPinDots() {
+        const dots = document.querySelectorAll('#modalPinDots .pin-dot');
+        dots.forEach((dot, idx) => {
+          if (idx < this.currentModalPin.length) dot.classList.add('filled');
+          else dot.classList.remove('filled');
+        });
+      },
+      checkModalPin() {
+        setTimeout(() => {
+          if (btoa(this.currentModalPin) === AppState.user.pin) {
+            document.getElementById('pinVerifyModal').classList.remove('active');
+            if (typeof this.pendingActionCallback === 'function') {
+              this.pendingActionCallback();
+            }
+            this.pendingActionCallback = null;
+          } else {
+            alert('รหัส PIN ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง');
+            this.currentModalPin = '';
+            this.renderModalPinDots();
+          }
+        }, 100);
+      },
+
       bindEvents() {
         // Refresh Screen Button (Navigates to Dashboard instantly & updates data)
         document.getElementById('refreshScreenBtn')?.addEventListener('click', () => {
@@ -1130,8 +1168,32 @@
           document.getElementById('addGoalModal').classList.remove('active');
         });
 
-        // Submit Saving
-        document.getElementById('submitSavingBtn')?.addEventListener('click', async () => {
+        // PIN Pad in Verification Modal
+        document.querySelectorAll('#pinVerifyModal .pin-btn[data-val]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (this.currentModalPin.length < 6) {
+              this.currentModalPin += btn.getAttribute('data-val');
+              this.renderModalPinDots();
+              if (this.currentModalPin.length === 6) {
+                this.checkModalPin();
+              }
+            }
+          });
+        });
+
+        document.getElementById('pinDelActionBtn')?.addEventListener('click', () => {
+          this.currentModalPin = this.currentModalPin.slice(0, -1);
+          this.renderModalPinDots();
+        });
+
+        document.getElementById('pinCancelActionBtn')?.addEventListener('click', () => {
+          this.currentModalPin = '';
+          this.pendingActionCallback = null;
+          document.getElementById('pinVerifyModal').classList.remove('active');
+        });
+
+        // Submit Saving (Trigger PIN 6-Digit Check)
+        document.getElementById('submitSavingBtn')?.addEventListener('click', () => {
           const amount = parseFloat(document.getElementById('saveAmount').value);
           const category = document.getElementById('saveCategory').value;
           const type = document.getElementById('saveType').value;
@@ -1144,36 +1206,39 @@
             return;
           }
 
-          const record = {
-            id: 'TX_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-            userId: AppState.user.id,
-            amount, category, type,
-            date: date || new Date().toISOString().split('T')[0],
-            time: time || new Date().toTimeString().slice(0, 5),
-            note, createdAt: new Date().toISOString()
-          };
+          // Request PIN 6-digit confirmation
+          this.requestPinVerification(async () => {
+            const record = {
+              id: 'TX_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+              userId: AppState.user.id,
+              amount, category, type,
+              date: date || new Date().toISOString().split('T')[0],
+              time: time || new Date().toTimeString().slice(0, 5),
+              note, createdAt: new Date().toISOString()
+            };
 
-          if (Engine.isDelayedWindow()) {
-            AppState.pendingSavings.push(record);
-            await StorageAdapter.put('pending', record);
-            alert('บันทึกในช่วง 23:00-23:30 น. ข้อมูลจะถูกเก็บในคิวและซิงค์ให้อัตโนมัติหลังช่วงเวลาดังกล่าว');
-            UI.renderPendingQueue();
-          } else {
-            AppState.savings.push(record);
-            await StorageAdapter.put('savings', record);
-            SyncAdapter.syncRecord('SAVING', record);
-          }
+            if (Engine.isDelayedWindow()) {
+              AppState.pendingSavings.push(record);
+              await StorageAdapter.put('pending', record);
+              alert('บันทึกในช่วง 23:00-23:30 น. ข้อมูลจะถูกเก็บในคิวและซิงค์ให้อัตโนมัติหลังช่วงเวลาดังกล่าว');
+              UI.renderPendingQueue();
+            } else {
+              AppState.savings.push(record);
+              await StorageAdapter.put('savings', record);
+              SyncAdapter.syncRecord('SAVING', record);
+            }
 
-          document.getElementById('addSavingModal').classList.remove('active');
-          UI.renderDashboard();
-          UI.renderSavingsList();
-          UI.renderAIAnalytics();
-          UI.checkCacheSizeAndClean();
-          UI.notify('บันทึกเงินออมและประมวลผลสถิติเรียบร้อย');
+            document.getElementById('addSavingModal').classList.remove('active');
+            UI.renderDashboard();
+            UI.renderSavingsList();
+            UI.renderAIAnalytics();
+            UI.checkCacheSizeAndClean();
+            UI.notify('ยืนยัน PIN สำเร็จ! บันทึกเงินออมเรียบร้อย');
+          });
         });
 
-        // Submit Goal
-        document.getElementById('submitGoalBtn')?.addEventListener('click', async () => {
+        // Submit Goal (Trigger PIN 6-Digit Check)
+        document.getElementById('submitGoalBtn')?.addEventListener('click', () => {
           const name = document.getElementById('goalName').value;
           const targetAmount = parseFloat(document.getElementById('goalTargetAmount').value);
           const targetDate = document.getElementById('goalTargetDate').value;
@@ -1183,21 +1248,24 @@
             return;
           }
 
-          const goal = {
-            id: 'GL_' + Date.now(),
-            userId: AppState.user.id,
-            name, targetAmount, currentAmount: 0,
-            targetDate, status: 'in_progress', createdAt: new Date().toISOString()
-          };
+          // Request PIN 6-digit confirmation
+          this.requestPinVerification(async () => {
+            const goal = {
+              id: 'GL_' + Date.now(),
+              userId: AppState.user.id,
+              name, targetAmount, currentAmount: 0,
+              targetDate, status: 'in_progress', createdAt: new Date().toISOString()
+            };
 
-          AppState.goals.push(goal);
-          await StorageAdapter.put('goals', goal);
-          SyncAdapter.syncRecord('GOAL', goal);
+            AppState.goals.push(goal);
+            await StorageAdapter.put('goals', goal);
+            SyncAdapter.syncRecord('GOAL', goal);
 
-          document.getElementById('addGoalModal').classList.remove('active');
-          UI.renderGoals();
-          UI.renderDashboard();
-          UI.notify('สร้างเป้าหมายสำเร็จ');
+            document.getElementById('addGoalModal').classList.remove('active');
+            UI.renderGoals();
+            UI.renderDashboard();
+            UI.notify('ยืนยัน PIN สำเร็จ! สร้างเป้าหมายเรียบร้อย');
+          });
         });
 
         // Search & Filters
@@ -1213,8 +1281,8 @@
           }
         });
 
-        // Add funds to Goal
-        document.addEventListener('click', async (e) => {
+        // Add funds to Goal (Trigger PIN 6-Digit Check)
+        document.addEventListener('click', (e) => {
           if (e.target.closest('.add-goal-fund-btn')) {
             const id = e.target.closest('.add-goal-fund-btn').getAttribute('data-id');
             const goal = AppState.goals.find(g => g.id === id);
@@ -1224,17 +1292,19 @@
             const amt = parseFloat(inputAmt);
             if (!amt || amt <= 0) return;
 
-            goal.currentAmount += amt;
-            if (goal.currentAmount >= goal.targetAmount) {
-              goal.status = 'completed';
-              goal.completedAt = new Date().toISOString().split('T')[0];
-              alert(`🎉 ยินดีด้วย! คุณบรรลุเป้าหมาย "${goal.name}" แล้ว!`);
-            }
+            this.requestPinVerification(async () => {
+              goal.currentAmount += amt;
+              if (goal.currentAmount >= goal.targetAmount) {
+                goal.status = 'completed';
+                goal.completedAt = new Date().toISOString().split('T')[0];
+                alert(`ยินดีด้วย! คุณบรรลุเป้าหมาย "${goal.name}" แล้ว!`);
+              }
 
-            await StorageAdapter.put('goals', goal);
-            UI.renderGoals();
-            UI.renderDashboard();
-            UI.notify('จัดสรรเงินเข้าเป้าหมายสำเร็จ');
+              await StorageAdapter.put('goals', goal);
+              UI.renderGoals();
+              UI.renderDashboard();
+              UI.notify('จัดสรรเงินเข้าเป้าหมายสำเร็จ');
+            });
           }
         });
 
@@ -1376,7 +1446,7 @@
           appendChat('user', 'ขอเปลี่ยนรหัสผ่านและชื่อผู้ใช้งานประจำวัน');
           const today = new Date().toISOString().split('T')[0];
           if (AppState.rateLimits.lastForgotPassDate === today) {
-            setTimeout(() => appendChat('ai', '⚠️ คุณได้ใช้สิทธิ์เปลี่ยนข้อมูลประจำวันไปแล้ว (จำกัด 1 ครั้งต่อวัน)'), 300);
+            setTimeout(() => appendChat('ai', 'คุณได้ใช้สิทธิ์เปลี่ยนข้อมูลประจำวันไปแล้ว (จำกัด 1 ครั้งต่อวัน)'), 300);
             return;
           }
           const newUsername = prompt('ระบุชื่อผู้ใช้ใหม่ (Username):', AppState.user.username);
@@ -1403,7 +1473,7 @@
           appendChat('user', 'สลับภาษาไทย / อังกฤษ');
           const today = new Date().toISOString().split('T')[0];
           if (AppState.rateLimits.lastLangChangeDate === today) {
-            setTimeout(() => appendChat('ai', '⚠️ สามารถเปลี่ยนภาษาของระบบได้ 1 ครั้งต่อวันเท่านั้น'), 300);
+            setTimeout(() => appendChat('ai', 'สามารถเปลี่ยนภาษาของระบบได้ 1 ครั้งต่อวันเท่านั้น'), 300);
             return;
           }
           const nextLang = AppState.settings.language === 'th' ? 'en' : 'th';
@@ -1436,15 +1506,15 @@
 
         // 4. Delete All Data (30s Countdown -> Re-KYC)
         document.getElementById('aiBtnDeleteAllData')?.addEventListener('click', () => {
-          if (!confirm('⚠️ คำเตือน: ข้อมูลทั้งหมดจะถูกลบถาวรและไม่สามารถกู้คืนได้ ต้องการดำเนินการหรือไม่?')) return;
+          if (!confirm('คำเตือน: ข้อมูลทั้งหมดจะถูกลบถาวรและไม่สามารถกู้คืนได้ ต้องการดำเนินการหรือไม่?')) return;
           appendChat('user', 'ยืนยันการลบข้อมูลทั้งหมด');
-          appendChat('ai', '⏳ AI เริ่มกระบวนการทำลายข้อมูลถาวรภายใน 30 วินาที...');
+          appendChat('ai', 'AI เริ่มกระบวนการทำลายข้อมูลถาวรภายใน 30 วินาที...');
 
           let timeLeft = 30;
           const timer = setInterval(() => {
             timeLeft -= 5;
             if (timeLeft > 0) {
-              appendChat('ai', `⏳ จะลบข้อมูลทั้งหมดในอีก ${timeLeft} วินาที...`);
+              appendChat('ai', `จะลบข้อมูลทั้งหมดในอีก ${timeLeft} วินาที...`);
             } else {
               clearInterval(timer);
               StorageAdapter.clearAllStores().then(() => {
@@ -1523,12 +1593,11 @@
       }
     };
 
-    /* 6. AUTHENTICATION, MANDATORY PIN & PHOTO KYC */
+    /* 6. AUTHENTICATION & PHOTO KYC */
     const AuthManager = {
       isRegisterMode: false,
       videoStream: null,
       capturedPhotoData: null,
-      enteredPin: '',
 
       init() {
         this.bindEvents();
@@ -1572,6 +1641,7 @@
           toggleBtn.innerText = this.isRegisterMode ? 'กลับไปหน้าเข้าสู่ระบบ' : 'ลงทะเบียนผู้ใช้ใหม่';
         });
 
+        // Direct Login with Password only
         primaryBtn.addEventListener('click', async () => {
           const u = document.getElementById('authUsername').value.trim();
           const p = document.getElementById('authPassword').value.trim();
@@ -1607,39 +1677,12 @@
             const userData = JSON.parse(stored);
             if (userData.username === u && userData.password === btoa(p)) {
               AppState.user = userData;
-              // Open Mandatory PIN Check
-              document.getElementById('authForms').style.display = 'none';
-              document.getElementById('pinContainer').style.display = 'block';
-              this.enteredPin = '';
-              this.renderPinDots();
+              sessionStorage.setItem('sm_session', 'ACTIVE');
+              this.loadUserDataAndLaunch();
             } else {
               alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
             }
           }
-        });
-
-        // PIN Keypad Handlers
-        document.querySelectorAll('.pin-btn[data-val]').forEach(btn => {
-          btn.addEventListener('click', () => {
-            if (this.enteredPin.length < 6) {
-              this.enteredPin += btn.getAttribute('data-val');
-              this.renderPinDots();
-              if (this.enteredPin.length === 6) {
-                this.verifyPin();
-              }
-            }
-          });
-        });
-
-        document.getElementById('pinDelBtn')?.addEventListener('click', () => {
-          this.enteredPin = this.enteredPin.slice(0, -1);
-          this.renderPinDots();
-        });
-
-        document.getElementById('pinCancelBtn')?.addEventListener('click', () => {
-          this.enteredPin = '';
-          document.getElementById('pinContainer').style.display = 'none';
-          document.getElementById('authForms').style.display = 'block';
         });
 
         // KYC Controls
@@ -1683,25 +1726,6 @@
           alert('ลงทะเบียนและยืนยันตัวตนสำเร็จ!');
           this.loadUserDataAndLaunch();
         });
-      },
-      renderPinDots() {
-        const dots = document.querySelectorAll('.pin-dot');
-        dots.forEach((dot, idx) => {
-          if (idx < this.enteredPin.length) dot.classList.add('filled');
-          else dot.classList.remove('filled');
-        });
-      },
-      verifyPin() {
-        setTimeout(() => {
-          if (btoa(this.enteredPin) === AppState.user.pin) {
-            sessionStorage.setItem('sm_session', 'ACTIVE');
-            this.loadUserDataAndLaunch();
-          } else {
-            alert('รหัส PIN ไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง');
-            this.enteredPin = '';
-            this.renderPinDots();
-          }
-        }, 100);
       },
       async startCamera() {
         try {
