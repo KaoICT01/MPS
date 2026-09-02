@@ -68,7 +68,7 @@
     .b-nav-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-secondary); font-size: 11px; background: none; border: none; cursor: pointer; flex: 1; transition: 0.2s; }
     .b-nav-btn.active { color: var(--primary); font-weight: 600; transform: translateY(-2px); }
     
-    /* Cards & Components */
+    /* Cards & Buttons */
     .card { background: var(--surface-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
     .balance-card { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #fff; border: none; box-shadow: 0 12px 30px var(--primary-glow); }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; min-height: 44px; }
@@ -85,6 +85,7 @@
     input, select, textarea { width: 100%; padding: 12px 14px; background: var(--surface-secondary); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 15px; outline: none; }
     input:focus, select:focus { border-color: var(--border-focus); }
     
+    /* Toast & Top Bar Actions */
     .action-icon-btn { background: none; border: none; color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 10px; transition: 0.2s; }
     .action-icon-btn:hover { background: var(--surface-secondary); }
     .bell-wrapper { position: relative; cursor: pointer; display: flex; align-items: center; }
@@ -93,6 +94,7 @@
     .toast { background: var(--surface); color: var(--text); border: 1px solid var(--primary); border-left: 5px solid var(--primary); padding: 12px 16px; border-radius: 8px; box-shadow: var(--shadow); font-size: 13px; font-weight: 500; transform: translateY(-20px); opacity: 0; transition: 0.3s; pointer-events: auto; }
     .toast.show { transform: translateY(0); opacity: 1; }
     
+    /* PIN Keypad */
     .pin-dots { display: flex; justify-content: center; gap: 14px; margin: 24px 0; }
     .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border-focus); background: transparent; }
     .pin-dot.filled { background: var(--primary); }
@@ -100,6 +102,7 @@
     .pin-btn { height: 55px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface-secondary); color: var(--text); font-size: 20px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .pin-btn:active { background: var(--primary); color: #fff; }
 
+    /* Modals */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 100; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: 0.2s; }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
     .modal-sheet { background: var(--surface); width: 100%; max-width: 500px; border-radius: 20px 20px 0 0; padding: 24px; max-height: 90vh; overflow-y: auto; transform: translateY(100%); transition: 0.3s cubic-bezier(0.1, 0.9, 0.2, 1); }
@@ -110,14 +113,19 @@
       .modal-overlay.active .modal-sheet { transform: scale(1); }
     }
     
-    .view-section { display: none; }
-    .view-section.active { display: block; }
-    .chat-container { display: flex; flex-direction: column; height: 60vh; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); overflow: hidden; }
+    /* AI CHAT 2.0 ADVANCED CONVERSATIONAL UI */
+    .chat-container { display: flex; flex-direction: column; height: 65vh; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); overflow: hidden; }
+    .chat-header-bar { padding: 10px 16px; background: var(--surface-secondary); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 600; }
     .chat-messages { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-    .chat-bubble { max-width: 85%; padding: 12px 16px; border-radius: 14px; font-size: 14px; line-height: 1.5; white-space: pre-line; }
+    .chat-bubble { max-width: 88%; padding: 12px 16px; border-radius: 14px; font-size: 13.5px; line-height: 1.5; white-space: pre-line; box-shadow: var(--shadow); position: relative; }
     .chat-bubble.ai { align-self: flex-start; background: var(--surface-secondary); color: var(--text); border-bottom-left-radius: 2px; }
     .chat-bubble.user { align-self: flex-end; background: var(--primary); color: #fff; border-bottom-right-radius: 2px; }
-    .chat-actions { padding: 12px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 8px; background: var(--surface-card); }
+    .chat-chips-bar { padding: 8px 12px; background: var(--surface-card); border-top: 1px solid var(--border); display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+    .chat-input-bar { padding: 10px 12px; background: var(--surface); border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: center; }
+    .typing-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--text-secondary); margin: 0 2px; animation: blink 1.2s infinite; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink { 0%, 100% { opacity: 0.2; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.1); } }
     
     .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -210,12 +218,12 @@
       <a class="nav-item active" data-view="dashboard"><svg><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="i18n-dash">แดชบอร์ด</span></a>
       <a class="nav-item" data-view="savings"><svg><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg><span class="i18n-savings">บันทึกเงินออม</span></a>
       <a class="nav-item" data-view="goals"><svg><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span class="i18n-goals">เป้าหมายการออม</span></a>
-      <a class="nav-item" data-view="aiPlanning"><svg><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" x2="12" y1="22.08" y2="12"/></svg><span class="i18n-ai-plan">AI วางแผนการออม</span></a>
-      <a class="nav-item" data-view="aiHelp"><svg><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="i18n-ai-help">AI ช่วยเหลือ & บัญชี</span></a>
+      <a class="nav-item" data-view="aiPlanning"><svg><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" x2="12" y1="22.08" y2="12"/></svg><span class="i18n-ai-plan">AI วางแผนการออม 2.0</span></a>
+      <a class="nav-item" data-view="aiHelp"><svg><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="i18n-ai-help">AI ช่วยเหลือ & บัญชี 2.0</span></a>
       <a class="nav-item" data-view="rank"><svg><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="i18n-rank">ระดับการออม</span></a>
-      <a class="nav-item" data-view="analysis"><svg><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg><span class="i18n-analysis">AI วิเคราะห์สถิติ</span></a>
+      <a class="nav-item" data-view="analysis"><svg><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg><span class="i18n-analysis">AI วิเคราะห์สถิติ 2.0</span></a>
       <a class="nav-item" data-view="pending"><svg><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="i18n-pending">ข้อมูลส่วนดำเนินการ</span></a>
-      <a class="nav-item" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="i18n-settings">ตั้งค่าระบบ</span></a>
+      <a class="nav-item" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="i18n-settings">ตั้งค่าระบบ</span></a>
     </aside>
 
     <div class="main-wrapper">
@@ -247,7 +255,7 @@
       <!-- Content Views -->
       <main class="content-area">
         
-        <!-- 1. DASHBOARD VIEW (Clean Layout, Recent moved to Savings History) -->
+        <!-- 1. DASHBOARD VIEW -->
         <section id="viewDashboard" class="view-section active">
           <div class="card balance-card">
             <div style="font-size: 13px; opacity: 0.85;" class="i18n-total-lbl">ยอดเงินออมทั้งหมด (Total Savings)</div>
@@ -316,41 +324,65 @@
           </div>
         </section>
 
-        <!-- 4. PAGE: AI SAVING PLANNING -->
+        <!-- 4. PAGE: AI SAVING PLANNING 2.0 -->
         <section id="viewAiPlanning" class="view-section">
           <div class="card">
-            <h2>AI วางแผนการออม</h2>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">คำนวณและวางแผนการออมเงินอัตโนมัติด้วยวันคลิก</p>
+            <h2>AI วางแผนการออม 2.0</h2>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">คำนวณและวางแผนการออมเงินอัตโนมัติด้วยระบบแชทอัจฉริยะ</p>
             
             <div class="chat-container">
-              <div class="chat-messages" id="planningChatMessages">
-                <div class="chat-bubble ai">ยินดีต้อนรับสู่ AI Planning! กรุณาเลือกรายการที่ต้องการให้ประเมินด้านล่างได้ทันทีครับ</div>
+              <div class="chat-header-bar">
+                <span>SmartSave Planning Engine 2.0</span>
+                <span style="font-size: 11px; color: var(--success);">Online</span>
               </div>
-              <div class="chat-actions">
-                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnPlanDaily">แผนออมรายวัน (365 วัน)</button>
-                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnPlanMonthly">แผนออมรายเดือน (12 เดือน)</button>
-                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnGoalForecast">ประเมินวันบรรลุเป้าหมาย</button>
+              <div class="chat-messages" id="planningChatMessages">
+                <div class="chat-bubble ai">ยินดีต้อนรับสู่ AI Planning 2.0! คุณสามารถพิมพ์สอบถาม หรือกดชิปคำสั่งด่วนด้านล่างได้ทันทีครับ</div>
+              </div>
+              <!-- Smart Chips Bar -->
+              <div class="chat-chips-bar">
+                <button type="button" class="btn-chip" id="aiBtnPlanDaily">แผนออมรายวัน (365 วัน)</button>
+                <button type="button" class="btn-chip" id="aiBtnPlanMonthly">แผนออมรายเดือน (12 เดือน)</button>
+                <button type="button" class="btn-chip" id="aiBtnGoalForecast">ประเมินวันบรรลุเป้าหมาย</button>
+              </div>
+              <!-- Conversational Input Bar -->
+              <div class="chat-input-bar">
+                <input type="text" id="planningChatInput" placeholder="พิมพ์คำถามเกี่ยวกับการวางแผนออมเงิน...">
+                <button class="btn btn-primary" id="planningChatSendBtn" style="padding: 8px 14px; min-height: 40px;">
+                  <svg style="width: 16px; height: 16px;"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- 5. PAGE: AI HELP & OPERATIONS (Logout Inside) -->
+        <!-- 5. PAGE: AI HELP & OPERATIONS 2.0 (Logout Inside) -->
         <section id="viewAiHelp" class="view-section">
           <div class="card">
-            <h2>AI ศูนย์ช่วยเหลือ & ดำเนินการบัญชี</h2>
+            <h2>AI ศูนย์ช่วยเหลือ & ดำเนินการบัญชี 2.0</h2>
             <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">จัดการความปลอดภัย เปลี่ยนภาษา และออกจากระบบผ่าน AI ทันที</p>
             
             <div class="chat-container">
+              <div class="chat-header-bar">
+                <span>SmartSave Help Support 2.0</span>
+                <span style="font-size: 11px; color: var(--success);">Secured</span>
+              </div>
               <div class="chat-messages" id="helpChatMessages">
                 <div class="chat-bubble ai">ศูนย์ช่วยเหลือ SmartSave AI พร้อมให้บริการ กดเลือกคำสั่งด่วนด้านล่างได้ทันที:</div>
               </div>
-              <div class="chat-actions">
-                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnForgotPass">เปลี่ยนรหัสผ่าน & ชื่อผู้ใช้ (1ครั้ง/วัน)</button>
-                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnInstantLang">สลับภาษา TH / EN (1ครั้ง/วัน)</button>
-                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnSoundConfig">ตั้งค่าเสียงแจ้งเตือน (10 เสียง)</button>
-                <button class="btn btn-danger" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnDeleteAllData">ลบข้อมูลทั้งหมด (30 วิ)</button>
-                <button class="btn btn-outline" style="font-size: 12px; padding: 6px 12px; min-height: 36px; border-color: var(--danger); color: var(--danger);" id="aiBtnLogout">ออกจากระบบทันที (Logout)</button>
+              <!-- Smart Chips Bar -->
+              <div class="chat-chips-bar">
+                <button type="button" class="btn-chip" id="aiBtnForgotPass">เปลี่ยนรหัสผ่าน & ชื่อผู้ใช้ (1ครั้ง/วัน)</button>
+                <button type="button" class="btn-chip" id="aiBtnInstantLang">สลับภาษา TH / EN (1ครั้ง/วัน)</button>
+                <button type="button" class="btn-chip" id="aiBtnSoundConfig">ตั้งค่าเสียงแจ้งเตือน (10 เสียง)</button>
+                <button type="button" class="btn-chip" style="color: var(--danger); border-color: var(--danger);" id="aiBtnDeleteAllData">ลบข้อมูลทั้งหมด (30 วิ)</button>
+                <button type="button" class="btn-chip" style="background: var(--danger); color: #fff;" id="aiBtnLogout">ออกจากระบบทันที (Logout)</button>
+              </div>
+              <!-- Conversational Input Bar -->
+              <div class="chat-input-bar">
+                <input type="text" id="helpChatInput" placeholder="พิมพ์สิ่งที่ต้องการให้ช่วยเหลือ เช่น เปลี่ยนรหัส, สลับภาษา...">
+                <button class="btn btn-primary" id="helpChatSendBtn" style="padding: 8px 14px; min-height: 40px;">
+                  <svg style="width: 16px; height: 16px;"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
               </div>
             </div>
           </div>
@@ -379,20 +411,32 @@
           </div>
         </section>
 
-        <!-- 7. AI-POWERED ANALYTICS VIEW (NO CHARTS - FULL CHAT INTELLIGENCE) -->
+        <!-- 7. AI-POWERED ANALYTICS VIEW 2.0 (NO CHARTS - FULL CHAT INTELLIGENCE) -->
         <section id="viewAnalysis" class="view-section">
           <div class="card">
-            <h2>AI วิเคราะห์สถิติและการออม</h2>
+            <h2>AI วิเคราะห์สถิติและการออม 2.0</h2>
             <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">ประมวลผลสถิติแบบครบวงจรและรายงานผลอัตโนมัติแบบเรียลไทม์</p>
             
-            <div class="chat-container" style="height: 65vh;">
+            <div class="chat-container">
+              <div class="chat-header-bar">
+                <span>SmartSave Analytics Core 2.0</span>
+                <span style="font-size: 11px; color: var(--success);">Live Analytics</span>
+              </div>
               <div class="chat-messages" id="analysisChatMessages">
                 <div class="chat-bubble ai" id="analysisInitialAiMsg">กำลังโหลดและประมวลผลสถิติทางการเงินของคุณ...</div>
               </div>
-              <div class="chat-actions">
-                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnRefreshStats">ประมวลผลสถิติภาพรวมสด</button>
-                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnCatBreakdown">วิเคราะห์สัดส่วนหมวดหมู่</button>
-                <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 12px; min-height: 36px;" id="aiBtnFinancialHealth">ประเมินสุขภาพวินัยการออม</button>
+              <!-- Smart Chips Bar -->
+              <div class="chat-chips-bar">
+                <button type="button" class="btn-chip" id="aiBtnRefreshStats">ประมวลผลสถิติภาพรวมสด</button>
+                <button type="button" class="btn-chip" id="aiBtnCatBreakdown">วิเคราะห์สัดส่วนหมวดหมู่</button>
+                <button type="button" class="btn-chip" id="aiBtnFinancialHealth">ประเมินสุขภาพวินัยการออม</button>
+              </div>
+              <!-- Conversational Input Bar -->
+              <div class="chat-input-bar">
+                <input type="text" id="analysisChatInput" placeholder="พิมพ์คำถาม เช่น สรุปยอดออมเดือนนี้, สุขภาพการเงิน...">
+                <button class="btn btn-primary" id="analysisChatSendBtn" style="padding: 8px 14px; min-height: 40px;">
+                  <svg style="width: 16px; height: 16px;"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
               </div>
             </div>
           </div>
@@ -570,11 +614,11 @@
     <div class="modal-sheet">
       <h3 style="margin-bottom: 16px;">เมนูเพิ่มเติม</h3>
       <div style="display: flex; flex-direction: column; gap: 8px;">
-        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="aiHelp"><svg><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> AI ช่วยเหลือ & ออกจากระบบ</button>
+        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="aiHelp"><svg><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> AI ช่วยเหลือ & ออกจากระบบ 2.0</button>
         <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="rank"><svg><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> ระดับการออม (Rank)</button>
-        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="analysis"><svg><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg> AI วิเคราะห์สถิติ (Analysis)</button>
+        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="analysis"><svg><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg> AI วิเคราะห์สถิติ 2.0 (Analysis)</button>
         <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="pending"><svg><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ข้อมูลส่วนดำเนินการ (Pending Queue)</button>
-        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> ตั้งค่าระบบ (Settings)</button>
+        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> ตั้งค่าระบบ (Settings)</button>
       </div>
       <button class="btn btn-outline" style="width: 100%; margin-top: 14px;" id="closeMoreMenuBtn">ปิด</button>
     </div>
@@ -810,7 +854,7 @@
       }
     };
 
-    /* 5. UI CONTROLLER & AI STATS */
+    /* 5. UI CONTROLLER & AI CHAT 2.0 CONVERSATIONAL ENGINE */
     const UI = {
       pendingActionCallback: null,
       currentModalPin: '',
@@ -956,7 +1000,6 @@
         document.getElementById('rankTitle').innerText = rank.title;
         document.getElementById('rankDesc').innerText = rank.desc;
 
-        // Render Favorites
         const favContainer = document.getElementById('favoritesList');
         favContainer.innerHTML = AppState.categories.slice(0, 4).map(cat => `
           <button class="btn btn-secondary quick-save-btn" data-category="${cat}" style="font-size: 12px; white-space: nowrap; padding: 6px 12px; min-height: 36px;">+ ${cat}</button>
@@ -993,7 +1036,6 @@
           return matchQ && matchC;
         }).sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-        // Render Recent Top Transactions
         const recentTop = [...AppState.savings].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 3);
         if (recentBox) {
           if (!recentTop.length) {
@@ -1107,13 +1149,35 @@
         });
         const topCat = Object.entries(catMap).sort((a,b) => b[1] - a[1])[0] || ['-', 0];
 
-        initialMsg.innerText = `รายงานผลการวิเคราะห์สถิติสด (AI Live Intelligence):\n` +
+        initialMsg.innerText = `รายงานผลการวิเคราะห์สถิติสด (AI Live Intelligence 2.0):\n` +
           `• ยอดรวมเงินออมสะสม: ${Engine.formatCurrency(total)} (${count} รายการ)\n` +
           `• ยอดออมเฉลี่ยต่อรายการ: ${Engine.formatCurrency(avgPerTx)}\n` +
           `• ยอดสะสมเดือนปัจจุบัน: ${Engine.formatCurrency(monthly)}\n` +
           `• หมวดหมู่ที่ออมสูงสุด: ${topCat[0]} (${Engine.formatCurrency(topCat[1])})\n` +
           `• วินัยออมต่อเนื่อง: ${streak} วัน (สถานะ: ${rank.title})\n` +
           `• การประเมิน: การออมของคุณอยู่ในเกณฑ์ดีเยี่ยม ระบบแนะนำให้ออมสม่ำเสมอในหมวด ${topCat[0]} ต่อไปเพื่อรักษา Streak ครับ`;
+      },
+
+      /* AI CHAT 2.0 CORE STREAMING / TYPING ENGINE */
+      appendChatMessage(boxId, sender, text, animate = true) {
+        const box = document.getElementById(boxId);
+        if (!box) return;
+
+        const div = document.createElement('div');
+        div.className = `chat-bubble ${sender}`;
+        box.appendChild(div);
+
+        if (sender === 'ai' && animate) {
+          div.innerHTML = `<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>`;
+          box.scrollTop = box.scrollHeight;
+          setTimeout(() => {
+            div.innerText = text;
+            box.scrollTop = box.scrollHeight;
+          }, 450);
+        } else {
+          div.innerText = text;
+          box.scrollTop = box.scrollHeight;
+        }
       },
 
       /* PIN 6-DIGIT VERIFICATION WORKFLOW */
@@ -1434,74 +1498,72 @@
         this.bindAiAnalyticsCommands();
       },
 
-      /* PAGE 4: AI SAVING PLANNING */
+      /* PAGE 4: AI SAVING PLANNING 2.0 HANDLERS */
       bindAiPlanningCommands() {
-        const box = document.getElementById('planningChatMessages');
-        const appendChat = (sender, text) => {
-          const div = document.createElement('div');
-          div.className = `chat-bubble ${sender}`;
-          div.innerText = text;
-          box.appendChild(div);
-          box.scrollTop = box.scrollHeight;
-        };
-
-        document.getElementById('aiBtnPlanDaily')?.addEventListener('click', () => {
-          appendChat('user', 'ขอแผนออมเงินรายวัน (365 วัน)');
+        const executePlanDaily = () => {
+          this.appendChatMessage('planningChatMessages', 'user', 'ขอแผนออมเงินรายวัน (365 วัน)', false);
           const total = Engine.calculateTotalSavings();
           const target = 100000;
           const remain = Math.max(0, target - total);
           const daily = Math.round(remain / 365);
-          setTimeout(() => {
-            appendChat('ai', `แผนออมรายวันสู่เป้าหมาย ฿100,000:\n• ยอดคงเหลือที่ต้องออม: ${Engine.formatCurrency(remain)}\n• แนะนำให้ออมวันละ: ${Engine.formatCurrency(daily)}/วัน ติดต่อกัน 365 วัน`);
-            UI.notify('ประมวลผลแผนรายวันสำเร็จ');
-          }, 300);
-        });
+          this.appendChatMessage('planningChatMessages', 'ai', `แผนออมรายวันสู่เป้าหมาย ฿100,000:\n• ยอดคงเหลือที่ต้องออม: ${Engine.formatCurrency(remain)}\n• แนะนำให้ออมวันละ: ${Engine.formatCurrency(daily)}/วัน ติดต่อกัน 365 วัน`);
+          UI.notify('ประมวลผลแผนรายวันสำเร็จ');
+        };
 
-        document.getElementById('aiBtnPlanMonthly')?.addEventListener('click', () => {
-          appendChat('user', 'ขอแผนออมเงินรายเดือน (12 เดือน)');
+        const executePlanMonthly = () => {
+          this.appendChatMessage('planningChatMessages', 'user', 'ขอแผนออมเงินรายเดือน (12 เดือน)', false);
           const total = Engine.calculateTotalSavings();
           const target = 100000;
           const remain = Math.max(0, target - total);
           const monthly = Math.round(remain / 12);
-          setTimeout(() => {
-            appendChat('ai', `แผนออมรายเดือนสู่เป้าหมาย ฿100,000:\n• ยอดคงเหลือที่ต้องออม: ${Engine.formatCurrency(remain)}\n• แนะนำให้ออมเดือนละ: ${Engine.formatCurrency(monthly)}/เดือน ภายใน 1 ปี`);
-            UI.notify('ประมวลผลแผนรายเดือนสำเร็จ');
-          }, 300);
-        });
-
-        document.getElementById('aiBtnGoalForecast')?.addEventListener('click', () => {
-          appendChat('user', 'ประเมินวันบรรลุเป้าหมาย');
-          const activeGoals = AppState.goals.filter(g => g.status !== 'completed');
-          setTimeout(() => {
-            if (!activeGoals.length) {
-              appendChat('ai', 'คุณยังไม่มีเป้าหมายที่กำลังดำเนินการ กรุณาสร้างเป้าหมายก่อนทำการประเมินครับ');
-            } else {
-              const g = activeGoals[0];
-              const diff = g.targetAmount - g.currentAmount;
-              appendChat('ai', `เป้าหมาย "${g.name}":\n• ยอดคงเหลือ: ${Engine.formatCurrency(diff)}\n• วันครบกำหนด: ${g.targetDate}\n• ความคืบหน้า: ${Math.round((g.currentAmount/g.targetAmount)*100)}%`);
-            }
-            UI.notify('ประเมินเป้าหมายสำเร็จ');
-          }, 300);
-        });
-      },
-
-      /* PAGE 5: AI HELP & SYSTEM OPERATIONS */
-      bindAiHelpCommands() {
-        const box = document.getElementById('helpChatMessages');
-        const appendChat = (sender, text) => {
-          const div = document.createElement('div');
-          div.className = `chat-bubble ${sender}`;
-          div.innerText = text;
-          box.appendChild(div);
-          box.scrollTop = box.scrollHeight;
+          this.appendChatMessage('planningChatMessages', 'ai', `แผนออมรายเดือนสู่เป้าหมาย ฿100,000:\n• ยอดคงเหลือที่ต้องออม: ${Engine.formatCurrency(remain)}\n• แนะนำให้ออมเดือนละ: ${Engine.formatCurrency(monthly)}/เดือน ภายใน 1 ปี`);
+          UI.notify('ประมวลผลแผนรายเดือนสำเร็จ');
         };
 
-        // 1. Forgot Password & Username (1 time / day)
-        document.getElementById('aiBtnForgotPass')?.addEventListener('click', () => {
-          appendChat('user', 'ขอเปลี่ยนรหัสผ่านและชื่อผู้ใช้งานประจำวัน');
+        const executeGoalForecast = () => {
+          this.appendChatMessage('planningChatMessages', 'user', 'ประเมินวันบรรลุเป้าหมาย', false);
+          const activeGoals = AppState.goals.filter(g => g.status !== 'completed');
+          if (!activeGoals.length) {
+            this.appendChatMessage('planningChatMessages', 'ai', 'คุณยังไม่มีเป้าหมายที่กำลังดำเนินการ กรุณาสร้างเป้าหมายก่อนทำการประเมินครับ');
+          } else {
+            const g = activeGoals[0];
+            const diff = g.targetAmount - g.currentAmount;
+            this.appendChatMessage('planningChatMessages', 'ai', `เป้าหมาย "${g.name}":\n• ยอดคงเหลือ: ${Engine.formatCurrency(diff)}\n• วันครบกำหนด: ${g.targetDate}\n• ความคืบหน้า: ${Math.round((g.currentAmount/g.targetAmount)*100)}%`);
+          }
+          UI.notify('ประเมินเป้าหมายสำเร็จ');
+        };
+
+        document.getElementById('aiBtnPlanDaily')?.addEventListener('click', executePlanDaily);
+        document.getElementById('aiBtnPlanMonthly')?.addEventListener('click', executePlanMonthly);
+        document.getElementById('aiBtnGoalForecast')?.addEventListener('click', executeGoalForecast);
+
+        // Natural Language Chat Input Support
+        const handleCustomInput = () => {
+          const input = document.getElementById('planningChatInput');
+          const val = (input.value || '').trim();
+          if (!val) return;
+          input.value = '';
+          this.appendChatMessage('planningChatMessages', 'user', val, false);
+
+          if (val.includes('วัน') || val.includes('daily')) executePlanDaily();
+          else if (val.includes('เดือน') || val.includes('monthly')) executePlanMonthly();
+          else if (val.includes('เป้าหมาย') || val.includes('forecast') || val.includes('วันไหน')) executeGoalForecast();
+          else {
+            this.appendChatMessage('planningChatMessages', 'ai', `AI Planning 2.0 เข้าใจคำถามของคุณ: "${val}"\nระบบแนะนำให้เลือกแผนออมรายวัน หรือกำหนดเป้าหมายทางการเงินใหม่เพื่อให้ AI ประมวลผลได้แม่นยำยิ่งขึ้นครับ`);
+          }
+        };
+
+        document.getElementById('planningChatSendBtn')?.addEventListener('click', handleCustomInput);
+        document.getElementById('planningChatInput')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleCustomInput(); });
+      },
+
+      /* PAGE 5: AI HELP & SYSTEM OPERATIONS 2.0 HANDLERS */
+      bindAiHelpCommands() {
+        const executeForgotPass = () => {
+          this.appendChatMessage('helpChatMessages', 'user', 'ขอเปลี่ยนรหัสผ่านและชื่อผู้ใช้งานประจำวัน', false);
           const today = new Date().toISOString().split('T')[0];
           if (AppState.rateLimits.lastForgotPassDate === today) {
-            setTimeout(() => appendChat('ai', 'คุณได้ใช้สิทธิ์เปลี่ยนข้อมูลประจำวันไปแล้ว (จำกัด 1 ครั้งต่อวัน)'), 300);
+            this.appendChatMessage('helpChatMessages', 'ai', 'คุณได้ใช้สิทธิ์เปลี่ยนข้อมูลประจำวันไปแล้ว (จำกัด 1 ครั้งต่อวัน)');
             return;
           }
           const newUsername = prompt('ระบุชื่อผู้ใช้ใหม่ (Username):', AppState.user.username);
@@ -1513,22 +1575,19 @@
             localStorage.setItem('sm_user', JSON.stringify(user));
             AppState.rateLimits.lastForgotPassDate = today;
             localStorage.setItem('sm_limits', JSON.stringify(AppState.rateLimits));
+            this.appendChatMessage('helpChatMessages', 'ai', 'เปลี่ยนข้อมูลเข้าสู่ระบบสำเร็จ! AI กำลังนำท่านไปหน้าเข้าสู่ระบบทันที...');
             setTimeout(() => {
-              appendChat('ai', 'เปลี่ยนข้อมูลเข้าสู่ระบบสำเร็จ! AI กำลังนำท่านไปหน้าเข้าสู่ระบบทันที...');
-              setTimeout(() => {
-                sessionStorage.removeItem('sm_session');
-                window.location.reload();
-              }, 1200);
-            }, 300);
+              sessionStorage.removeItem('sm_session');
+              window.location.reload();
+            }, 1200);
           }
-        });
+        };
 
-        // 2. Instant Language Switch (1 time / day)
-        document.getElementById('aiBtnInstantLang')?.addEventListener('click', () => {
-          appendChat('user', 'สลับภาษาไทย / อังกฤษ');
+        const executeInstantLang = () => {
+          this.appendChatMessage('helpChatMessages', 'user', 'สลับภาษาไทย / อังกฤษ', false);
           const today = new Date().toISOString().split('T')[0];
           if (AppState.rateLimits.lastLangChangeDate === today) {
-            setTimeout(() => appendChat('ai', 'สามารถเปลี่ยนภาษาของระบบได้ 1 ครั้งต่อวันเท่านั้น'), 300);
+            this.appendChatMessage('helpChatMessages', 'ai', 'สามารถเปลี่ยนภาษาของระบบได้ 1 ครั้งต่อวันเท่านั้น');
             return;
           }
           const nextLang = AppState.settings.language === 'th' ? 'en' : 'th';
@@ -1537,39 +1596,33 @@
           localStorage.setItem('sm_limits', JSON.stringify(AppState.rateLimits));
           localStorage.setItem('sm_settings', JSON.stringify(AppState.settings));
           UI.applyLanguage(nextLang);
-          setTimeout(() => {
-            appendChat('ai', `สลับภาษาของระบบเป็น [${nextLang.toUpperCase()}] สำเร็จทันที`);
-            UI.notify(`Language switched to ${nextLang.toUpperCase()}`);
-          }, 300);
-        });
+          this.appendChatMessage('helpChatMessages', 'ai', `สลับภาษาของระบบเป็น [${nextLang.toUpperCase()}] สำเร็จทันที`);
+          UI.notify(`Language switched to ${nextLang.toUpperCase()}`);
+        };
 
-        // 3. Sound Configuration (10 Choices)
-        document.getElementById('aiBtnSoundConfig')?.addEventListener('click', () => {
-          appendChat('user', 'ตั้งค่าเสียงแจ้งเตือน (10 เสียง)');
+        const executeSoundConfig = () => {
+          this.appendChatMessage('helpChatMessages', 'user', 'ตั้งค่าเสียงแจ้งเตือน (10 เสียง)', false);
           const choice = prompt('เลือกเสียงแจ้งเตือนลำดับที่ (1 - 10):', AppState.settings.soundTone);
           const num = parseInt(choice);
           if (num >= 1 && num <= 10) {
             AppState.settings.soundTone = num;
             localStorage.setItem('sm_settings', JSON.stringify(AppState.settings));
             SoundEngine.play(num);
-            setTimeout(() => {
-              appendChat('ai', `บันทึกเสียงแจ้งเตือนโทน [${num}] เรียบร้อย พร้อมทดสอบเสียง`);
-              UI.notify(`ตั้งค่าเสียงโทน ${num} สำเร็จ`);
-            }, 300);
+            this.appendChatMessage('helpChatMessages', 'ai', `บันทึกเสียงแจ้งเตือนโทน [${num}] เรียบร้อย พร้อมทดสอบเสียง`);
+            UI.notify(`ตั้งค่าเสียงโทน ${num} สำเร็จ`);
           }
-        });
+        };
 
-        // 4. Delete All Data (30s Countdown -> Re-KYC)
-        document.getElementById('aiBtnDeleteAllData')?.addEventListener('click', () => {
+        const executeDeleteAll = () => {
           if (!confirm('คำเตือน: ข้อมูลทั้งหมดจะถูกลบถาวรและไม่สามารถกู้คืนได้ ต้องการดำเนินการหรือไม่?')) return;
-          appendChat('user', 'ยืนยันการลบข้อมูลทั้งหมด');
-          appendChat('ai', 'AI เริ่มกระบวนการทำลายข้อมูลถาวรภายใน 30 วินาที...');
+          this.appendChatMessage('helpChatMessages', 'user', 'ยืนยันการลบข้อมูลทั้งหมด', false);
+          this.appendChatMessage('helpChatMessages', 'ai', 'AI เริ่มกระบวนการทำลายข้อมูลถาวรภายใน 30 วินาที...');
 
           let timeLeft = 30;
           const timer = setInterval(() => {
             timeLeft -= 5;
             if (timeLeft > 0) {
-              appendChat('ai', `จะลบข้อมูลทั้งหมดในอีก ${timeLeft} วินาที...`);
+              UI.appendChatMessage('helpChatMessages', 'ai', `จะลบข้อมูลทั้งหมดในอีก ${timeLeft} วินาที...`, false);
             } else {
               clearInterval(timer);
               StorageAdapter.clearAllStores().then(() => {
@@ -1580,71 +1633,101 @@
               });
             }
           }, 5000);
-        });
-
-        // 5. Instant AI Logout
-        document.getElementById('aiBtnLogout')?.addEventListener('click', () => {
-          appendChat('user', 'ออกจากระบบทันที (Logout)');
-          setTimeout(() => {
-            appendChat('ai', 'AI กำลังประมวลผลตัดการเชื่อมต่อเซสชันความปลอดภัย...');
-            setTimeout(() => {
-              sessionStorage.removeItem('sm_session');
-              window.location.reload();
-            }, 800);
-          }, 200);
-        });
-      },
-
-      /* PAGE 7: AI ANALYTICS CHAT COMMANDS */
-      bindAiAnalyticsCommands() {
-        const box = document.getElementById('analysisChatMessages');
-        const appendChat = (sender, text) => {
-          const div = document.createElement('div');
-          div.className = `chat-bubble ${sender}`;
-          div.innerText = text;
-          box.appendChild(div);
-          box.scrollTop = box.scrollHeight;
         };
 
-        document.getElementById('aiBtnRefreshStats')?.addEventListener('click', () => {
-          appendChat('user', 'ขอข้อมูลสถิติภาพรวมสด');
+        const executeLogout = () => {
+          this.appendChatMessage('helpChatMessages', 'user', 'ออกจากระบบทันที (Logout)', false);
+          this.appendChatMessage('helpChatMessages', 'ai', 'AI กำลังประมวลผลตัดการเชื่อมต่อเซสชันความปลอดภัย...');
           setTimeout(() => {
-            const total = Engine.calculateTotalSavings();
-            const monthly = Engine.calculateMonthlySavings();
-            const streak = Engine.calculateStreak();
-            appendChat('ai', `สถิติภาพรวมปัจจุบัน:\n• ยอดสะสมรวม: ${Engine.formatCurrency(total)}\n• ยอดออมเดือนนี้: ${Engine.formatCurrency(monthly)}\n• Streak ปัจจุบัน: ${streak} วัน`);
-            UI.notify('อัปเดตสถิติสดสำเร็จ');
-          }, 300);
-        });
+            sessionStorage.removeItem('sm_session');
+            window.location.reload();
+          }, 800);
+        };
 
-        document.getElementById('aiBtnCatBreakdown')?.addEventListener('click', () => {
-          appendChat('user', 'วิเคราะห์สัดส่วนหมวดหมู่การออม');
-          setTimeout(() => {
-            const catMap = {};
-            AppState.savings.forEach(s => catMap[s.category] = (catMap[s.category] || 0) + Number(s.amount));
-            const entries = Object.entries(catMap);
-            if (!entries.length) {
-              appendChat('ai', 'ยังไม่มีข้อมูลหมวดหมู่การออมในระบบครับ');
-            } else {
-              const breakdown = entries.map(([k, v]) => `• ${k}: ${Engine.formatCurrency(v)}`).join('\n');
-              appendChat('ai', `สัดส่วนการออมแบ่งตามหมวดหมู่:\n${breakdown}`);
-            }
-            UI.notify('วิเคราะห์หมวดหมู่สำเร็จ');
-          }, 300);
-        });
+        document.getElementById('aiBtnForgotPass')?.addEventListener('click', executeForgotPass);
+        document.getElementById('aiBtnInstantLang')?.addEventListener('click', executeInstantLang);
+        document.getElementById('aiBtnSoundConfig')?.addEventListener('click', executeSoundConfig);
+        document.getElementById('aiBtnDeleteAllData')?.addEventListener('click', executeDeleteAll);
+        document.getElementById('aiBtnLogout')?.addEventListener('click', executeLogout);
 
-        document.getElementById('aiBtnFinancialHealth')?.addEventListener('click', () => {
-          appendChat('user', 'ประเมินสุขภาพวินัยการออม');
-          setTimeout(() => {
-            const streak = Engine.calculateStreak();
-            const total = Engine.calculateTotalSavings();
-            let score = 50;
-            if (streak >= 7) score += 25;
-            if (total >= 50000) score += 25;
-            appendChat('ai', `คะแนนสุขภาพวินัยการออม: [${score}/100]\n• ความต่อเนื่อง: ${streak > 5 ? 'ดีเยี่ยม' : 'ควรเพิ่มความสม่ำเสมอ'}\n• ยอดเงินสำรอง: ${total > 20000 ? 'เพียงพอ' : 'ควรสะสมเพิ่ม'}`);
-            UI.notify('ประเมินสุขภาพวินัยสำเร็จ');
-          }, 300);
-        });
+        const handleCustomHelpInput = () => {
+          const input = document.getElementById('helpChatInput');
+          const val = (input.value || '').trim();
+          if (!val) return;
+          input.value = '';
+          this.appendChatMessage('helpChatMessages', 'user', val, false);
+
+          if (val.includes('รหัส') || val.includes('ชื่อผู้ใช้') || val.includes('pass')) executeForgotPass();
+          else if (val.includes('ภาษา') || val.includes('lang')) executeInstantLang();
+          else if (val.includes('เสียง') || val.includes('sound')) executeSoundConfig();
+          else if (val.includes('ลบข้อมูล') || val.includes('delete')) executeDeleteAll();
+          else if (val.includes('ออก') || val.includes('logout')) executeLogout();
+          else {
+            this.appendChatMessage('helpChatMessages', 'ai', `AI Help Support 2.0 พร้อมช่วยเหลือ: กรุณาเลือกชิปคำสั่งด้านบนสำหรับการจัดการความปลอดภัยของบัญชีครับ`);
+          }
+        };
+
+        document.getElementById('helpChatSendBtn')?.addEventListener('click', handleCustomHelpInput);
+        document.getElementById('helpChatInput')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleCustomHelpInput(); });
+      },
+
+      /* PAGE 7: AI ANALYTICS CHAT 2.0 HANDLERS */
+      bindAiAnalyticsCommands() {
+        const executeRefreshStats = () => {
+          this.appendChatMessage('analysisChatMessages', 'user', 'ขอข้อมูลสถิติภาพรวมสด', false);
+          const total = Engine.calculateTotalSavings();
+          const monthly = Engine.calculateMonthlySavings();
+          const streak = Engine.calculateStreak();
+          this.appendChatMessage('analysisChatMessages', 'ai', `สถิติภาพรวมปัจจุบัน:\n• ยอดสะสมรวม: ${Engine.formatCurrency(total)}\n• ยอดออมเดือนนี้: ${Engine.formatCurrency(monthly)}\n• Streak ปัจจุบัน: ${streak} วัน`);
+          UI.notify('อัปเดตสถิติสดสำเร็จ');
+        };
+
+        const executeCatBreakdown = () => {
+          this.appendChatMessage('analysisChatMessages', 'user', 'วิเคราะห์สัดส่วนหมวดหมู่การออม', false);
+          const catMap = {};
+          AppState.savings.forEach(s => catMap[s.category] = (catMap[s.category] || 0) + Number(s.amount));
+          const entries = Object.entries(catMap);
+          if (!entries.length) {
+            this.appendChatMessage('analysisChatMessages', 'ai', 'ยังไม่มีข้อมูลหมวดหมู่การออมในระบบครับ');
+          } else {
+            const breakdown = entries.map(([k, v]) => `• ${k}: ${Engine.formatCurrency(v)}`).join('\n');
+            this.appendChatMessage('analysisChatMessages', 'ai', `สัดส่วนการออมแบ่งตามหมวดหมู่:\n${breakdown}`);
+          }
+          UI.notify('วิเคราะห์หมวดหมู่สำเร็จ');
+        };
+
+        const executeFinancialHealth = () => {
+          this.appendChatMessage('analysisChatMessages', 'user', 'ประเมินสุขภาพวินัยการออม', false);
+          const streak = Engine.calculateStreak();
+          const total = Engine.calculateTotalSavings();
+          let score = 50;
+          if (streak >= 7) score += 25;
+          if (total >= 50000) score += 25;
+          this.appendChatMessage('analysisChatMessages', 'ai', `คะแนนสุขภาพวินัยการออม: [${score}/100]\n• ความต่อเนื่อง: ${streak > 5 ? 'ดีเยี่ยม' : 'ควรเพิ่มความสม่ำเสมอ'}\n• ยอดเงินสำรอง: ${total > 20000 ? 'เพียงพอ' : 'ควรสะสมเพิ่ม'}`);
+          UI.notify('ประเมินสุขภาพวินัยสำเร็จ');
+        };
+
+        document.getElementById('aiBtnRefreshStats')?.addEventListener('click', executeRefreshStats);
+        document.getElementById('aiBtnCatBreakdown')?.addEventListener('click', executeCatBreakdown);
+        document.getElementById('aiBtnFinancialHealth')?.addEventListener('click', executeFinancialHealth);
+
+        const handleCustomAnalyticsInput = () => {
+          const input = document.getElementById('analysisChatInput');
+          const val = (input.value || '').trim();
+          if (!val) return;
+          input.value = '';
+          this.appendChatMessage('analysisChatMessages', 'user', val, false);
+
+          if (val.includes('สถิติ') || val.includes('ยอด') || val.includes('รวม')) executeRefreshStats();
+          else if (val.includes('หมวดหมู่') || val.includes('สัดส่วน')) executeCatBreakdown();
+          else if (val.includes('สุขภาพ') || val.includes('วินัย') || val.includes('คะแนน')) executeFinancialHealth();
+          else {
+            this.appendChatMessage('analysisChatMessages', 'ai', `AI Analytics Core 2.0 กำลังวิเคราะห์: "${val}"\nข้อมูลการเงินของคุณมีความมั่นคง แนะนำรักษาความต่อเนื่องในการออมเพื่อเพิ่มคะแนนสุขภาพวินัยครับ`);
+          }
+        };
+
+        document.getElementById('analysisChatSendBtn')?.addEventListener('click', handleCustomAnalyticsInput);
+        document.getElementById('analysisChatInput')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleCustomAnalyticsInput(); });
       }
     };
 
