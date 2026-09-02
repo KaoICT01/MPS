@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking Pro v7.2.0</title>
+  <title>SmartSave Banking Pro v7.4.0</title>
   <style>
     :root {
       --bg: #070b14;
@@ -63,7 +63,7 @@
     .nav-item { display: flex; align-items: center; gap: 12px; padding: 11px 16px; border-radius: 12px; color: var(--text-secondary); text-decoration: none; cursor: pointer; transition: 0.2s; font-size: 13.5px; font-weight: 500; }
     .nav-item:hover, .nav-item.active { background: var(--surface-secondary); color: var(--primary); }
     
-    /* Modern Glass Bottom Nav */
+    /* Glass Bottom Nav */
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--nav-glass); backdrop-filter: blur(16px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0 calc(8px + env(safe-area-inset-bottom)); z-index: 50; }
     .b-nav-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-secondary); font-size: 11px; background: none; border: none; cursor: pointer; flex: 1; transition: 0.2s; }
     .b-nav-btn.active { color: var(--primary); font-weight: 600; transform: translateY(-2px); }
@@ -77,7 +77,7 @@
     .btn-secondary { background: var(--surface-secondary); color: var(--text); }
     .btn-danger { background: var(--danger); color: #fff; }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
-    .btn-chip { padding: 6px 12px; font-size: 12px; border-radius: 8px; background: var(--surface-secondary); border: 1px solid var(--border); color: var(--text); cursor: pointer; min-height: 32px; }
+    .btn-chip { padding: 6px 12px; font-size: 12px; border-radius: 8px; background: var(--surface-secondary); border: 1px solid var(--border); color: var(--text); cursor: pointer; min-height: 32px; white-space: nowrap; }
     .btn-chip:active { background: var(--primary); color: #fff; }
     
     .form-group { margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
@@ -113,7 +113,7 @@
       .modal-overlay.active .modal-sheet { transform: scale(1); }
     }
     
-    /* AI CHAT 2.0 ADVANCED CONVERSATIONAL UI */
+    /* AI CHAT 4.0 ADVANCED CONVERSATIONAL UI */
     .chat-container { display: flex; flex-direction: column; height: 65vh; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); overflow: hidden; }
     .chat-header-bar { padding: 10px 16px; background: var(--surface-secondary); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 600; }
     .chat-messages { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
@@ -159,7 +159,7 @@
       <div style="text-align: center; margin-bottom: 24px;">
         <svg style="width: 48px; height: 48px; color: var(--primary);"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         <h2 style="margin-top: 8px;" id="authTitle">SmartSave Banking</h2>
-        <p style="color: var(--text-secondary); font-size: 13px;" id="authSub">Professional Edition v7.2.0</p>
+        <p style="color: var(--text-secondary); font-size: 13px;" id="authSub">Professional Edition v7.4.0 (THB Currency Lock)</p>
       </div>
 
       <!-- Login / Register Forms -->
@@ -218,12 +218,12 @@
       <a class="nav-item active" data-view="dashboard"><svg><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="i18n-dash">แดชบอร์ด</span></a>
       <a class="nav-item" data-view="savings"><svg><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg><span class="i18n-savings">บันทึกเงินออม</span></a>
       <a class="nav-item" data-view="goals"><svg><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span class="i18n-goals">เป้าหมายการออม</span></a>
-      <a class="nav-item" data-view="aiPlanning"><svg><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" x2="12" y1="22.08" y2="12"/></svg><span class="i18n-ai-plan">AI วางแผนการออม 2.0</span></a>
-      <a class="nav-item" data-view="aiHelp"><svg><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="i18n-ai-help">AI ช่วยเหลือ & บัญชี 2.0</span></a>
+      <a class="nav-item" data-view="aiPlanning"><svg><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" x2="12" y1="22.08" y2="12"/></svg><span class="i18n-ai-plan">AI วางแผนการออม 4.0</span></a>
+      <a class="nav-item" data-view="aiHelp"><svg><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="i18n-ai-help">AI ช่วยเหลือ & บัญชี 4.0</span></a>
       <a class="nav-item" data-view="rank"><svg><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="i18n-rank">ระดับการออม</span></a>
-      <a class="nav-item" data-view="analysis"><svg><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg><span class="i18n-analysis">AI วิเคราะห์สถิติ 2.0</span></a>
+      <a class="nav-item" data-view="analysis"><svg><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg><span class="i18n-analysis">AI วิเคราะห์สถิติ 4.0</span></a>
       <a class="nav-item" data-view="pending"><svg><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="i18n-pending">ข้อมูลส่วนดำเนินการ</span></a>
-      <a class="nav-item" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="i18n-settings">ตั้งค่าระบบ</span></a>
+      <a class="nav-item" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="i18n-settings">ตั้งค่าระบบ</span></a>
     </aside>
 
     <div class="main-wrapper">
@@ -258,7 +258,7 @@
         <!-- 1. DASHBOARD VIEW -->
         <section id="viewDashboard" class="view-section active">
           <div class="card balance-card">
-            <div style="font-size: 13px; opacity: 0.85;" class="i18n-total-lbl">ยอดเงินออมทั้งหมด (Total Savings)</div>
+            <div style="font-size: 13px; opacity: 0.85;" class="i18n-total-lbl">ยอดเงินออมทั้งหมด (Total Savings - THB)</div>
             <h1 style="font-size: 32px; margin: 10px 0 16px;" id="dashTotalSavings">฿0.00</h1>
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <div>
@@ -324,19 +324,19 @@
           </div>
         </section>
 
-        <!-- 4. PAGE: AI SAVING PLANNING 2.0 -->
+        <!-- 4. PAGE: AI SAVING PLANNING 4.0 -->
         <section id="viewAiPlanning" class="view-section">
           <div class="card">
-            <h2>AI วางแผนการออม 2.0</h2>
-            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">คำนวณและวางแผนการออมเงินอัตโนมัติด้วยระบบแชทอัจฉริยะ</p>
+            <h2>AI วางแผนการออม 4.0</h2>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">คำนวณและวางแผนการออมเงินอัตโนมัติด้วยระบบแชทอัจฉริยะ 4.0</p>
             
             <div class="chat-container">
               <div class="chat-header-bar">
-                <span>SmartSave Planning Engine 2.0</span>
+                <span>SmartSave Planning Engine 4.0 (THB)</span>
                 <span style="font-size: 11px; color: var(--success);">Online</span>
               </div>
               <div class="chat-messages" id="planningChatMessages">
-                <div class="chat-bubble ai">ยินดีต้อนรับสู่ AI Planning 2.0! คุณสามารถพิมพ์สอบถาม หรือกดชิปคำสั่งด่วนด้านล่างได้ทันทีครับ</div>
+                <div class="chat-bubble ai">ยินดีต้อนรับสู่ AI Planning 4.0! คุณสามารถพิมพ์สอบถาม หรือกดชิปคำสั่งด่วนด้านล่างได้ทันทีครับ</div>
               </div>
               <!-- Smart Chips Bar -->
               <div class="chat-chips-bar">
@@ -346,7 +346,7 @@
               </div>
               <!-- Conversational Input Bar -->
               <div class="chat-input-bar">
-                <input type="text" id="planningChatInput" placeholder="พิมพ์คำถามเกี่ยวกับการวางแผนออมเงิน...">
+                <input type="text" id="planningChatInput" placeholder="พิมพ์คำถามเกี่ยวกับการวางแผนออมเงิน (บาท)...">
                 <button class="btn btn-primary" id="planningChatSendBtn" style="padding: 8px 14px; min-height: 40px;">
                   <svg style="width: 16px; height: 16px;"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                 </button>
@@ -355,15 +355,15 @@
           </div>
         </section>
 
-        <!-- 5. PAGE: AI HELP & OPERATIONS 2.0 (Logout Inside) -->
+        <!-- 5. PAGE: AI HELP & OPERATIONS 4.0 (Logout Inside) -->
         <section id="viewAiHelp" class="view-section">
           <div class="card">
-            <h2>AI ศูนย์ช่วยเหลือ & ดำเนินการบัญชี 2.0</h2>
+            <h2>AI ศูนย์ช่วยเหลือ & ดำเนินการบัญชี 4.0</h2>
             <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">จัดการความปลอดภัย เปลี่ยนภาษา และออกจากระบบผ่าน AI ทันที</p>
             
             <div class="chat-container">
               <div class="chat-header-bar">
-                <span>SmartSave Help Support 2.0</span>
+                <span>SmartSave Help Support 4.0</span>
                 <span style="font-size: 11px; color: var(--success);">Secured</span>
               </div>
               <div class="chat-messages" id="helpChatMessages">
@@ -397,7 +397,7 @@
               <p style="color: var(--text-secondary); font-size: 13px; margin-top: 4px;" id="rankDesc">เริ่มต้นเส้นทางการออมเงิน</p>
             </div>
             <div class="card" style="text-align: left; background: var(--surface-secondary);">
-              <h4 style="margin-bottom: 8px;">เกณฑ์การประเมินระดับ:</h4>
+              <h4 style="margin-bottom: 8px;">เกณฑ์การประเมินระดับ (สกุลเงินบาท):</h4>
               <ul style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding-left: 20px;">
                 <li>Beginner: ยอดออม < ฿5,000</li>
                 <li>Saver: ยอดออม ≥ ฿5,000 หรือ Streak ≥ 7 วัน</li>
@@ -411,16 +411,16 @@
           </div>
         </section>
 
-        <!-- 7. AI-POWERED ANALYTICS VIEW 2.0 (NO CHARTS - FULL CHAT INTELLIGENCE) -->
+        <!-- 7. AI-POWERED ANALYTICS VIEW 4.0 (NO CHARTS - FULL CHAT INTELLIGENCE) -->
         <section id="viewAnalysis" class="view-section">
           <div class="card">
-            <h2>AI วิเคราะห์สถิติและการออม 2.0</h2>
+            <h2>AI วิเคราะห์สถิติและการออม 4.0</h2>
             <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">ประมวลผลสถิติแบบครบวงจรและรายงานผลอัตโนมัติแบบเรียลไทม์</p>
             
             <div class="chat-container">
               <div class="chat-header-bar">
-                <span>SmartSave Analytics Core 2.0</span>
-                <span style="font-size: 11px; color: var(--success);">Live Analytics</span>
+                <span>SmartSave Analytics Core 4.0</span>
+                <span style="font-size: 11px; color: var(--success);">Live Intelligence</span>
               </div>
               <div class="chat-messages" id="analysisChatMessages">
                 <div class="chat-bubble ai" id="analysisInitialAiMsg">กำลังโหลดและประมวลผลสถิติทางการเงินของคุณ...</div>
@@ -459,7 +459,7 @@
         <!-- 9. SETTINGS VIEW -->
         <section id="viewSettings" class="view-section">
           <div class="card">
-            <h2>ตั้งค่าระบบ</h2>
+            <h2>ตั้งค่าระบบ & วงเงิน (THB Currency Lock)</h2>
             <div class="form-group" style="margin-top: 14px;">
               <label>ธีม (Appearance)</label>
               <select id="settingTheme">
@@ -467,15 +467,22 @@
                 <option value="light">Light Theme</option>
               </select>
             </div>
+            
             <div class="form-group">
               <label>สกุลเงินหลัก (Currency)</label>
-              <select id="settingCurrency">
-                <option value="THB">THB (฿) - Thai Baht</option>
-                <option value="USD">USD ($) - US Dollar</option>
-                <option value="EUR">EUR (€) - Euro</option>
-                <option value="JPY">JPY (¥) - Japanese Yen</option>
-              </select>
+              <input type="text" value="THB (฿) - เงินบาทไทย (ระบบล็อกมาตรฐาน)" disabled style="opacity: 0.7; cursor: not-allowed;">
             </div>
+
+            <div class="form-group">
+              <label>ตั้งค่าจำกัดวงเงินออมต่อรายการสูงสุด (Max Per Transaction Limit - บาท)</label>
+              <input type="number" id="settingMaxLimitPerTx" placeholder="เช่น 100000">
+            </div>
+
+            <div class="form-group">
+              <label>ตั้งค่าจำกัดวงเงินออมต่อวันสูงสุด (Daily Max Limit - บาท)</label>
+              <input type="number" id="settingMaxLimitDaily" placeholder="เช่น 500000">
+            </div>
+            <button class="btn btn-secondary" id="saveLimitsBtn" style="margin-top: 4px;">บันทึกการตั้งค่าวงเงิน</button>
             
             <hr style="border: 0; border-top: 1px solid var(--border); margin: 16px 0;">
             <h3>จัดการหมวดหมู่การออม</h3>
@@ -513,9 +520,9 @@
   <!-- MODAL: ADD SAVING (With Quick Amount Selector) -->
   <div class="modal-overlay" id="addSavingModal">
     <div class="modal-sheet">
-      <h3 style="margin-bottom: 16px;">บันทึกเงินออมใหม่</h3>
+      <h3 style="margin-bottom: 16px;">บันทึกเงินออมใหม่ (บาท)</h3>
       <div class="form-group">
-        <label>จำนวนเงิน (Amount)</label>
+        <label>จำนวนเงิน (Amount - THB)</label>
         <input type="number" id="saveAmount" inputmode="decimal" placeholder="0.00" style="font-size: 20px; font-weight: 700;">
         
         <!-- Quick Amount Selector Buttons -->
@@ -561,13 +568,13 @@
   <!-- MODAL: ADD GOAL -->
   <div class="modal-overlay" id="addGoalModal">
     <div class="modal-sheet">
-      <h3 style="margin-bottom: 16px;">สร้างเป้าหมายการออม</h3>
+      <h3 style="margin-bottom: 16px;">สร้างเป้าหมายการออม (บาท)</h3>
       <div class="form-group">
         <label>ชื่อเป้าหมาย</label>
         <input type="text" id="goalName" placeholder="เช่น เงินสำรองฉุกเฉิน, ซื้อบ้าน">
       </div>
       <div class="form-group">
-        <label>ยอดเป้าหมาย (Target Amount)</label>
+        <label>ยอดเป้าหมาย (Target Amount - THB)</label>
         <input type="number" id="goalTargetAmount" inputmode="decimal" placeholder="0.00">
       </div>
       <div class="form-group">
@@ -614,11 +621,11 @@
     <div class="modal-sheet">
       <h3 style="margin-bottom: 16px;">เมนูเพิ่มเติม</h3>
       <div style="display: flex; flex-direction: column; gap: 8px;">
-        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="aiHelp"><svg><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> AI ช่วยเหลือ & ออกจากระบบ 2.0</button>
+        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="aiHelp"><svg><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> AI ช่วยเหลือ & ออกจากระบบ 4.0</button>
         <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="rank"><svg><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> ระดับการออม (Rank)</button>
-        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="analysis"><svg><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg> AI วิเคราะห์สถิติ 2.0 (Analysis)</button>
+        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="analysis"><svg><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg> AI วิเคราะห์สถิติ 4.0 (Analysis)</button>
         <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="pending"><svg><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ข้อมูลส่วนดำเนินการ (Pending Queue)</button>
-        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> ตั้งค่าระบบ (Settings)</button>
+        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> ตั้งค่าระบบ (Settings)</button>
       </div>
       <button class="btn btn-outline" style="width: 100%; margin-top: 14px;" id="closeMoreMenuBtn">ปิด</button>
     </div>
@@ -630,7 +637,7 @@
       GAS_ENDPOINT: 'https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec',
       SHEET_ID: '1nXTCNdVJRpDuIunPLnjqMkUzmOA87gtUqoclBIgNObk',
       DB_NAME: 'SmartSaveDB_Master',
-      DB_VERSION: 3,
+      DB_VERSION: 4,
       CACHE_THRESHOLD_BYTES: 5 * 1024 * 1024 * 1024 // 5 GB
     };
 
@@ -639,7 +646,7 @@
         dash: "แดชบอร์ด", savings: "บันทึกเงินออม", goals: "เป้าหมายการออม",
         aiPlan: "AI วางแผนการออม", aiHelp: "AI ช่วยเหลือ & บัญชี", rank: "ระดับการออม",
         analysis: "AI วิเคราะห์สถิติ", pending: "ข้อมูลส่วนดำเนินการ", settings: "ตั้งค่าระบบ",
-        totalLbl: "ยอดเงินออมทั้งหมด (Total Savings)", monthLbl: "เดือนนี้: ",
+        totalLbl: "ยอดเงินออมทั้งหมด (Total Savings - THB)", monthLbl: "เดือนนี้: ",
         addSavingBtn: "ออมเงิน", todayLbl: "ออมวันนี้", goalsLbl: "เป้าหมายคงอยู่",
         streakLbl: "Streak ออมต่อเนื่อง", rankLbl: "ระดับการออม", favLbl: "รายการโปรด / หมวดหมู่ออมด่วน",
         recentLbl: "รายการออมล่าสุด", viewall: "ดูทั้งหมด", more: "อื่นๆ"
@@ -648,7 +655,7 @@
         dash: "Dashboard", savings: "Savings", goals: "Goals",
         aiPlan: "AI Planning", aiHelp: "AI Help & Ops", rank: "Rank",
         analysis: "AI Analytics", pending: "Pending Queue", settings: "Settings",
-        totalLbl: "Total Savings", monthLbl: "This Month: ",
+        totalLbl: "Total Savings (THB)", monthLbl: "This Month: ",
         addSavingBtn: "Add Saving", todayLbl: "Today's Saving", goalsLbl: "Active Goals",
         streakLbl: "Saving Streak", rankLbl: "Saving Rank", favLbl: "Favorites / Quick Save",
         recentLbl: "Recent Transactions", viewall: "View All", more: "More"
@@ -663,9 +670,11 @@
       categories: ['เงินเก็บประจำ', 'กองทุนฉุกเฉิน', 'ลงทุน', 'ท่องเที่ยว', 'เพื่ออนาคต'],
       settings: {
         theme: 'dark',
-        currency: 'THB',
+        currency: 'THB', // Locked strictly to Thai Baht
         language: 'th',
-        soundTone: 1
+        soundTone: 1,
+        maxLimitPerTx: 100000,
+        maxLimitDaily: 500000
       },
       rateLimits: {
         lastForgotPassDate: null,
@@ -800,10 +809,10 @@
         const mins = now.getMinutes();
         return (hrs === 23 && mins >= 0 && mins <= 30);
       },
-      formatCurrency(amount, currency = AppState.settings.currency) {
+      formatCurrency(amount) {
         return new Intl.NumberFormat(AppState.settings.language === 'th' ? 'th-TH' : 'en-US', {
           style: 'currency',
-          currency: currency,
+          currency: 'THB',
           minimumFractionDigits: 2
         }).format(amount);
       },
@@ -854,7 +863,7 @@
       }
     };
 
-    /* 5. UI CONTROLLER & AI CHAT 2.0 CONVERSATIONAL ENGINE */
+    /* 5. UI CONTROLLER & AI CHAT 4.0 CONVERSATIONAL ENGINE */
     const UI = {
       pendingActionCallback: null,
       currentModalPin: '',
@@ -867,6 +876,13 @@
         this.checkCacheSizeAndClean();
         this.applyTheme(AppState.settings.theme);
         this.applyLanguage(AppState.settings.language);
+        this.loadLimitSettings();
+      },
+      loadLimitSettings() {
+        const maxTx = document.getElementById('settingMaxLimitPerTx');
+        const maxDaily = document.getElementById('settingMaxLimitDaily');
+        if (maxTx) maxTx.value = AppState.settings.maxLimitPerTx || 100000;
+        if (maxDaily) maxDaily.value = AppState.settings.maxLimitDaily || 500000;
       },
       checkSundayLock() {
         if (Engine.isSunday()) {
@@ -1149,16 +1165,16 @@
         });
         const topCat = Object.entries(catMap).sort((a,b) => b[1] - a[1])[0] || ['-', 0];
 
-        initialMsg.innerText = `รายงานผลการวิเคราะห์สถิติสด (AI Live Intelligence 2.0):\n` +
+        initialMsg.innerText = `รายงานผลการวิเคราะห์สถิติสด (AI Live Intelligence 4.0 - THB Lock):\n` +
           `• ยอดรวมเงินออมสะสม: ${Engine.formatCurrency(total)} (${count} รายการ)\n` +
           `• ยอดออมเฉลี่ยต่อรายการ: ${Engine.formatCurrency(avgPerTx)}\n` +
           `• ยอดสะสมเดือนปัจจุบัน: ${Engine.formatCurrency(monthly)}\n` +
           `• หมวดหมู่ที่ออมสูงสุด: ${topCat[0]} (${Engine.formatCurrency(topCat[1])})\n` +
           `• วินัยออมต่อเนื่อง: ${streak} วัน (สถานะ: ${rank.title})\n` +
-          `• การประเมิน: การออมของคุณอยู่ในเกณฑ์ดีเยี่ยม ระบบแนะนำให้ออมสม่ำเสมอในหมวด ${topCat[0]} ต่อไปเพื่อรักษา Streak ครับ`;
+          `• การประเมิน: สุขภาพทางการเงินอยู่ในเกณฑ์มั่นคง วงเงินคงเหลืออยู่ในระดับปลอดภัยครับ`;
       },
 
-      /* AI CHAT 2.0 CORE STREAMING / TYPING ENGINE */
+      /* AI CHAT 4.0 CORE STREAMING / TYPING ENGINE */
       appendChatMessage(boxId, sender, text, animate = true) {
         const box = document.getElementById(boxId);
         if (!box) return;
@@ -1305,7 +1321,7 @@
           document.getElementById('pinVerifyModal').classList.remove('active');
         });
 
-        // Submit Saving (Trigger PIN 6-Digit Check)
+        // Submit Saving (Trigger Limits & PIN 6-Digit Check)
         document.getElementById('submitSavingBtn')?.addEventListener('click', () => {
           const amount = parseFloat(document.getElementById('saveAmount').value);
           const category = document.getElementById('saveCategory').value;
@@ -1319,11 +1335,24 @@
             return;
           }
 
+          // Check Limit Configuration
+          if (amount > AppState.settings.maxLimitPerTx) {
+            alert(`จำนวนเงินเกินวงเงินจำกัดต่อรายการ (${Engine.formatCurrency(AppState.settings.maxLimitPerTx)})`);
+            return;
+          }
+
+          const todayTotal = Engine.calculateTodaySavings();
+          if ((todayTotal + amount) > AppState.settings.maxLimitDaily) {
+            alert(`จำนวนเงินรวมวันนี้จะเกินวงเงินจำกัดต่อวัน (${Engine.formatCurrency(AppState.settings.maxLimitDaily)})`);
+            return;
+          }
+
           this.requestPinVerification(async () => {
             const record = {
               id: 'TX_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
               userId: AppState.user.id,
               amount, category, type,
+              currency: 'THB',
               date: date || new Date().toISOString().split('T')[0],
               time: time || new Date().toTimeString().slice(0, 5),
               note, createdAt: new Date().toISOString()
@@ -1365,6 +1394,7 @@
               id: 'GL_' + Date.now(),
               userId: AppState.user.id,
               name, targetAmount, currentAmount: 0,
+              currency: 'THB',
               targetDate, status: 'in_progress', createdAt: new Date().toISOString()
             };
 
@@ -1403,7 +1433,7 @@
             const goal = AppState.goals.find(g => g.id === id);
             if (!goal) return;
 
-            const inputAmt = prompt(`ระบุจำนวนเงินฝากเข้า "${goal.name}":`);
+            const inputAmt = prompt(`ระบุจำนวนเงินฝากเข้า "${goal.name}" (บาท):`);
             const amt = parseFloat(inputAmt);
             if (!amt || amt <= 0) return;
 
@@ -1441,6 +1471,16 @@
           }
         });
 
+        // Save Limit Settings
+        document.getElementById('saveLimitsBtn')?.addEventListener('click', () => {
+          const txL = parseFloat(document.getElementById('settingMaxLimitPerTx').value);
+          const dyL = parseFloat(document.getElementById('settingMaxLimitDaily').value);
+          if (txL > 0) AppState.settings.maxLimitPerTx = txL;
+          if (dyL > 0) AppState.settings.maxLimitDaily = dyL;
+          localStorage.setItem('sm_settings', JSON.stringify(AppState.settings));
+          UI.notify('บันทึกการตั้งค่าวงเงินเรียบร้อยแล้ว');
+        });
+
         // Manage Categories
         document.getElementById('addCategoryBtn')?.addEventListener('click', () => {
           const val = document.getElementById('newCategoryInput').value.trim();
@@ -1466,14 +1506,6 @@
 
         // Settings Listeners
         document.getElementById('settingTheme')?.addEventListener('change', (e) => UI.applyTheme(e.target.value));
-        document.getElementById('settingCurrency')?.addEventListener('change', (e) => {
-          AppState.settings.currency = e.target.value;
-          localStorage.setItem('sm_settings', JSON.stringify(AppState.settings));
-          UI.renderDashboard();
-          UI.renderSavingsList();
-          UI.renderGoals();
-          UI.renderAIAnalytics();
-        });
 
         // Clear Cache Button
         document.getElementById('clearCacheBtn')?.addEventListener('click', async () => {
@@ -1498,7 +1530,7 @@
         this.bindAiAnalyticsCommands();
       },
 
-      /* PAGE 4: AI SAVING PLANNING 2.0 HANDLERS */
+      /* PAGE 4: AI SAVING PLANNING 4.0 HANDLERS */
       bindAiPlanningCommands() {
         const executePlanDaily = () => {
           this.appendChatMessage('planningChatMessages', 'user', 'ขอแผนออมเงินรายวัน (365 วัน)', false);
@@ -1549,7 +1581,7 @@
           else if (val.includes('เดือน') || val.includes('monthly')) executePlanMonthly();
           else if (val.includes('เป้าหมาย') || val.includes('forecast') || val.includes('วันไหน')) executeGoalForecast();
           else {
-            this.appendChatMessage('planningChatMessages', 'ai', `AI Planning 2.0 เข้าใจคำถามของคุณ: "${val}"\nระบบแนะนำให้เลือกแผนออมรายวัน หรือกำหนดเป้าหมายทางการเงินใหม่เพื่อให้ AI ประมวลผลได้แม่นยำยิ่งขึ้นครับ`);
+            this.appendChatMessage('planningChatMessages', 'ai', `AI Planning 4.0 เข้าใจคำถามของคุณ: "${val}"\nระบบแนะนำให้เลือกแผนออมรายวัน หรือกำหนดเป้าหมายทางการเงินใหม่เพื่อให้ AI ประมวลผลได้แม่นยำยิ่งขึ้นครับ`);
           }
         };
 
@@ -1557,7 +1589,7 @@
         document.getElementById('planningChatInput')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleCustomInput(); });
       },
 
-      /* PAGE 5: AI HELP & SYSTEM OPERATIONS 2.0 HANDLERS */
+      /* PAGE 5: AI HELP & SYSTEM OPERATIONS 4.0 HANDLERS */
       bindAiHelpCommands() {
         const executeForgotPass = () => {
           this.appendChatMessage('helpChatMessages', 'user', 'ขอเปลี่ยนรหัสผ่านและชื่อผู้ใช้งานประจำวัน', false);
@@ -1663,7 +1695,7 @@
           else if (val.includes('ลบข้อมูล') || val.includes('delete')) executeDeleteAll();
           else if (val.includes('ออก') || val.includes('logout')) executeLogout();
           else {
-            this.appendChatMessage('helpChatMessages', 'ai', `AI Help Support 2.0 พร้อมช่วยเหลือ: กรุณาเลือกชิปคำสั่งด้านบนสำหรับการจัดการความปลอดภัยของบัญชีครับ`);
+            this.appendChatMessage('helpChatMessages', 'ai', `AI Help Support 4.0 พร้อมช่วยเหลือ: กรุณาเลือกชิปคำสั่งด้านบนสำหรับการจัดการความปลอดภัยของบัญชีครับ`);
           }
         };
 
@@ -1671,7 +1703,7 @@
         document.getElementById('helpChatInput')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleCustomHelpInput(); });
       },
 
-      /* PAGE 7: AI ANALYTICS CHAT 2.0 HANDLERS */
+      /* PAGE 7: AI ANALYTICS CHAT 4.0 HANDLERS */
       bindAiAnalyticsCommands() {
         const executeRefreshStats = () => {
           this.appendChatMessage('analysisChatMessages', 'user', 'ขอข้อมูลสถิติภาพรวมสด', false);
@@ -1722,7 +1754,7 @@
           else if (val.includes('หมวดหมู่') || val.includes('สัดส่วน')) executeCatBreakdown();
           else if (val.includes('สุขภาพ') || val.includes('วินัย') || val.includes('คะแนน')) executeFinancialHealth();
           else {
-            this.appendChatMessage('analysisChatMessages', 'ai', `AI Analytics Core 2.0 กำลังวิเคราะห์: "${val}"\nข้อมูลการเงินของคุณมีความมั่นคง แนะนำรักษาความต่อเนื่องในการออมเพื่อเพิ่มคะแนนสุขภาพวินัยครับ`);
+            this.appendChatMessage('analysisChatMessages', 'ai', `AI Analytics Core 4.0 กำลังวิเคราะห์: "${val}"\nข้อมูลการเงินของคุณมีความมั่นคง แนะนำรักษาความต่อเนื่องในการออมเพื่อเพิ่มคะแนนสุขภาพวินัยครับ`);
           }
         };
 
