@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking v6.8.0</title>
+  <title>SmartSave Banking Pro v7.2.0</title>
   <style>
     :root {
       --bg: #070b14;
@@ -21,6 +21,7 @@
       --danger: #ef4444;
       --warning: #f59e0b;
       --accent: #6366f1;
+      --nav-glass: rgba(15, 23, 42, 0.85);
       --shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
       --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
@@ -39,16 +40,18 @@
       --success: #059669;
       --danger: #dc2626;
       --warning: #d97706;
+      --nav-glass: rgba(255, 255, 255, 0.85);
       --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font); -webkit-tap-highlight-color: transparent; }
     body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
     svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; display: inline-block; vertical-align: middle; }
     
+    /* Layout */
     .app-container { display: flex; width: 100%; min-height: 100vh; }
     .sidebar { width: 270px; background: var(--surface); border-right: 1px solid var(--border); display: none; flex-direction: column; padding: 24px 16px; gap: 6px; }
     .main-wrapper { flex: 1; display: flex; flex-direction: column; min-width: 0; max-width: 100%; }
-    .top-bar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 40; }
+    .top-bar { background: var(--nav-glass); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 40; }
     .content-area { flex: 1; padding: 16px; max-width: 1200px; margin: 0 auto; width: 100%; padding-bottom: 95px; }
     
     @media (min-width: 768px) {
@@ -60,10 +63,12 @@
     .nav-item { display: flex; align-items: center; gap: 12px; padding: 11px 16px; border-radius: 12px; color: var(--text-secondary); text-decoration: none; cursor: pointer; transition: 0.2s; font-size: 13.5px; font-weight: 500; }
     .nav-item:hover, .nav-item.active { background: var(--surface-secondary); color: var(--primary); }
     
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--surface); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0 calc(8px + env(safe-area-inset-bottom)); z-index: 50; }
-    .b-nav-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-secondary); font-size: 11px; background: none; border: none; cursor: pointer; flex: 1; }
-    .b-nav-btn.active { color: var(--primary); font-weight: 600; }
+    /* Modern Glass Bottom Nav */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--nav-glass); backdrop-filter: blur(16px); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0 calc(8px + env(safe-area-inset-bottom)); z-index: 50; }
+    .b-nav-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-secondary); font-size: 11px; background: none; border: none; cursor: pointer; flex: 1; transition: 0.2s; }
+    .b-nav-btn.active { color: var(--primary); font-weight: 600; transform: translateY(-2px); }
     
+    /* Cards & Components */
     .card { background: var(--surface-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
     .balance-card { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #fff; border: none; box-shadow: 0 12px 30px var(--primary-glow); }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; min-height: 44px; }
@@ -72,6 +77,8 @@
     .btn-secondary { background: var(--surface-secondary); color: var(--text); }
     .btn-danger { background: var(--danger); color: #fff; }
     .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn-chip { padding: 6px 12px; font-size: 12px; border-radius: 8px; background: var(--surface-secondary); border: 1px solid var(--border); color: var(--text); cursor: pointer; min-height: 32px; }
+    .btn-chip:active { background: var(--primary); color: #fff; }
     
     .form-group { margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
     .form-group label { font-size: 13px; color: var(--text-secondary); }
@@ -93,7 +100,7 @@
     .pin-btn { height: 55px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface-secondary); color: var(--text); font-size: 20px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; }
     .pin-btn:active { background: var(--primary); color: #fff; }
 
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: 0.2s; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 100; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: 0.2s; }
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
     .modal-sheet { background: var(--surface); width: 100%; max-width: 500px; border-radius: 20px 20px 0 0; padding: 24px; max-height: 90vh; overflow-y: auto; transform: translateY(100%); transition: 0.3s cubic-bezier(0.1, 0.9, 0.2, 1); }
     .modal-overlay.active .modal-sheet { transform: translateY(0); }
@@ -117,6 +124,9 @@
     @media(min-width: 600px) { .grid-4 { grid-template-columns: repeat(4, 1fr); } }
     .progress-bar { height: 8px; background: var(--surface-secondary); border-radius: 4px; overflow: hidden; margin: 8px 0; }
     .progress-fill { height: 100%; background: var(--primary); border-radius: 4px; width: 0%; transition: width 0.3s; }
+
+    /* Sunday Lockdown Overlay */
+    #sundayLockScreen { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: none; align-items: center; justify-content: center; text-align: center; padding: 24px; }
   </style>
 </head>
 <body>
@@ -124,13 +134,24 @@
   <!-- Instant Toast Container -->
   <div class="toast-container" id="toastBox"></div>
 
+  <!-- SUNDAY MAINTENANCE LOCK SCREEN -->
+  <div id="sundayLockScreen">
+    <div class="card" style="max-width: 440px; width: 100%;">
+      <svg style="width: 54px; height: 54px; color: var(--warning); margin-bottom: 12px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <h2 style="margin-bottom: 8px;">ระบบปิดปรับปรุงประจำสัปดาห์</h2>
+      <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">
+        ระบบ SmartSave Banking ปิดการทำรายการทุกวันอาทิตย์เพื่อบำรุงรักษาและสำรองข้อมูลระบบความปลอดภัย กรุณากลับมาใช้งานใหม่อีกครั้งในวันจันทร์ครับ
+      </p>
+    </div>
+  </div>
+
   <!-- AUTH SCREEN (No Navigation Bar) -->
   <div id="authContainer" style="display: flex; min-height: 100vh; align-items: center; justify-content: center; padding: 20px;">
     <div class="card" style="width: 100%; max-width: 420px;">
       <div style="text-align: center; margin-bottom: 24px;">
         <svg style="width: 48px; height: 48px; color: var(--primary);"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         <h2 style="margin-top: 8px;" id="authTitle">SmartSave Banking</h2>
-        <p style="color: var(--text-secondary); font-size: 13px;" id="authSub">ระบบบริหารเงินออมอัจฉริยะ v6.8.0</p>
+        <p style="color: var(--text-secondary); font-size: 13px;" id="authSub">Professional Edition v7.2.0</p>
       </div>
 
       <!-- Login / Register Forms -->
@@ -184,7 +205,7 @@
     <aside class="sidebar">
       <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
         <svg style="color: var(--primary);"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        <span style="font-weight: 700; font-size: 18px;">SmartSave</span>
+        <span style="font-weight: 700; font-size: 18px;">SmartSave Pro</span>
       </div>
       <a class="nav-item active" data-view="dashboard"><svg><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="i18n-dash">แดชบอร์ด</span></a>
       <a class="nav-item" data-view="savings"><svg><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg><span class="i18n-savings">บันทึกเงินออม</span></a>
@@ -194,7 +215,7 @@
       <a class="nav-item" data-view="rank"><svg><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="i18n-rank">ระดับการออม</span></a>
       <a class="nav-item" data-view="analysis"><svg><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg><span class="i18n-analysis">AI วิเคราะห์สถิติ</span></a>
       <a class="nav-item" data-view="pending"><svg><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="i18n-pending">ข้อมูลส่วนดำเนินการ</span></a>
-      <a class="nav-item" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="i18n-settings">ตั้งค่าระบบ</span></a>
+      <a class="nav-item" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span class="i18n-settings">ตั้งค่าระบบ</span></a>
     </aside>
 
     <div class="main-wrapper">
@@ -226,7 +247,7 @@
       <!-- Content Views -->
       <main class="content-area">
         
-        <!-- 1. DASHBOARD VIEW -->
+        <!-- 1. DASHBOARD VIEW (Clean Layout, Recent moved to Savings History) -->
         <section id="viewDashboard" class="view-section active">
           <div class="card balance-card">
             <div style="font-size: 13px; opacity: 0.85;" class="i18n-total-lbl">ยอดเงินออมทั้งหมด (Total Savings)</div>
@@ -249,24 +270,21 @@
             <div class="card"><div style="font-size: 12px; color: var(--text-secondary);" class="i18n-rank-lbl">ระดับการออม</div><div style="font-size: 16px; font-weight: 700; margin-top: 4px; color: var(--accent);" id="dashRank">Beginner</div></div>
           </div>
 
-          <!-- Favorite Categories -->
+          <!-- Favorite Categories (Quick Save) -->
           <div class="card">
             <h3 style="font-size: 15px; margin-bottom: 12px;" class="i18n-fav-lbl">รายการโปรด / หมวดหมู่ออมด่วน</h3>
             <div id="favoritesList" style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;"></div>
           </div>
-
-          <!-- Recent Transactions -->
-          <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-              <h3 style="font-size: 15px;" class="i18n-recent-lbl">รายการออมล่าสุด</h3>
-              <a style="font-size: 12px; color: var(--primary); cursor: pointer;" id="gotoSavingsHistory" class="i18n-viewall">ดูทั้งหมด</a>
-            </div>
-            <div id="dashRecentTransactions"></div>
-          </div>
         </section>
 
-        <!-- 2. SAVINGS VIEW -->
+        <!-- 2. SAVINGS VIEW (With Recent Transactions Header) -->
         <section id="viewSavings" class="view-section">
+          <!-- Recent Transactions Preview Card -->
+          <div class="card" style="border-left: 4px solid var(--primary);">
+            <h3 style="font-size: 15px; margin-bottom: 10px;">รายการออมล่าสุด (Recent Transactions)</h3>
+            <div id="savingsRecentPreview"></div>
+          </div>
+
           <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
               <h2 class="i18n-savings-hist">ประวัติการออมทั้งหมด</h2>
@@ -380,7 +398,7 @@
           </div>
         </section>
 
-        <!-- 8. PENDING VIEW (ข้อมูลส่วนดำเนินการ - Auto Sync Enabled) -->
+        <!-- 8. PENDING VIEW (Auto Sync Enabled) -->
         <section id="viewPending" class="view-section">
           <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -448,13 +466,22 @@
     </nav>
   </div>
 
-  <!-- MODAL: ADD SAVING -->
+  <!-- MODAL: ADD SAVING (With Quick Amount Selector) -->
   <div class="modal-overlay" id="addSavingModal">
     <div class="modal-sheet">
       <h3 style="margin-bottom: 16px;">บันทึกเงินออมใหม่</h3>
       <div class="form-group">
         <label>จำนวนเงิน (Amount)</label>
         <input type="number" id="saveAmount" inputmode="decimal" placeholder="0.00" style="font-size: 20px; font-weight: 700;">
+        
+        <!-- Quick Amount Selector Buttons -->
+        <div style="display: flex; gap: 6px; overflow-x: auto; margin-top: 8px; padding-bottom: 4px;">
+          <button type="button" class="btn-chip quick-amt-btn" data-amt="50">+50</button>
+          <button type="button" class="btn-chip quick-amt-btn" data-amt="100">+100</button>
+          <button type="button" class="btn-chip quick-amt-btn" data-amt="500">+500</button>
+          <button type="button" class="btn-chip quick-amt-btn" data-amt="1000">+1,000</button>
+          <button type="button" class="btn-chip quick-amt-btn" data-amt="5000">+5,000</button>
+        </div>
       </div>
       <div class="form-group">
         <label>หมวดหมู่</label>
@@ -547,7 +574,7 @@
         <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="rank"><svg><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> ระดับการออม (Rank)</button>
         <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="analysis"><svg><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg> AI วิเคราะห์สถิติ (Analysis)</button>
         <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="pending"><svg><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ข้อมูลส่วนดำเนินการ (Pending Queue)</button>
-        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> ตั้งค่าระบบ (Settings)</button>
+        <button class="btn btn-secondary" style="justify-content: flex-start;" data-view="settings"><svg><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> ตั้งค่าระบบ (Settings)</button>
       </div>
       <button class="btn btn-outline" style="width: 100%; margin-top: 14px;" id="closeMoreMenuBtn">ปิด</button>
     </div>
@@ -718,8 +745,11 @@
       }
     };
 
-    /* 4. CALCULATION ENGINE */
+    /* 4. CALCULATION & SYSTEM RULES ENGINE */
     const Engine = {
+      isSunday() {
+        return new Date().getDay() === 0; // 0 = Sunday
+      },
       isDelayedWindow() {
         const now = new Date();
         const hrs = now.getHours();
@@ -786,12 +816,18 @@
       currentModalPin: '',
 
       init() {
+        this.checkSundayLock();
         this.bindEvents();
         this.startClock();
         this.startAutoSyncMonitor();
         this.checkCacheSizeAndClean();
         this.applyTheme(AppState.settings.theme);
         this.applyLanguage(AppState.settings.language);
+      },
+      checkSundayLock() {
+        if (Engine.isSunday()) {
+          document.getElementById('sundayLockScreen').style.display = 'flex';
+        }
       },
       startClock() {
         setInterval(() => {
@@ -920,22 +956,7 @@
         document.getElementById('rankTitle').innerText = rank.title;
         document.getElementById('rankDesc').innerText = rank.desc;
 
-        const container = document.getElementById('dashRecentTransactions');
-        const recent = [...AppState.savings].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
-        if (!recent.length) {
-          container.innerHTML = `<div style="text-align: center; padding: 24px; color: var(--text-secondary); font-size: 13px;">ยังไม่มีรายการออม เริ่มบันทึกรายการแรกของคุณ</div>`;
-        } else {
-          container.innerHTML = recent.map(item => `
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border);">
-              <div>
-                <div style="font-weight: 600; font-size: 14px;">${item.category}</div>
-                <div style="font-size: 11px; color: var(--text-secondary);">${item.date} • ${item.time || ''}</div>
-              </div>
-              <div style="font-weight: 700; color: var(--success); font-size: 15px;">+${Engine.formatCurrency(item.amount)}</div>
-            </div>
-          `).join('');
-        }
-
+        // Render Favorites
         const favContainer = document.getElementById('favoritesList');
         favContainer.innerHTML = AppState.categories.slice(0, 4).map(cat => `
           <button class="btn btn-secondary quick-save-btn" data-category="${cat}" style="font-size: 12px; white-space: nowrap; padding: 6px 12px; min-height: 36px;">+ ${cat}</button>
@@ -964,12 +985,30 @@
         const query = (document.getElementById('savingSearch')?.value || '').toLowerCase();
         const catFilter = document.getElementById('savingCategoryFilter')?.value || '';
         const container = document.getElementById('allSavingsList');
+        const recentBox = document.getElementById('savingsRecentPreview');
         
         let filtered = AppState.savings.filter(s => {
           const matchQ = (s.note || '').toLowerCase().includes(query) || s.category.toLowerCase().includes(query);
           const matchC = catFilter ? s.category === catFilter : true;
           return matchQ && matchC;
         }).sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        // Render Recent Top Transactions
+        const recentTop = [...AppState.savings].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 3);
+        if (recentBox) {
+          if (!recentTop.length) {
+            recentBox.innerHTML = `<div style="font-size: 12px; color: var(--text-secondary);">ยังไม่มีรายการล่าสุด</div>`;
+          } else {
+            recentBox.innerHTML = recentTop.map(item => `
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed var(--border); font-size: 13px;">
+                <div>
+                  <strong>${item.category}</strong> <span style="font-size: 11px; color: var(--text-secondary);">(${item.date})</span>
+                </div>
+                <div style="color: var(--success); font-weight: 700;">+${Engine.formatCurrency(item.amount)}</div>
+              </div>
+            `).join('');
+          }
+        }
 
         if (!filtered.length) {
           container.innerHTML = `<div style="text-align: center; padding: 32px; color: var(--text-secondary); font-size: 13px;">ไม่พบรายการที่ค้นหา</div>`;
@@ -1108,6 +1147,16 @@
       },
 
       bindEvents() {
+        // Quick Amount Selector in Add Saving Modal
+        document.querySelectorAll('.quick-amt-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const amtToAdd = parseFloat(btn.getAttribute('data-amt'));
+            const input = document.getElementById('saveAmount');
+            const current = parseFloat(input.value) || 0;
+            input.value = current + amtToAdd;
+          });
+        });
+
         // Refresh Screen Button (Navigates to Dashboard instantly & updates data)
         document.getElementById('refreshScreenBtn')?.addEventListener('click', () => {
           this.switchView('dashboard');
@@ -1137,6 +1186,10 @@
 
         // Modals
         const openSaving = () => {
+          if (Engine.isSunday()) {
+            alert('ระบบปิดทำการทุกวันอาทิตย์ ไม่สามารถทำรายการได้');
+            return;
+          }
           const now = new Date();
           document.getElementById('saveDate').value = now.toISOString().split('T')[0];
           document.getElementById('saveTime').value = now.toTimeString().slice(0, 5);
@@ -1151,6 +1204,10 @@
         });
 
         document.getElementById('openAddGoalModalBtn')?.addEventListener('click', () => {
+          if (Engine.isSunday()) {
+            alert('ระบบปิดทำการทุกวันอาทิตย์ ไม่สามารถทำรายการได้');
+            return;
+          }
           document.getElementById('goalName').value = '';
           document.getElementById('goalTargetAmount').value = '';
           document.getElementById('goalTargetDate').value = '';
@@ -1274,6 +1331,10 @@
         // Add funds to Goal (Trigger PIN 6-Digit Check)
         document.addEventListener('click', (e) => {
           if (e.target.closest('.add-goal-fund-btn')) {
+            if (Engine.isSunday()) {
+              alert('ระบบปิดทำการทุกวันอาทิตย์ ไม่สามารถทำรายการได้');
+              return;
+            }
             const id = e.target.closest('.add-goal-fund-btn').getAttribute('data-id');
             const goal = AppState.goals.find(g => g.id === id);
             if (!goal) return;
@@ -1301,6 +1362,10 @@
         // Delete Saving
         document.addEventListener('click', async (e) => {
           if (e.target.closest('.del-saving-btn')) {
+            if (Engine.isSunday()) {
+              alert('ระบบปิดทำการทุกวันอาทิตย์ ไม่สามารถลบรายการได้');
+              return;
+            }
             if (!confirm('ยืนยันลบรายการนี้?')) return;
             const id = e.target.closest('.del-saving-btn').getAttribute('data-id');
             AppState.savings = AppState.savings.filter(s => s.id !== id);
