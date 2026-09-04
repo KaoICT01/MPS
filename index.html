@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking v2.2.0.1</title>
+  <title>SmartSave Banking v2.2.0.3 (POS)</title>
   <meta name="theme-color" content="#060911">
   <style>
     :root {
       --bg: #060911;
-      --surface: #0f1523;
-      --surface-card: #151d30;
-      --surface-secondary: #1c2740;
-      --surface-glass: rgba(15, 21, 35, 0.9);
-      --border: #23314f;
+      --surface: #0e1424;
+      --surface-card: #141c32;
+      --surface-secondary: #1d2744;
+      --surface-glass: rgba(14, 20, 36, 0.92);
+      --border: #223152;
       --border-focus: #3b82f6;
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
@@ -22,7 +22,7 @@
       --danger: #ef4444;
       --warning: #f59e0b;
       --success: #10b981;
-      --card-gradient: linear-gradient(135deg, #1d4ed8 0%, #0b1329 100%);
+      --card-gradient: linear-gradient(135deg, #1d4ed8 0%, #0a1126 100%);
       --radius-sm: 8px;
       --radius-md: 14px;
       --radius-lg: 22px;
@@ -35,12 +35,12 @@
       --surface: #ffffff;
       --surface-card: #f8fafc;
       --surface-secondary: #e2e8f0;
-      --surface-glass: rgba(255, 255, 255, 0.94);
+      --surface-glass: rgba(255, 255, 255, 0.95);
       --border: #cbd5e1;
       --border-focus: #2563eb;
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
-      --text: #0b1329;
+      --text: #0a1126;
       --text-secondary: #64748b;
       --card-gradient: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
     }
@@ -416,7 +416,7 @@
       cursor: pointer;
     }
 
-    /* AI Chat Box */
+    /* AI 6.0 Chat Box */
     .chat-box {
       display: flex;
       flex-direction: column;
@@ -533,11 +533,6 @@
       justify-content: space-between;
       align-items: center;
     }
-    
-    .rank-item.current {
-      border-color: var(--primary);
-      background: var(--surface-card);
-    }
   </style>
 </head>
 <body data-theme="dark">
@@ -554,10 +549,10 @@
   <header class="top-bar" id="appHeader" style="display:none;">
     <div class="brand-title">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-      <span>SmartSave</span>
+      <span>SmartSave POS</span>
     </div>
     <div class="top-actions">
-      <!-- Reload / F5 Button: Redirects to Home & retains data -->
+      <!-- Reload / F5 Button -->
       <button class="icon-btn" id="btnReload" title="รีโหลดกลับหน้าหลัก">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
       </button>
@@ -582,7 +577,7 @@
       <div style="text-align:center; margin: 40px 0 24px 0;">
         <svg width="52" height="52" viewBox="0 0 24 24" stroke="var(--primary)" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         <h2 style="font-size:1.6rem; margin-top:8px;">SmartSave Banking</h2>
-        <p style="color:var(--text-secondary); font-size:0.85rem;">ระบบบริหารการออมเงินส่วนบุคคลระดับมืออาชีพ</p>
+        <p style="color:var(--text-secondary); font-size:0.85rem;">ระบบบริหารการออมเงินส่วนบุคคลระดับมืออาชีพ (POS v2.2.0.3)</p>
       </div>
 
       <div id="authForms">
@@ -671,9 +666,9 @@
       </div>
     </section>
 
-    <!-- 3. ADD SAVING VIEW -->
+    <!-- 3. ADD SAVING VIEW (POS Quick Controls) -->
     <section id="viewAddSaving" class="view-section">
-      <h3 style="margin-bottom:16px;">บันทึกเงินออมใหม่</h3>
+      <h3 style="margin-bottom:16px;">บันทึกเงินออมใหม่ (POS)</h3>
       <form id="formAddSaving" onsubmit="event.preventDefault(); app.openPinAuthModal();">
         <div class="form-group">
           <label>จำนวนเงิน (บาท THB เท่านั้น)</label>
@@ -723,27 +718,27 @@
       <div id="goalsContainer"></div>
     </section>
 
-    <!-- 6. AI STATS & ANALYSIS VIEW (No Graph, Instant AI Full-Data Analytics) -->
+    <!-- 6. AI 6.0 STATS & ANALYSIS VIEW (No Graphs, Real-time Engine) -->
     <section id="viewAiAnalysis" class="view-section">
-      <h3 style="margin-bottom:12px;">วิเคราะห์สถิติการออมด้วย AI 4.0</h3>
+      <h3 style="margin-bottom:12px;">วิเคราะห์สถิติการออมด้วย AI 6.0</h3>
       <div class="chat-box" id="aiAnalysisResult">
-        <div class="chat-msg ai">ระบบ AI 4.0 พร้อมประมวลผลข้อมูลการออมของคุณทันทีแบบ Real-time โดยไม่ต้องพึ่งพากราฟ...</div>
+        <div class="chat-msg ai">ระบบ AI 6.0 พร้อมประมวลผลข้อมูลการออมของคุณทันทีแบบ Real-time โดยไม่ต้องพึ่งพากราฟ...</div>
       </div>
-      <button class="btn-primary" onclick="app.runAiStatAnalysis()">ประมวลผลการออมรอบด้าน</button>
+      <button class="btn-primary" onclick="app.runAiStatAnalysis()">ประมวลผลสถิติแบบครบข้อมูล</button>
     </section>
 
-    <!-- 7. AI PLAN & CHAT VIEW (Logout inside) -->
+    <!-- 7. AI 6.0 PLAN & CHAT VIEW (Logout inside) -->
     <section id="viewAiChatPlan" class="view-section">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <h3>AI 4.0 วางแผนการออม</h3>
+        <h3>AI 6.0 วางแผนการออม</h3>
         <button class="btn-quick-amt" style="color:var(--danger); border-color:var(--danger);" onclick="app.logout()">ออกจากระบบ</button>
       </div>
       <div class="chat-box" id="aiChatPlanBox">
-        <div class="chat-msg ai">สวัสดีครับ! เลือกแบบแผนการออมที่ต้องการวิเคราะห์ด้านล่างได้ทันทีโดยไม่ต้องพิมพ์ครับ</div>
+        <div class="chat-msg ai">สวัสดีครับ! เลือกแบบแผนการออมด้านล่างได้ทันทีโดยไม่ต้องพิมพ์ครับ</div>
       </div>
       <div class="ai-action-btns">
         <button class="ai-btn-option" onclick="app.askAiPlan('แผนออมเงิน 1 แสนแรกใน 1 ปี')">📊 แผนออมเงิน 1 แสนแรกใน 1 ปี</button>
-        <button class="ai-btn-option" onclick="app.askAiPlan('สูตรออม 50/30/20 แบบเข้มงวด')">💡 สูตรออม 50/30/20 ฉบับมนุษย์เงินเดือน</button>
+        <button class="ai-btn-option" onclick="app.askAiPlan('สูตรออม 50/30/20 ฉบับมนุษย์เงินเดือน')">💡 สูตรออม 50/30/20 ฉบับมนุษย์เงินเดือน</button>
         <button class="ai-btn-option" onclick="app.askAiPlan('ประเมินความเสี่ยงและอัตราการออมปัจจุบัน')">🔍 ประเมินวินัยและความเสี่ยงการเงิน</button>
       </div>
     </section>
@@ -751,7 +746,7 @@
     <!-- 8. AI ASSISTANCE & SUPPORT VIEW -->
     <section id="viewAiHelp" class="view-section">
       <h3>AI ขอความช่วยเหลือและบริการระบบ</h3>
-      <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:16px;">จัดการบริการส่วนตัวผ่าน AI Chat 4.0 รวดเร็วและปลอดภัย</p>
+      <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:16px;">จัดการบริการส่วนตัวผ่าน AI Chat 6.0 รวดเร็วและปลอดภัย</p>
       
       <div class="ai-action-btns">
         <button class="ai-btn-option" onclick="app.handleForgotCredentials()">1. ลืมรหัสผ่าน / ลืมชื่อผู้ใช้งาน (เปลี่ยนได้ 1 ครั้ง/วัน)</button>
@@ -766,7 +761,7 @@
     <section id="viewPendingSync" class="view-section">
       <h3>ข้อมูลส่วนดำเนินการ (Pending Sync)</h3>
       <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:14px;">
-        รายการที่บันทึกระหว่างเวลา 23:00 - 23:30 น. จะถูกซิงค์อัตโนมัติเข้าสู่คลาวด์หลังเวลา 23:30 น. โดยไม่ต้องกดปุ่มใดๆ
+        รายการที่บันทึกระหว่างเวลา 23:00 - 23:30 น. จะถูกซิงค์อัตโนมัติเข้าสู่คลาวด์หลังเวลา 23:30 น. โดยไม่ต้องกดปุ่ม
       </p>
       <div id="pendingQueueList"></div>
     </section>
@@ -793,7 +788,7 @@
       <h3 style="margin-bottom:16px;">เมนูอื่นๆ</h3>
       <div class="ai-action-btns">
         <button class="ai-btn-option" onclick="app.navigate('viewAiAnalysis')">
-          <span>วิเคราะห์สถิติการออม (AI Analysis)</span>
+          <span>วิเคราะห์สถิติการออม (AI 6.0)</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="ai-btn-option" onclick="app.navigate('viewRankDetails')">
@@ -884,8 +879,8 @@
 const CONFIG = {
   GAS_ENDPOINT: 'https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec',
   SHEET_ID: '1nXTCNdVJRpDuIunPLnjqMkUzmOA87gtUqoclBIgNObk',
-  DB_NAME: 'SmartSaveBankDB_v2201',
-  VERSION: '2.2.0.1',
+  DB_NAME: 'SmartSaveBankDB_v2203_POS',
+  VERSION: '2.2.0.3-POS',
   CACHE_LIMIT_BYTES: 5 * 1024 * 1024 * 1024 // 5GB
 };
 
@@ -1299,7 +1294,7 @@ class SmartSaveApp {
 
   async runAiStatAnalysis() {
     const box = document.getElementById('aiAnalysisResult');
-    box.innerHTML = '<div class="chat-msg ai">กำลังประมวลผลข้อมูลการเงินรอบด้านด้วย AI 4.0 Engine...</div>';
+    box.innerHTML = '<div class="chat-msg ai">กำลังประมวลผลข้อมูลการเงินรอบด้านด้วย AI 6.0 Core Engine...</div>';
 
     const txs = await this.getAllFromStore('savings');
     let total = txs.reduce((sum, t) => sum + t.amount, 0);
@@ -1307,13 +1302,13 @@ class SmartSaveApp {
     setTimeout(() => {
       box.innerHTML = `
         <div class="chat-msg ai">
-          <strong>ผลวิเคราะห์การออมรอบด้าน AI 4.0:</strong><br>
+          <strong>ผลวิเคราะห์การออมรอบด้าน AI 6.0 Engine:</strong><br>
           • <strong>ยอดออมสะสมสุทธิ:</strong> ${this.formatCurrency(total)}<br>
           • <strong>วินัยและความสม่ำเสมอ:</strong> อยู่ในเกณฑ์ดีเยี่ยม ไม่มียอดถดถอย<br>
           • <strong>คำแนะนำเชิงกลยุทธ์:</strong> แนะนำจัดสรรเงิน 20% เพื่อการลงทุนระยะยาวเพื่อสร้างผลตอบแทนชนะเงินเฟ้อ
         </div>
       `;
-    }, 800);
+    }, 600);
   }
 
   askAiPlan(planType) {
@@ -1331,7 +1326,7 @@ class SmartSaveApp {
       }
       box.innerHTML += `<div class="chat-msg ai">${reply}</div>`;
       box.scrollTop = box.scrollHeight;
-    }, 600);
+    }, 500);
   }
 
   handleForgotCredentials() {
