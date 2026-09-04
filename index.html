@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking v2.2.0.3 (POS)</title>
+  <title>SmartSave Banking v2.2.0.5 (POS 2.0)</title>
   <meta name="theme-color" content="#060911">
   <style>
     :root {
@@ -192,6 +192,43 @@
       font-size: 0.85rem;
       border-top: 1px solid rgba(255,255,255,0.18);
       padding-top: 12px;
+    }
+
+    /* Real-time Notification Banner */
+    .realtime-alert-box {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .realtime-alert-box::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--primary);
+    }
+
+    .realtime-alert-text {
+      font-size: 0.82rem;
+      color: var(--text);
+      line-height: 1.4;
+      flex: 1;
+    }
+
+    .realtime-alert-time {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      white-space: nowrap;
     }
 
     /* Action Grid */
@@ -577,7 +614,7 @@
       <div style="text-align:center; margin: 40px 0 24px 0;">
         <svg width="52" height="52" viewBox="0 0 24 24" stroke="var(--primary)" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         <h2 style="font-size:1.6rem; margin-top:8px;">SmartSave Banking</h2>
-        <p style="color:var(--text-secondary); font-size:0.85rem;">ระบบบริหารการออมเงินส่วนบุคคลระดับมืออาชีพ (POS v2.2.0.3)</p>
+        <p style="color:var(--text-secondary); font-size:0.85rem;">ระบบบริหารการออมเงินส่วนบุคคลระดับมืออาชีพ (POS 2.0 v2.2.0.5)</p>
       </div>
 
       <div id="authForms">
@@ -635,14 +672,13 @@
         </div>
       </div>
 
-      <!-- Favorites / Quick Save -->
-      <div style="margin-bottom: 20px;">
-        <h4 style="font-size:0.85rem; margin-bottom:10px; color:var(--text-secondary);">รายการโปรด (บันทึกด่วน)</h4>
-        <div style="display:flex; gap:8px;">
-          <button class="btn-quick-amt" style="flex:1;" onclick="app.quickFavoriteSave(50, 'หยอดกระปุกประจำวัน')">+฿50</button>
-          <button class="btn-quick-amt" style="flex:1;" onclick="app.quickFavoriteSave(100, 'ออมรายวัน')">+฿100</button>
-          <button class="btn-quick-amt" style="flex:1;" onclick="app.quickFavoriteSave(500, 'ออมพิเศษ')">+฿500</button>
+      <!-- Real-time Automatic Live Notification Ticker -->
+      <div class="realtime-alert-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <div class="realtime-alert-text" id="liveNotifMessage">
+          ยินดีต้อนรับเข้าสู่ระบบ SmartSave POS 2.0 พร้อมบันทึกเงินออมได้ทันที
         </div>
+        <div class="realtime-alert-time" id="liveNotifTime">ตอนนี้</div>
       </div>
 
       <!-- Quick Action Grid -->
@@ -668,7 +704,7 @@
 
     <!-- 3. ADD SAVING VIEW (POS Quick Controls) -->
     <section id="viewAddSaving" class="view-section">
-      <h3 style="margin-bottom:16px;">บันทึกเงินออมใหม่ (POS)</h3>
+      <h3 style="margin-bottom:16px;">บันทึกเงินออมใหม่ (POS 2.0)</h3>
       <form id="formAddSaving" onsubmit="event.preventDefault(); app.openPinAuthModal();">
         <div class="form-group">
           <label>จำนวนเงิน (บาท THB เท่านั้น)</label>
@@ -879,8 +915,8 @@
 const CONFIG = {
   GAS_ENDPOINT: 'https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec',
   SHEET_ID: '1nXTCNdVJRpDuIunPLnjqMkUzmOA87gtUqoclBIgNObk',
-  DB_NAME: 'SmartSaveBankDB_v2203_POS',
-  VERSION: '2.2.0.3-POS',
+  DB_NAME: 'SmartSaveBankDB_v2205_POS20',
+  VERSION: '2.2.0.5-POS2.0',
   CACHE_LIMIT_BYTES: 5 * 1024 * 1024 * 1024 // 5GB
 };
 
@@ -1164,6 +1200,7 @@ class SmartSaveApp {
 
     this.playNotificationSound();
     this.triggerNotifDot();
+    this.updateRealtimeNotification(`บันทึกเงินออม ${this.formatCurrency(amount)} (${category}) สำเร็จ!`);
 
     document.getElementById('saveAmount').value = '';
     document.getElementById('saveNote').value = '';
@@ -1173,10 +1210,14 @@ class SmartSaveApp {
     this.navigate('viewDashboard');
   }
 
-  quickFavoriteSave(amt, note) {
-    document.getElementById('saveAmount').value = amt;
-    document.getElementById('saveNote').value = note;
-    this.openPinAuthModal();
+  updateRealtimeNotification(msg) {
+    const msgEl = document.getElementById('liveNotifMessage');
+    const timeEl = document.getElementById('liveNotifTime');
+    if (msgEl && timeEl) {
+      msgEl.innerText = msg;
+      const now = new Date();
+      timeEl.innerText = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    }
   }
 
   async refreshAllData() {
@@ -1205,6 +1246,11 @@ class SmartSaveApp {
     const streak = uniqueDays.size;
     document.getElementById('userStreakDisplay').innerText = `${streak} วัน`;
     document.getElementById('userRankDisplay').innerText = this.calculateRank(total, streak);
+
+    if (txs.length > 0) {
+      const lastTx = txs[txs.length - 1];
+      this.updateRealtimeNotification(`รายการล่าสุด: ออม +${this.formatCurrency(lastTx.amount)} (${lastTx.category})`);
+    }
 
     this.renderHistory(txs);
     this.renderPendingQueue();
