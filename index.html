@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking v5.0 — Data Center Edition</title>
+  <title>SmartSave Banking v7.0 — Data Center & Cloud Rocket</title>
   <meta name="theme-color" content="#030712">
   <style>
     :root {
@@ -18,7 +18,7 @@
       --text-secondary: #859bb5;
       --border: #1e3a5f;
       --border-focus: #0284c7;
-      --border-grid: rgba(30, 58, 95, 0.4);
+      --border-grid: rgba(30, 58, 95, 0.35);
       --success: #10b981;
       --warning: #f59e0b;
       --danger: #f43f5e;
@@ -64,7 +64,7 @@
       justify-content: center;
       overflow-x: hidden;
       background-image: radial-gradient(var(--border-grid) 1px, transparent 1px);
-      background-size: 24px 24px;
+      background-size: 20px 20px;
     }
 
     .app-container {
@@ -80,7 +80,6 @@
       border-right: 1px solid var(--border);
     }
 
-    /* Top App Bar */
     .top-bar {
       height: 64px;
       padding: 0 16px;
@@ -116,7 +115,7 @@
     }
 
     .user-greeting h4 {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 700;
       letter-spacing: -0.3px;
       font-family: var(--font-mono);
@@ -151,7 +150,6 @@
 
     .icon-btn:active { border-color: var(--primary); }
 
-    /* Content Area */
     .main-content {
       flex: 1;
       padding: 16px 16px calc(75px + var(--safe-bottom)) 16px;
@@ -166,7 +164,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Main Balance Card (Data Center Server Panel) */
+    /* Main Balance Card */
     .balance-card {
       background: var(--card-gradient);
       color: #ffffff;
@@ -180,7 +178,7 @@
     }
 
     .balance-card::before {
-      content: 'CLUSTER_SECURE_STORAGE // NODE_THB';
+      content: 'DC_RESERVE // CLOUD_ROCKET_ISOLATED';
       position: absolute;
       top: 10px;
       right: 14px;
@@ -218,7 +216,6 @@
       font-family: var(--font-mono);
     }
 
-    /* Primary Action */
     .btn-main-add {
       width: 100%;
       height: 50px;
@@ -240,11 +237,7 @@
 
     .btn-main-add:active { transform: scale(0.98); opacity: 0.9; }
 
-    /* Quick Favorites */
-    .favorites-container {
-      margin-bottom: 18px;
-    }
-
+    .favorites-container { margin-bottom: 18px; }
     .section-title {
       font-size: 0.75rem;
       color: var(--text-secondary);
@@ -278,7 +271,6 @@
     .fav-item svg { width: 18px; height: 18px; stroke: var(--primary-glow); }
     .fav-item span { font-size: 0.65rem; color: var(--text-secondary); font-weight: 500; }
 
-    /* Smart Notification Feed (Terminal Log Style) */
     .notif-feed {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -306,7 +298,6 @@
       font-family: var(--font-mono);
     }
 
-    /* Streak & Rank Grid */
     .status-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -432,7 +423,6 @@
     .nav-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; }
     .nav-btn span { font-size: 0.65rem; font-family: var(--font-mono); }
 
-    /* List & Cards */
     .tx-item {
       display: flex;
       justify-content: space-between;
@@ -448,7 +438,34 @@
     .tx-info p { font-size: 0.68rem; color: var(--text-secondary); margin-top: 2px; font-family: var(--font-mono); }
     .tx-amount { font-size: 0.9rem; font-weight: 700; color: var(--success); font-family: var(--font-mono); }
 
-    /* AI Chat System */
+    /* Cloud Rocket Goal Card */
+    .rocket-goal-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .rocket-goal-card.locked {
+      border-left: 3px solid var(--warning);
+    }
+
+    .rocket-goal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-family: var(--font-mono);
+    }
+
+    .rocket-goal-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
     .chat-box {
       display: flex;
       flex-direction: column;
@@ -504,8 +521,6 @@
       justify-content: space-between;
       font-family: var(--font-mono);
     }
-
-    .ai-btn-option:active { border-color: var(--primary); }
 
     .camera-container {
       width: 100%;
@@ -584,8 +599,8 @@
     <section id="viewAuth" class="view-section active">
       <div style="text-align:center; margin: 30px 0 20px 0;">
         <svg width="44" height="44" viewBox="0 0 24 24" stroke="var(--primary-glow)" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        <h2 style="font-size:1.4rem; margin-top:8px; font-family:var(--font-mono);">SmartSave DC v5.0</h2>
-        <p style="color:var(--text-secondary); font-size:0.75rem; font-family:var(--font-mono);">Enterprise Data Center Savings Terminal</p>
+        <h2 style="font-size:1.4rem; margin-top:8px; font-family:var(--font-mono);">SmartSave DC v7.0</h2>
+        <p style="color:var(--text-secondary); font-size:0.75rem; font-family:var(--font-mono);">Cloud Rocket Terminal Edition</p>
       </div>
 
       <div id="authForms">
@@ -653,8 +668,8 @@
             <span>ออมเงิน</span>
           </div>
           <div class="fav-item" onclick="app.navigate('viewGoals')">
-            <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
-            <span>เป้าหมาย</span>
+            <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+            <span>Cloud Rocket</span>
           </div>
           <div class="fav-item" onclick="app.navigate('viewSavingPlan')">
             <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -757,13 +772,17 @@
       <div id="historyListContainer"></div>
     </section>
 
-    <!-- 5. GOALS VIEW -->
+    <!-- 5. GOALS VIEW (CLOUD ROCKET SYSTEM) -->
     <section id="viewGoals" class="view-section">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-        <h3 style="font-family:var(--font-mono);">// SAVING TARGETS</h3>
-        <button class="btn-quick-amt" style="padding:4px 10px;" onclick="app.openAddGoalPrompt()">+ NEW GOAL</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h3 style="font-family:var(--font-mono);">// CLOUD ROCKET GOALS</h3>
+        <button class="btn-quick-amt" style="padding:4px 10px;" onclick="app.openAddGoalPrompt()">+ NEW ROCKET</button>
       </div>
+      <p style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:12px; font-family:var(--font-mono);">*ระบบ Cloud Rocket แยกเงินเก็บอิสระ ไม่นับรวมใน Total Savings จนกว่าจะบรรลุ 100%</p>
       <div id="goalsContainer"></div>
+      
+      <h4 style="font-family:var(--font-mono); font-size:0.8rem; margin: 18px 0 8px 0; color:var(--text-secondary);">// COMPLETED ROCKET HISTORY</h4>
+      <div id="goalHistoryContainer"></div>
     </section>
 
     <!-- 6. SAVING PLAN VIEW -->
@@ -884,7 +903,7 @@
     </button>
     <button class="nav-btn" onclick="app.navigate('viewGoals')">
       <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-      <span>GOALS</span>
+      <span>ROCKET</span>
     </button>
     <button class="nav-btn" onclick="app.navigate('viewAnalysis')">
       <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -901,13 +920,13 @@
 <script>
 /**
  * SmartSave Banking - Client Core Module ES2025+
- * Data Center Edition v5.0
+ * Data Center Edition v7.0 // Cloud Rocket Goal Engine & AI Speech Synthesis
  */
 
 const CONFIG = {
   GAS_ENDPOINT: 'https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec',
-  DB_NAME: 'SmartSaveBankDB_v50_DC',
-  VERSION: '5.0.0-DC',
+  DB_NAME: 'SmartSaveBankDB_v70_ROCKET',
+  VERSION: '7.0.0-ROCKET',
   CACHE_LIMIT_BYTES: 5 * 1024 * 1024 * 1024
 };
 
@@ -918,6 +937,7 @@ class SmartSaveApp {
     this.categories = ['เงินสำรองฉุกเฉิน', 'พอร์ตลงทุนสินทรัพย์', 'กองทุนสำรองเกษียณ', 'ออมรายวันสภาพคล่อง'];
     this.selectedAudioTone = 1;
     this.currentLanguage = 'TH';
+    this.speechSynthesis = window.speechSynthesis || null;
     this.init();
   }
 
@@ -1061,6 +1081,7 @@ class SmartSaveApp {
       };
       localStorage.setItem('SMARTSAVE_USER', JSON.stringify(user));
       this.currentUser = user;
+      this.speakAi('ลงทะเบียนและเข้าสู่ระบบสำเร็จ');
       this.loginSuccess();
     } else {
       const stored = localStorage.getItem('SMARTSAVE_USER');
@@ -1068,6 +1089,7 @@ class SmartSaveApp {
         const user = JSON.parse(stored);
         if (user.username === u && user.passwordHash === btoa(p)) {
           this.currentUser = user;
+          this.speakAi('เข้าสู่ระบบสำเร็จ');
           this.loginSuccess();
           return;
         }
@@ -1094,6 +1116,7 @@ class SmartSaveApp {
 
   logout() {
     if (confirm('ยืนยันตัดการเชื่อมต่อ Terminal Session?')) {
+      this.speakAi('ออกจากระบบเรียบร้อย');
       this.currentUser = null;
       document.getElementById('appHeader').style.display = 'none';
       document.getElementById('bottomNav').style.display = 'none';
@@ -1153,7 +1176,9 @@ class SmartSaveApp {
     dbTx.objectStore(targetStore).add(tx);
 
     this.playNotificationSound();
+    const msg = `บันทึกเงินออม ${this.formatCurrency(amount)} หมวดหมู่ ${category} สำเร็จ`;
     this.updateNotificationFeed(`[TRANSACTION_COMMITTED]: ${this.formatCurrency(amount)} // ${category}`);
+    this.speakAi(msg);
 
     document.getElementById('saveAmount').value = '';
     document.getElementById('saveNote').value = '';
@@ -1161,6 +1186,158 @@ class SmartSaveApp {
     alert(isMaintenance ? 'บันทึกเข้าสู่ Pending Batch Queue (Auto Sync หลัง 23:30)' : 'บันทึกข้อมูลเงินออมสำเร็จ');
     this.refreshAllData();
     this.navigate('viewDashboard');
+  }
+
+  // --- CLOUD ROCKET GOAL SYSTEM ---
+  openAddGoalPrompt() {
+    const name = prompt('ชื่อเป้าหมาย Rocket Goal:');
+    const target = parseFloat(prompt('จำนวนเงินเป้าหมาย (บาท):'));
+    if (name && target > 0) {
+      const goal = {
+        id: 'RCK_' + Date.now(),
+        userId: this.currentUser.id,
+        name: name,
+        targetAmount: target,
+        currentAmount: 0,
+        isLocked: false,
+        currency: 'THB',
+        startDate: new Date().toISOString().slice(0, 10),
+        status: 'active',
+        createdAt: new Date().toISOString()
+      };
+      const tx = this.db.transaction('goals', 'readwrite');
+      tx.objectStore('goals').add(goal);
+      this.speakAi(`สร้างเป้าหมาย ${name} วงเงิน ${target} บาท เรียบร้อย`);
+      this.renderGoals();
+    }
+  }
+
+  async addFundsToGoal(goalId) {
+    const goals = await this.getAllFromStore('goals');
+    const goal = goals.find(g => g.id === goalId);
+    if (!goal) return;
+
+    if (goal.isLocked) return alert('เป้าหมายนี้ถูกล็อกไว้ ไม่สามารถเพิ่มเงินได้');
+
+    const amt = parseFloat(prompt(`เพิ่มเงินเข้าเป้าหมาย "${goal.name}" (บาท):`));
+    if (amt && amt > 0) {
+      goal.currentAmount += amt;
+
+      // Check if 100% complete
+      if (goal.currentAmount >= goal.targetAmount) {
+        goal.currentAmount = goal.targetAmount;
+        goal.status = 'completed';
+        goal.completedAt = new Date().toISOString();
+
+        // 100% Milestone: Create transaction to History
+        const completionTx = {
+          id: 'TX_GOAL_' + Date.now(),
+          userId: this.currentUser.id,
+          amount: goal.targetAmount,
+          currency: 'THB',
+          date: new Date().toISOString().slice(0, 10),
+          time: new Date().toTimeString().slice(0, 5),
+          type: 'Goal Completed',
+          category: 'เป้าหมาย Cloud Rocket',
+          wallet: 'Goal Storage',
+          note: `ภารกิจเป้าหมายสำเร็จ: ${goal.name}`,
+          isPending: false,
+          createdAt: new Date().toISOString()
+        };
+
+        const tx = this.db.transaction(['goals', 'savings'], 'readwrite');
+        tx.objectStore('goals').put(goal);
+        tx.objectStore('savings').add(completionTx);
+
+        this.speakAi(`ยินดีด้วย! เป้าหมาย ${goal.name} บรรลุหนึ่งร้อยเปอร์เซ็นต์เรียบร้อยแล้ว`);
+        alert(`เป้าหมาย "${goal.name}" บรรลุ 100%! บันทึกเข้าสู่ประวัติการออมเรียบร้อย`);
+      } else {
+        const tx = this.db.transaction('goals', 'readwrite');
+        tx.objectStore('goals').put(goal);
+        this.speakAi(`เพิ่มเงิน ${amt} บาท เข้าเป้าหมาย ${goal.name} สำเร็จ`);
+      }
+      this.refreshAllData();
+    }
+  }
+
+  async toggleGoalLock(goalId) {
+    const goals = await this.getAllFromStore('goals');
+    const goal = goals.find(g => g.id === goalId);
+    if (goal) {
+      goal.isLocked = !goal.isLocked;
+      const tx = this.db.transaction('goals', 'readwrite');
+      tx.objectStore('goals').put(goal);
+      this.speakAi(goal.isLocked ? `ล็อกเป้าหมาย ${goal.name} แล้ว` : `ปลดล็อกเป้าหมาย ${goal.name} แล้ว`);
+      this.renderGoals();
+    }
+  }
+
+  async renderGoals() {
+    const goals = await this.getAllFromStore('goals');
+    const container = document.getElementById('goalsContainer');
+    const historyContainer = document.getElementById('goalHistoryContainer');
+    if (!container) return;
+
+    const activeGoals = goals.filter(g => g.status === 'active');
+    const completedGoals = goals.filter(g => g.status === 'completed');
+
+    if (activeGoals.length === 0) {
+      container.innerHTML = '<div class="empty-state"><p>// NO ACTIVE CLOUD ROCKETS</p></div>';
+    } else {
+      container.innerHTML = activeGoals.map(g => {
+        const pct = Math.min(100, Math.round((g.currentAmount / g.targetAmount) * 100));
+        return `
+          <div class="rocket-goal-card ${g.isLocked ? 'locked' : ''}">
+            <div class="rocket-goal-header">
+              <strong>${g.name} ${g.isLocked ? '🔒 [LOCKED]' : ''}</strong>
+              <span style="color:var(--primary-glow); font-weight:700;">${pct}%</span>
+            </div>
+            <div style="height:5px; background:var(--surface-secondary); border-radius:3px; overflow:hidden;">
+              <div style="height:100%; width:${pct}%; background:var(--primary-glow); box-shadow:0 0 6px var(--primary-glow);"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-top:4px; font-size:0.7rem; color:var(--text-secondary); font-family:var(--font-mono);">
+              <span>${this.formatCurrency(g.currentAmount)}</span>
+              <span>TARGET ${this.formatCurrency(g.targetAmount)}</span>
+            </div>
+            <div class="rocket-goal-actions">
+              <button class="btn-quick-amt" style="flex:1;" onclick="app.addFundsToGoal('${g.id}')">+ เติมเงิน</button>
+              <button class="btn-quick-amt" style="width:80px;" onclick="app.toggleGoalLock('${g.id}')">${g.isLocked ? 'ปลดล็อก' : 'ล็อก'}</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    if (historyContainer) {
+      if (completedGoals.length === 0) {
+        historyContainer.innerHTML = '<div class="empty-state" style="padding:10px;"><p>// NO COMPLETED HISTORY</p></div>';
+      } else {
+        historyContainer.innerHTML = completedGoals.map(g => `
+          <div class="tx-item" style="font-family:var(--font-mono); border-left: 3px solid var(--success);">
+            <div class="tx-info">
+              <h5>${g.name} [COMPLETED 100%]</h5>
+              <p>สำเร็จเมื่อ: ${g.completedAt?.slice(0, 10)}</p>
+            </div>
+            <div class="tx-amount" style="color:var(--success);">${this.formatCurrency(g.targetAmount)}</div>
+          </div>
+        `).join('');
+      }
+    }
+  }
+
+  // --- AI SPEECH ENGINE ---
+  speakAi(text) {
+    if (!this.speechSynthesis) return;
+    try {
+      this.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = this.currentLanguage === 'TH' ? 'th-TH' : 'en-US';
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      this.speechSynthesis.speak(utterance);
+    } catch (e) {
+      console.warn('Speech error', e);
+    }
   }
 
   updateNotificationFeed(msg) {
@@ -1324,6 +1501,7 @@ class SmartSaveApp {
       }
       box.innerHTML += `<div class="chat-msg ai">${reply}</div>`;
       box.scrollTop = box.scrollHeight;
+      this.speakAi(reply);
     }, 300);
   }
 
@@ -1368,6 +1546,7 @@ class SmartSaveApp {
       let sec = 30;
       const helpOut = document.getElementById('aiHelpOutput');
       helpOut.innerHTML = `<p style="color:var(--danger); font-weight:bold; font-family:var(--font-mono);">[PURGE_IN_PROGRESS]: กำลังทำลายข้อมูลใน <span id="countdown">${sec}</span>s...</p>`;
+      this.speakAi('ระบบกำลังทำลายข้อมูลทั้งหมดภายในสามสิบวินาที');
       
       const timer = setInterval(() => {
         sec--;
@@ -1449,57 +1628,6 @@ class SmartSaveApp {
         </div>
       `).join('');
     }
-  }
-
-  openAddGoalPrompt() {
-    const name = prompt('ชื่อเป้าหมาย:');
-    const target = parseFloat(prompt('จำนวนเงินเป้าหมาย (บาท):'));
-    if (name && target > 0) {
-      const goal = {
-        id: 'G_' + Date.now(),
-        userId: this.currentUser.id,
-        name: name,
-        targetAmount: target,
-        currentAmount: 0,
-        currency: 'THB',
-        startDate: new Date().toISOString().slice(0, 10),
-        status: 'active',
-        createdAt: new Date().toISOString()
-      };
-      const tx = this.db.transaction('goals', 'readwrite');
-      tx.objectStore('goals').add(goal);
-      this.renderGoals();
-    }
-  }
-
-  async renderGoals() {
-    const goals = await this.getAllFromStore('goals');
-    const container = document.getElementById('goalsContainer');
-    if (!container) return;
-
-    if (goals.length === 0) {
-      container.innerHTML = '<div class="empty-state"><p>// NO ACTIVE GOALS</p></div>';
-      return;
-    }
-
-    container.innerHTML = goals.map(g => {
-      const pct = Math.min(100, Math.round((g.currentAmount / g.targetAmount) * 100));
-      return `
-        <div class="status-card" style="margin-bottom:8px; display:block; font-family:var(--font-mono);">
-          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-            <strong>${g.name}</strong>
-            <span style="color:var(--primary-glow); font-weight:700;">${pct}%</span>
-          </div>
-          <div style="height:4px; background:var(--surface-secondary); border-radius:2px; overflow:hidden;">
-            <div style="height:100%; width:${pct}%; background:var(--primary-glow); box-shadow:0 0 6px var(--primary-glow);"></div>
-          </div>
-          <div style="display:flex; justify-content:space-between; margin-top:4px; font-size:0.7rem; color:var(--text-secondary);">
-            <span>${this.formatCurrency(g.currentAmount)}</span>
-            <span>TARGET ${this.formatCurrency(g.targetAmount)}</span>
-          </div>
-        </div>
-      `;
-    }).join('');
   }
 
   async autoSyncPendingQueue() {
