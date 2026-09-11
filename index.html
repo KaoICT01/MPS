@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking v9.0 — Clicx & Data Center 2026</title>
+  <title>SmartSave Banking v11.0 — Clicx Digital Save 2026</title>
   <meta name="theme-color" content="#020617">
   <style>
     :root {
@@ -19,7 +19,7 @@
       --text-secondary: #94a3b8;
       --border: #1e293b;
       --border-focus: #0ea5e9;
-      --border-grid: rgba(30, 41, 59, 0.5);
+      --border-grid: rgba(30, 41, 59, 0.45);
       --success: #10b981;
       --warning: #f59e0b;
       --danger: #ef4444;
@@ -81,7 +81,6 @@
       border-right: 1px solid var(--border);
     }
 
-    /* Top Bar */
     .top-bar {
       height: 64px;
       padding: 0 16px;
@@ -166,7 +165,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Main Balance Card (Clicx 2026 Style) */
+    /* Main Balance Card */
     .balance-card {
       background: var(--card-gradient);
       color: #ffffff;
@@ -389,7 +388,7 @@
 
     .btn-primary:active { opacity: 0.9; }
 
-    /* Bottom Navigation Bar */
+    /* Modern Bottom Navigation Bar */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -602,36 +601,36 @@
     <section id="viewAuth" class="view-section active">
       <div style="text-align:center; margin: 36px 0 24px 0;">
         <svg width="48" height="48" viewBox="0 0 24 24" stroke="var(--primary-glow)" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        <h2 style="font-size:1.5rem; margin-top:8px; font-family:var(--font-mono);">SmartSave v9.0</h2>
-        <p style="color:var(--text-secondary); font-size:0.78rem; font-family:var(--font-mono);">Clicx Digital Save 2026 // Data Center Terminal</p>
+        <h2 style="font-size:1.5rem; margin-top:8px; font-family:var(--font-mono);">SmartSave v11.0</h2>
+        <p style="color:var(--text-secondary); font-size:0.78rem; font-family:var(--font-mono);">Clicx Digital Save 2026 // AI 8.0 Engine</p>
       </div>
 
       <div id="authForms">
         <div id="registerFields" style="display:none;">
           <div class="form-group">
-            <label>Display Identifier</label>
+            <label id="lblDisplayName">Display Identifier</label>
             <input type="text" class="form-control" id="authDisplayName" placeholder="ชื่อเรียก">
           </div>
         </div>
 
         <div class="form-group">
-          <label>Node Username</label>
+          <label id="lblUsername">Node Username</label>
           <input type="text" class="form-control" id="authUsername" placeholder="กรอกชื่อผู้ใช้">
         </div>
         
         <div class="form-group">
-          <label>Security Key (Password)</label>
+          <label id="lblPassword">Security Key (Password)</label>
           <input type="password" class="form-control" id="authPassword" placeholder="กรอกรหัสผ่าน">
         </div>
 
         <div id="registerExtraFields" style="display:none;">
           <div class="form-group">
-            <label>Confirm Security Key</label>
+            <label id="lblConfirmPassword">Confirm Security Key</label>
             <input type="password" class="form-control" id="authConfirmPassword" placeholder="ยืนยันรหัสผ่าน">
           </div>
 
           <div class="form-group">
-            <label>Face Biometric Identity (KYC)</label>
+            <label id="lblFaceKyc">Face Biometric Identity (KYC)</label>
             <div class="camera-container">
               <video id="kycVideo" autoplay playsinline></video>
               <canvas id="kycCanvas" style="display:none;"></canvas>
@@ -649,7 +648,7 @@
     <!-- 2. DASHBOARD VIEW -->
     <section id="viewDashboard" class="view-section">
       <div class="balance-card">
-        <div class="card-label">Total Reserve Fund (THB)</div>
+        <div class="card-label" id="lblTotalSavings">Total Reserve Fund (THB)</div>
         <div class="card-balance" id="dashTotalBalance">฿ 0.00</div>
         <div class="card-meta">
           <span>Month: <strong id="dashMonthBalance">+ ฿0.00</strong></span>
@@ -659,32 +658,32 @@
 
       <button class="btn-main-add" onclick="app.navigate('viewAddSaving')">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-        <span>บันทึกเงินออม (EXECUTE SAVING)</span>
+        <span id="btnTxtAddSaving">บันทึกเงินออม (EXECUTE SAVING)</span>
       </button>
 
       <!-- Quick Favorites -->
       <div class="favorites-container">
-        <div class="section-title">// QUICK ROUTING</div>
+        <div class="section-title" id="lblQuickRouting">// QUICK ROUTING</div>
         <div class="favorites-grid">
           <div class="fav-item" onclick="app.navigate('viewAddSaving')">
             <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-            <span>ออมเงิน</span>
+            <span id="favSave">ออมเงิน</span>
           </div>
           <div class="fav-item" onclick="app.navigate('viewGoals')">
-            <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
-            <span>Rocket</span>
+            <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><polygon points="12 2 19 21 12 17 5 21 12 2"/></svg>
+            <span id="favRocket">Rocket</span>
           </div>
           <div class="fav-item" onclick="app.navigate('viewSavingPlan')">
             <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <span>แผนออม</span>
+            <span id="favPlan">แผนออม</span>
           </div>
           <div class="fav-item" onclick="app.navigate('viewAnalysis')">
-            <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-            <span>วิเคราะห์</span>
+            <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+            <span id="favStats">วิเคราะห์</span>
           </div>
           <div class="fav-item" onclick="app.navigate('viewAiSaving')">
             <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            <span>AI 6.0</span>
+            <span>AI 8.0</span>
           </div>
         </div>
       </div>
@@ -701,14 +700,14 @@
         <div class="status-card" onclick="app.navigate('viewRankDetails')">
           <svg width="22" height="22" viewBox="0 0 24 24" stroke="var(--primary-glow)" stroke-width="2" fill="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           <div class="status-info">
-            <h4>SECURITY RANK</h4>
+            <h4 id="lblSecRank">SECURITY RANK</h4>
             <p id="userRankDisplay">Beginner</p>
           </div>
         </div>
         <div class="status-card">
           <svg width="22" height="22" viewBox="0 0 24 24" stroke="var(--warning)" stroke-width="2" fill="none"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
           <div class="status-info">
-            <h4>UPTIME STREAK</h4>
+            <h4 id="lblUptimeStreak">UPTIME STREAK</h4>
             <p id="userStreakDisplay">0 วัน</p>
           </div>
         </div>
@@ -717,10 +716,10 @@
 
     <!-- 3. ADD SAVING VIEW -->
     <section id="viewAddSaving" class="view-section">
-      <h3 style="margin-bottom:16px; font-family:var(--font-mono);">// TRANSACTION ENTRY</h3>
+      <h3 style="margin-bottom:16px; font-family:var(--font-mono);" id="titleAddSaving">// TRANSACTION ENTRY</h3>
       <form id="formAddSaving" onsubmit="event.preventDefault(); app.handleSaveTransaction();">
         <div class="form-group">
-          <label>AMOUNT (THB ONLY)</label>
+          <label id="lblAmount">AMOUNT (THB ONLY)</label>
           <input type="number" id="saveAmount" class="form-control" placeholder="0.00" inputmode="decimal" step="0.01" required>
           <div class="quick-amount-grid">
             <button type="button" class="btn-quick-amt" onclick="app.setQuickAmount(50)">฿50</button>
@@ -732,7 +731,7 @@
         </div>
 
         <div class="form-group">
-          <label>SAVING TYPE</label>
+          <label id="lblType">SAVING TYPE</label>
           <select id="saveType" class="form-control">
             <option value="Daily Saving">Daily Saving (ออมรายวัน)</option>
             <option value="Weekly Saving">Weekly Saving (ออมรายสัปดาห์)</option>
@@ -743,32 +742,32 @@
         </div>
 
         <div class="form-group">
-          <label>CATEGORY</label>
+          <label id="lblCat">CATEGORY</label>
           <select id="saveCategory" class="form-control"></select>
         </div>
 
         <div class="form-group">
-          <label>WALLET IDENTIFIER</label>
+          <label id="lblWallet">WALLET IDENTIFIER</label>
           <input type="text" id="saveWallet" class="form-control" value="Main Reserve Wallet">
         </div>
 
         <div class="form-group">
-          <label>TIMESTAMP</label>
+          <label id="lblTime">TIMESTAMP</label>
           <input type="datetime-local" id="saveDateTime" class="form-control" required>
         </div>
 
         <div class="form-group">
-          <label>NOTE / DESCRIPTION</label>
+          <label id="lblNote">NOTE / DESCRIPTION</label>
           <input type="text" id="saveNote" class="form-control" placeholder="ระบุรายละเอียด">
         </div>
 
-        <button type="submit" class="btn-primary" style="margin-top:16px;">COMMIT RECORD</button>
+        <button type="submit" class="btn-primary" style="margin-top:16px;" id="btnCommitRecord">COMMIT RECORD</button>
       </form>
     </section>
 
     <!-- 4. SAVING HISTORY VIEW -->
     <section id="viewHistory" class="view-section">
-      <h3 style="margin-bottom:12px; font-family:var(--font-mono);">// TRANSACTION AUDIT LOG</h3>
+      <h3 style="margin-bottom:12px; font-family:var(--font-mono);" id="titleHistory">// TRANSACTION AUDIT LOG</h3>
       <div class="form-group">
         <input type="text" id="searchHistory" class="form-control" placeholder="ค้นหาตามโน้ต หรือหมวดหมู่..." oninput="app.filterHistory()">
       </div>
@@ -778,25 +777,25 @@
     <!-- 5. GOALS VIEW (CLOUD ROCKET SYSTEM) -->
     <section id="viewGoals" class="view-section">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <h3 style="font-family:var(--font-mono);">// CLOUD ROCKET GOALS</h3>
+        <h3 style="font-family:var(--font-mono);" id="titleRocketGoals">// CLOUD ROCKET GOALS</h3>
         <button class="btn-quick-amt" style="padding:4px 12px;" onclick="app.openAddGoalPrompt()">+ NEW ROCKET</button>
       </div>
-      <p style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:14px; font-family:var(--font-mono);">*ระบบ Cloud Rocket แยกเงินเก็บอิสระ ไม่นับรวมใน Total Savings จนกว่าจะบรรลุ 100%</p>
+      <p style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:14px; font-family:var(--font-mono);" id="txtRocketNotice">*ระบบ Cloud Rocket แยกเงินเก็บอิสระ ไม่นับรวมใน Total Savings จนกว่าจะบรรลุ 100%</p>
       <div id="goalsContainer"></div>
       
-      <h4 style="font-family:var(--font-mono); font-size:0.82rem; margin: 20px 0 10px 0; color:var(--text-secondary);">// COMPLETED ROCKET HISTORY</h4>
+      <h4 style="font-family:var(--font-mono); font-size:0.82rem; margin: 20px 0 10px 0; color:var(--text-secondary);" id="titleCompletedHistory">// COMPLETED ROCKET HISTORY</h4>
       <div id="goalHistoryContainer"></div>
     </section>
 
     <!-- 6. SAVING PLAN VIEW -->
     <section id="viewSavingPlan" class="view-section">
-      <h3 style="margin-bottom:12px; font-family:var(--font-mono);">// TARGET CALCULATION ENGINE</h3>
+      <h3 style="margin-bottom:12px; font-family:var(--font-mono);" id="titleSavingPlan">// TARGET CALCULATION ENGINE</h3>
       <div class="form-group">
-        <label>TARGET AMOUNT (THB):</label>
+        <label id="lblTargetAmt">TARGET AMOUNT (THB):</label>
         <input type="number" id="planTargetAmount" class="form-control" placeholder="100000" oninput="app.calculateSavingPlan()">
       </div>
       <div class="form-group">
-        <label>DURATION (DAYS):</label>
+        <label id="lblPlanDays">DURATION (DAYS):</label>
         <input type="number" id="planDays" class="form-control" placeholder="365" oninput="app.calculateSavingPlan()">
       </div>
       <div id="planResultContainer" style="margin-top:14px;"></div>
@@ -804,18 +803,18 @@
 
     <!-- 7. ANALYSIS VIEW -->
     <section id="viewAnalysis" class="view-section">
-      <h3 style="margin-bottom:12px; font-family:var(--font-mono);">// ANALYTICS ENGINE</h3>
+      <h3 style="margin-bottom:12px; font-family:var(--font-mono);" id="titleAnalytics">// ANALYTICS ENGINE</h3>
       <div id="analysisContainer"></div>
     </section>
 
-    <!-- 8. AI SAVING 6.0 VIEW -->
+    <!-- 8. AI SAVING 8.0 VIEW -->
     <section id="viewAiSaving" class="view-section">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <h3 style="font-family:var(--font-mono);">// AI ENGINE 6.0</h3>
-        <button class="btn-quick-amt" style="color:var(--danger); border-color:var(--danger);" onclick="app.logout()">TERMINATE SESSION</button>
+        <h3 style="font-family:var(--font-mono);">// AI ENGINE 8.0</h3>
+        <button class="btn-quick-amt" style="color:var(--danger); border-color:var(--danger);" onclick="app.logout()" id="btnTerminate">TERMINATE SESSION</button>
       </div>
       <div class="chat-box" id="aiSavingChatBox">
-        <div class="chat-msg ai">[AI_CORE]: พร้อมประมวลผลข้อมูลการเงินของคุณ เลือกรอบการวิเคราะห์ด้านล่าง</div>
+        <div class="chat-msg ai">[AI_8.0_CORE]: พร้อมประมวลผลข้อมูลการเงินของคุณ เลือกรอบการวิเคราะห์ด้านล่าง</div>
       </div>
       <div class="ai-action-grid">
         <button class="ai-btn-option" onclick="app.askAiSaving('วิเคราะห์การออมรอบด้าน')">📊 วิเคราะห์การออมรอบด้าน</button>
@@ -826,34 +825,34 @@
 
     <!-- 9. AI HELP CENTER VIEW -->
     <section id="viewAiHelp" class="view-section">
-      <h3 style="font-family:var(--font-mono);">// DC HELP & SYSTEM SERVICES</h3>
-      <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:14px; font-family:var(--font-mono);">Direct Terminal Support</p>
+      <h3 style="font-family:var(--font-mono);" id="titleAiHelp">// DC HELP & SYSTEM SERVICES</h3>
+      <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:14px; font-family:var(--font-mono);" id="txtDirectSupport">Direct Terminal Support</p>
       
       <div class="ai-action-grid">
-        <button class="ai-btn-option" onclick="app.handleForgotCredentials()">1. รีเซ็ตรหัสผ่าน / ชื่อผู้ใช้ (1 ครั้ง/วัน)</button>
-        <button class="ai-btn-option" onclick="app.openAiVoiceSettings()">2. ตั้งค่าเสียงภาษา AI Voice (เลือกเสียงระบบ)</button>
-        <button class="ai-btn-option" onclick="app.openSoundSettings()">3. ตั้งค่าความถี่เสียงแจ้งเตือน (10 Tones)</button>
-        <button class="ai-btn-option" style="color:var(--danger);" onclick="app.handlePurgeAllData()">4. PURGE ALL DATA (นับถอยหลัง 30 วิ)</button>
+        <button class="ai-btn-option" onclick="app.handleForgotCredentials()" id="optForgotCred">1. รีเซ็ตรหัสผ่าน / ชื่อผู้ใช้ (1 ครั้ง/วัน)</button>
+        <button class="ai-btn-option" onclick="app.openAiVoiceSettings()" id="optVoiceSettings">2. ตั้งค่าเสียงภาษา AI Voice (เลือกเสียงระบบ)</button>
+        <button class="ai-btn-option" onclick="app.openSoundSettings()" id="optToneSettings">3. ตั้งค่าความถี่เสียงแจ้งเตือน (10 Tones)</button>
+        <button class="ai-btn-option" style="color:var(--danger);" onclick="app.handlePurgeAllData()" id="optPurgeData">4. PURGE ALL DATA (นับถอยหลัง 30 วิ)</button>
       </div>
       <div id="aiHelpOutput" style="margin-top:14px;"></div>
     </section>
 
     <!-- 10. SAVING CALENDAR VIEW -->
     <section id="viewCalendar" class="view-section">
-      <h3 style="margin-bottom:12px; font-family:var(--font-mono);">// SAVINGS AUDIT CALENDAR</h3>
+      <h3 style="margin-bottom:12px; font-family:var(--font-mono);" id="titleCalendar">// SAVINGS AUDIT CALENDAR</h3>
       <div id="calendarContainer"></div>
     </section>
 
     <!-- 11. RANK DETAILS VIEW -->
     <section id="viewRankDetails" class="view-section">
-      <h3 style="font-family:var(--font-mono);">// SECURITY RANKS</h3>
-      <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:12px; font-family:var(--font-mono);">คำนวณจากยอดออมจริงและ Uptime Streak</p>
+      <h3 style="font-family:var(--font-mono);" id="titleRanks">// SECURITY RANKS</h3>
+      <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:12px; font-family:var(--font-mono);" id="txtRanksCriteria">คำนวณจากยอดออมจริงและ Uptime Streak</p>
       <div id="rankDetailsList"></div>
     </section>
 
     <!-- 12. CATEGORY SETTINGS VIEW -->
     <section id="viewCategorySettings" class="view-section">
-      <h3 style="font-family:var(--font-mono);">// CATEGORY REGISTRY</h3>
+      <h3 style="font-family:var(--font-mono);" id="titleCatRegistry">// CATEGORY REGISTRY</h3>
       <div style="display:flex; gap:6px; margin: 10px 0;">
         <input type="text" id="newCategoryInput" class="form-control" placeholder="ชื่อหมวดหมู่ใหม่">
         <button class="btn-primary" style="width:80px;" onclick="app.addCategory()">เพิ่ม</button>
@@ -863,30 +862,30 @@
 
     <!-- 13. MORE MENU VIEW -->
     <section id="viewMoreMenu" class="view-section">
-      <h3 style="margin-bottom:16px; font-family:var(--font-mono);">// SYSTEM MODULES</h3>
+      <h3 style="margin-bottom:16px; font-family:var(--font-mono);" id="titleMoreModules">// SYSTEM MODULES</h3>
       <div class="ai-action-grid">
         <button class="ai-btn-option" onclick="app.navigate('viewHistory')">
-          <span>ประวัติรายการออม (Saving History)</span>
+          <span id="moreHistory">ประวัติรายการออม (Saving History)</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="ai-btn-option" onclick="app.navigate('viewSavingPlan')">
-          <span>คำนวณแผนการออม (Saving Plan Engine)</span>
+          <span id="morePlan">คำนวณแผนการออม (Saving Plan Engine)</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="ai-btn-option" onclick="app.navigate('viewCalendar')">
-          <span>ปฏิทินการออม (Audit Calendar)</span>
+          <span id="moreCalendar">ปฏิทินการออม (Audit Calendar)</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="ai-btn-option" onclick="app.navigate('viewRankDetails')">
-          <span>เกียรติประวัติ (Saving Rank)</span>
+          <span id="moreRank">เกียรติประวัติ (Saving Rank)</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="ai-btn-option" onclick="app.navigate('viewCategorySettings')">
-          <span>หมวดหมู่บันทึก (Categories)</span>
+          <span id="moreCat">หมวดหมู่บันทึก (Categories)</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="ai-btn-option" onclick="app.navigate('viewAiHelp')">
-          <span>ศูนย์บริการ AI & ระบบช่วยเหลือ</span>
+          <span id="moreHelp">ศูนย์บริการ AI & ระบบช่วยเหลือ</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </div>
@@ -898,23 +897,23 @@
   <nav class="bottom-nav" id="bottomNav" style="display:none;">
     <button class="nav-btn active" onclick="app.navigate('viewDashboard')">
       <svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      <span>HOME</span>
+      <span id="navHome">HOME</span>
     </button>
     <button class="nav-btn" onclick="app.navigate('viewAddSaving')">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-      <span>SAVE</span>
+      <span id="navSave">SAVE</span>
     </button>
     <button class="nav-btn" onclick="app.navigate('viewGoals')">
       <svg viewBox="0 0 24 24"><polygon points="12 2 19 21 12 17 5 21 12 2"/></svg>
-      <span>ROCKET</span>
+      <span id="navRocket">ROCKET</span>
     </button>
     <button class="nav-btn" onclick="app.navigate('viewAnalysis')">
       <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
-      <span>STATS</span>
+      <span id="navStats">STATS</span>
     </button>
     <button class="nav-btn" onclick="app.navigate('viewMoreMenu')">
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
-      <span>MORE</span>
+      <span id="navMore">MORE</span>
     </button>
   </nav>
 
@@ -923,14 +922,117 @@
 <script>
 /**
  * SmartSave Banking - Client Core Module ES2025+
- * Data Center & Clicx 2026 Edition v9.0
+ * Data Center & Clicx 2026 Edition v11.0 // AI 8.0 Engine & Cloud Rocket
  */
 
 const CONFIG = {
   GAS_ENDPOINT: 'https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec',
-  DB_NAME: 'SmartSaveBankDB_v90_CLICX',
-  VERSION: '9.0.0-PRO',
+  DB_NAME: 'SmartSaveBankDB_v110_CLICX',
+  VERSION: '11.0.0-PRO',
   CACHE_LIMIT_BYTES: 5 * 1024 * 1024 * 1024
+};
+
+const I18N = {
+  TH: {
+    totalReserve: 'Total Reserve Fund (THB)',
+    executeSaving: 'บันทึกเงินออม (EXECUTE SAVING)',
+    quickRouting: '// QUICK ROUTING',
+    favSave: 'ออมเงิน',
+    favRocket: 'Rocket',
+    favPlan: 'แผนออม',
+    favStats: 'วิเคราะห์',
+    secRank: 'SECURITY RANK',
+    uptimeStreak: 'UPTIME STREAK',
+    titleAddSaving: '// TRANSACTION ENTRY',
+    amount: 'AMOUNT (THB ONLY)',
+    type: 'SAVING TYPE',
+    category: 'CATEGORY',
+    wallet: 'WALLET IDENTIFIER',
+    timestamp: 'TIMESTAMP',
+    note: 'NOTE / DESCRIPTION',
+    commitRecord: 'COMMIT RECORD',
+    titleHistory: '// TRANSACTION AUDIT LOG',
+    titleRocketGoals: '// CLOUD ROCKET GOALS',
+    rocketNotice: '*ระบบ Cloud Rocket แยกเงินเก็บอิสระ ไม่นับรวมใน Total Savings จนกว่าจะบรรลุ 100%',
+    completedHistory: '// COMPLETED ROCKET HISTORY',
+    titleSavingPlan: '// TARGET CALCULATION ENGINE',
+    targetAmt: 'TARGET AMOUNT (THB):',
+    planDays: 'DURATION (DAYS):',
+    titleAnalytics: '// ANALYTICS ENGINE',
+    titleAiHelp: '// DC HELP & SYSTEM SERVICES',
+    directSupport: 'Direct Terminal Support',
+    forgotCred: '1. รีเซ็ตรหัสผ่าน / ชื่อผู้ใช้ (1 ครั้ง/วัน)',
+    voiceSettings: '2. ตั้งค่าเสียงภาษา AI Voice (เลือกเสียงระบบ)',
+    toneSettings: '3. ตั้งค่าความถี่เสียงแจ้งเตือน (10 Tones)',
+    purgeData: '4. PURGE ALL DATA (นับถอยหลัง 30 วิ)',
+    titleCalendar: '// SAVINGS AUDIT CALENDAR',
+    titleRanks: '// SECURITY RANKS',
+    ranksCriteria: 'คำนวณจากยอดออมจริงและ Uptime Streak',
+    titleCatRegistry: '// CATEGORY REGISTRY',
+    titleMoreModules: '// SYSTEM MODULES',
+    moreHistory: 'ประวัติรายการออม (Saving History)',
+    morePlan: 'คำนวณแผนการออม (Saving Plan Engine)',
+    moreCalendar: 'ปฏิทินการออม (Audit Calendar)',
+    moreRank: 'เกียรติประวัติ (Saving Rank)',
+    moreCat: 'หมวดหมู่บันทึก (Categories)',
+    moreHelp: 'ศูนย์บริการ AI & ระบบช่วยเหลือ',
+    navHome: 'HOME',
+    navSave: 'SAVE',
+    navRocket: 'ROCKET',
+    navStats: 'STATS',
+    navMore: 'MORE',
+    terminate: 'TERMINATE SESSION'
+  },
+  EN: {
+    totalReserve: 'Total Savings Vault (THB)',
+    executeSaving: 'COMMIT SAVING RECORD',
+    quickRouting: '// INSTANT SHORTCUTS',
+    favSave: 'Save',
+    favRocket: 'Rockets',
+    favPlan: 'Plan',
+    favStats: 'Analytics',
+    secRank: 'STABILITY RANK',
+    uptimeStreak: 'SAVING STREAK',
+    titleAddSaving: '// COMMIT NEW TRANSACTION',
+    amount: 'AMOUNT (THB ONLY)',
+    type: 'SAVING STRATEGY TYPE',
+    category: 'ALLOCATION CATEGORY',
+    wallet: 'STORAGE VAULT',
+    timestamp: 'RECORD TIMESTAMP',
+    note: 'AUDIT DESCRIPTION',
+    commitRecord: 'CONFIRM & COMMIT',
+    titleHistory: '// AUDIT LOG TRAIL',
+    titleRocketGoals: '// CLOUD ROCKET ISOLATED GOALS',
+    rocketNotice: '*Cloud Rocket goals maintain isolated funds and are excluded from Total Savings until 100% completed.',
+    completedHistory: '// MISSION ARCHIVES',
+    titleSavingPlan: '// PLAN GENERATION ENGINE',
+    targetAmt: 'TARGET VALUE (THB):',
+    planDays: 'HORIZON (DAYS):',
+    titleAnalytics: '// QUANT ANALYTICS SUITE',
+    titleAiHelp: '// AI 8.0 SUPPORT MATRIX',
+    directSupport: 'Automated Operations Hub',
+    forgotCred: '1. Reset Credentials (Once/Day)',
+    voiceSettings: '2. Configure AI Voice Persona & Lang',
+    toneSettings: '3. Beacon Tone Frequency (10 Tones)',
+    purgeData: '4. PURGE ALL RECORDS (30s Timeout)',
+    titleCalendar: '// AUDIT TIMELINE CALENDAR',
+    titleRanks: '// STABILITY LEVEL HIERARCHY',
+    ranksCriteria: 'Calculated via real committed funds and streak continuity.',
+    titleCatRegistry: '// CATEGORY DIRECTORY',
+    titleMoreModules: '// ADVANCED SYSTEM MODULES',
+    moreHistory: 'Transaction Audit Trail',
+    morePlan: 'Savings Calculation Engine',
+    moreCalendar: 'Audit Frequency Calendar',
+    moreRank: 'Rank Milestones',
+    moreCat: 'Category Directory',
+    moreHelp: 'AI 8.0 Operations & Support',
+    navHome: 'HOME',
+    navSave: 'SAVE',
+    navRocket: 'ROCKET',
+    navStats: 'STATS',
+    navMore: 'MORE',
+    terminate: 'END SESSION'
+  }
 };
 
 class SmartSaveApp {
@@ -940,7 +1042,7 @@ class SmartSaveApp {
     this.categories = ['เงินสำรองฉุกเฉิน', 'พอร์ตลงทุนสินทรัพย์', 'กองทุนสำรองเกษียณ', 'ออมรายวันสภาพคล่อง'];
     this.selectedAudioTone = 1;
     this.currentLanguage = localStorage.getItem('SMARTSAVE_LANG') || 'TH';
-    this.selectedAiVoiceIndex = parseInt(localStorage.getItem('SMARTSAVE_VOICE_IDX') || '0');
+    this.selectedAiVoiceName = localStorage.getItem('SMARTSAVE_VOICE_NAME') || '';
     this.speechSynthesis = window.speechSynthesis || null;
     this.init();
   }
@@ -955,7 +1057,7 @@ class SmartSaveApp {
     this.loadSession();
     this.renderRankList();
     this.calculateSavingPlan();
-    document.getElementById('langText').innerText = this.currentLanguage;
+    this.applyLanguageUI();
   }
 
   checkSundayLock() {
@@ -1037,6 +1139,68 @@ class SmartSaveApp {
     document.getElementById('btnCaptureKyc').addEventListener('click', () => this.captureKycPhoto());
   }
 
+  applyLanguageUI() {
+    const dict = I18N[this.currentLanguage] || I18N.TH;
+    document.getElementById('langText').innerText = this.currentLanguage;
+    
+    // UI Label sync
+    const elMap = {
+      lblTotalSavings: dict.totalReserve,
+      btnTxtAddSaving: dict.executeSaving,
+      lblQuickRouting: dict.quickRouting,
+      favSave: dict.favSave,
+      favRocket: dict.favRocket,
+      favPlan: dict.favPlan,
+      favStats: dict.favStats,
+      lblSecRank: dict.secRank,
+      lblUptimeStreak: dict.uptimeStreak,
+      titleAddSaving: dict.titleAddSaving,
+      lblAmount: dict.amount,
+      lblType: dict.type,
+      lblCat: dict.category,
+      lblWallet: dict.wallet,
+      lblTime: dict.timestamp,
+      lblNote: dict.note,
+      btnCommitRecord: dict.commitRecord,
+      titleHistory: dict.titleHistory,
+      titleRocketGoals: dict.titleRocketGoals,
+      txtRocketNotice: dict.rocketNotice,
+      titleCompletedHistory: dict.completedHistory,
+      titleSavingPlan: dict.titleSavingPlan,
+      lblTargetAmt: dict.targetAmt,
+      lblPlanDays: dict.planDays,
+      titleAnalytics: dict.titleAnalytics,
+      titleAiHelp: dict.titleAiHelp,
+      txtDirectSupport: dict.directSupport,
+      optForgotCred: dict.forgotCred,
+      optVoiceSettings: dict.voiceSettings,
+      optToneSettings: dict.toneSettings,
+      optPurgeData: dict.purgeData,
+      titleCalendar: dict.titleCalendar,
+      titleRanks: dict.titleRanks,
+      txtRanksCriteria: dict.ranksCriteria,
+      titleCatRegistry: dict.titleCatRegistry,
+      titleMoreModules: dict.titleMoreModules,
+      moreHistory: dict.moreHistory,
+      morePlan: dict.morePlan,
+      moreCalendar: dict.moreCalendar,
+      moreRank: dict.moreRank,
+      moreCat: dict.moreCat,
+      moreHelp: dict.moreHelp,
+      navHome: dict.navHome,
+      navSave: dict.navSave,
+      navRocket: dict.navRocket,
+      navStats: dict.navStats,
+      navMore: dict.navMore,
+      btnTerminate: dict.terminate
+    };
+
+    for (let id in elMap) {
+      const el = document.getElementById(id);
+      if (el) el.innerText = elMap[id];
+    }
+  }
+
   async startKycCamera() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
@@ -1086,7 +1250,7 @@ class SmartSaveApp {
       };
       localStorage.setItem('SMARTSAVE_USER', JSON.stringify(user));
       this.currentUser = user;
-      this.speakAi('ลงทะเบียนและเข้าสู่ระบบสำเร็จ');
+      this.speakAi(this.currentLanguage === 'TH' ? 'ลงทะเบียนและเข้าสู่ระบบสำเร็จ' : 'Node initialization and authentication successful');
       this.loginSuccess();
     } else {
       const stored = localStorage.getItem('SMARTSAVE_USER');
@@ -1094,7 +1258,7 @@ class SmartSaveApp {
         const user = JSON.parse(stored);
         if (user.username === u && user.passwordHash === btoa(p)) {
           this.currentUser = user;
-          this.speakAi('เข้าสู่ระบบสำเร็จ');
+          this.speakAi(this.currentLanguage === 'TH' ? 'เข้าสู่ระบบสำเร็จ' : 'Terminal authentication verified');
           this.loginSuccess();
           return;
         }
@@ -1121,7 +1285,7 @@ class SmartSaveApp {
 
   logout() {
     if (confirm('ยืนยันตัดการเชื่อมต่อ Terminal Session?')) {
-      this.speakAi('ออกจากระบบเรียบร้อย');
+      this.speakAi(this.currentLanguage === 'TH' ? 'ออกจากระบบเรียบร้อย' : 'Terminal session ended');
       this.currentUser = null;
       document.getElementById('appHeader').style.display = 'none';
       document.getElementById('bottomNav').style.display = 'none';
@@ -1181,7 +1345,9 @@ class SmartSaveApp {
     dbTx.objectStore(targetStore).add(tx);
 
     this.playNotificationSound();
-    const msg = `บันทึกเงินออม ${this.formatCurrency(amount)} หมวดหมู่ ${category} สำเร็จ`;
+    const msg = this.currentLanguage === 'TH' 
+      ? `บันทึกเงินออม ${this.formatCurrency(amount)} หมวดหมู่ ${category} สำเร็จ`
+      : `Committed ${this.formatCurrency(amount)} under ${category}`;
     this.updateNotificationFeed(`[TRANSACTION_COMMITTED]: ${this.formatCurrency(amount)} // ${category}`);
     this.speakAi(msg);
 
@@ -1193,7 +1359,7 @@ class SmartSaveApp {
     this.navigate('viewDashboard');
   }
 
-  // --- CLOUD ROCKET GOAL SYSTEM ---
+  // --- CLOUD ROCKET GOALS ---
   openAddGoalPrompt() {
     const name = prompt('ชื่อเป้าหมาย Rocket Goal:');
     const target = parseFloat(prompt('จำนวนเงินเป้าหมาย (บาท):'));
@@ -1212,7 +1378,7 @@ class SmartSaveApp {
       };
       const tx = this.db.transaction('goals', 'readwrite');
       tx.objectStore('goals').add(goal);
-      this.speakAi(`สร้างเป้าหมาย ${name} วงเงิน ${target} บาท เรียบร้อย`);
+      this.speakAi(this.currentLanguage === 'TH' ? `สร้างเป้าหมาย ${name} วงเงิน ${target} บาท เรียบร้อย` : `Created Rocket Goal ${name} target ${target} Baht`);
       this.renderGoals();
     }
   }
@@ -1252,12 +1418,12 @@ class SmartSaveApp {
         tx.objectStore('goals').put(goal);
         tx.objectStore('savings').add(completionTx);
 
-        this.speakAi(`ยินดีด้วย! เป้าหมาย ${goal.name} บรรลุหนึ่งร้อยเปอร์เซ็นต์เรียบร้อยแล้ว`);
+        this.speakAi(this.currentLanguage === 'TH' ? `ยินดีด้วย! เป้าหมาย ${goal.name} บรรลุหนึ่งร้อยเปอร์เซ็นต์เรียบร้อยแล้ว` : `Congratulations! Rocket Goal ${goal.name} reached 100% completion.`);
         alert(`เป้าหมาย "${goal.name}" บรรลุ 100%! บันทึกเข้าสู่ประวัติการออมเรียบร้อย`);
       } else {
         const tx = this.db.transaction('goals', 'readwrite');
         tx.objectStore('goals').put(goal);
-        this.speakAi(`เพิ่มเงิน ${amt} บาท เข้าเป้าหมาย ${goal.name} สำเร็จ`);
+        this.speakAi(this.currentLanguage === 'TH' ? `เพิ่มเงิน ${amt} บาท เข้าเป้าหมาย ${goal.name} สำเร็จ` : `Added ${amt} Baht to ${goal.name}`);
       }
       this.refreshAllData();
     }
@@ -1270,7 +1436,9 @@ class SmartSaveApp {
       goal.isLocked = !goal.isLocked;
       const tx = this.db.transaction('goals', 'readwrite');
       tx.objectStore('goals').put(goal);
-      this.speakAi(goal.isLocked ? `ล็อกเป้าหมาย ${goal.name} แล้ว` : `ปลดล็อกเป้าหมาย ${goal.name} แล้ว`);
+      this.speakAi(goal.isLocked 
+        ? (this.currentLanguage === 'TH' ? `ล็อกเป้าหมาย ${goal.name} แล้ว` : `Locked ${goal.name}`) 
+        : (this.currentLanguage === 'TH' ? `ปลดล็อกเป้าหมาย ${goal.name} แล้ว` : `Unlocked ${goal.name}`));
       this.renderGoals();
     }
   }
@@ -1279,7 +1447,7 @@ class SmartSaveApp {
     if (confirm('ยืนยันการลบเป้าหมาย Cloud Rocket นี้หรือไม่?')) {
       const tx = this.db.transaction('goals', 'readwrite');
       tx.objectStore('goals').delete(goalId);
-      this.speakAi('ลบเป้าหมายเรียบร้อย');
+      this.speakAi(this.currentLanguage === 'TH' ? 'ลบเป้าหมายเรียบร้อย' : 'Deleted Rocket Goal');
       this.renderGoals();
     }
   }
@@ -1338,7 +1506,7 @@ class SmartSaveApp {
     }
   }
 
-  // --- AI SPEECH ENGINE ---
+  // --- AI 8.0 & SPEECH SYNTHESIS ENGINE ---
   speakAi(text) {
     if (!this.speechSynthesis) return;
     try {
@@ -1346,8 +1514,9 @@ class SmartSaveApp {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = this.currentLanguage === 'TH' ? 'th-TH' : 'en-US';
       const voices = this.speechSynthesis.getVoices();
-      if (voices.length > 0 && voices[this.selectedAiVoiceIndex]) {
-        utterance.voice = voices[this.selectedAiVoiceIndex];
+      if (this.selectedAiVoiceName) {
+        const found = voices.find(v => v.name === this.selectedAiVoiceName);
+        if (found) utterance.voice = found;
       }
       utterance.rate = 1.0;
       utterance.pitch = 1.0;
@@ -1362,27 +1531,26 @@ class SmartSaveApp {
     const voices = this.speechSynthesis.getVoices();
     if (voices.length === 0) return alert('ไม่พบเสียง AI ที่ติดตั้งในอุปกรณ์');
 
-    let menuStr = 'เลือกเสียง AI Speech Voice:\n';
-    voices.slice(0, 10).forEach((v, idx) => {
+    let menuStr = 'เลือกเสียง AI Speech Voice Persona:\n';
+    voices.slice(0, 12).forEach((v, idx) => {
       menuStr += `${idx + 1}. ${v.name} (${v.lang})\n`;
     });
 
-    const choice = prompt(menuStr, this.selectedAiVoiceIndex + 1);
+    const choice = prompt(menuStr, '1');
     const idx = parseInt(choice) - 1;
     if (idx >= 0 && idx < voices.length) {
-      this.selectedAiVoiceIndex = idx;
-      localStorage.setItem('SMARTSAVE_VOICE_IDX', idx);
-      this.speakAi('ทดสอบการออกเสียง AI Voice สำเร็จ');
+      this.selectedAiVoiceName = voices[idx].name;
+      localStorage.setItem('SMARTSAVE_VOICE_NAME', this.selectedAiVoiceName);
+      this.speakAi(this.currentLanguage === 'TH' ? 'ทดสอบการออกเสียง AI Voice สำเร็จ' : 'AI Voice configured successfully');
       alert(`เลือกเสียง ${voices[idx].name} เรียบร้อย`);
     }
   }
 
   handleLanguageToggle() {
     this.currentLanguage = this.currentLanguage === 'TH' ? 'EN' : 'TH';
-    document.getElementById('langText').innerText = this.currentLanguage;
     localStorage.setItem('SMARTSAVE_LANG', this.currentLanguage);
-    this.speakAi(this.currentLanguage === 'TH' ? 'สลับเป็นภาษาไทยเรียบร้อย' : 'Switched to English');
-    alert(`Language switched to ${this.currentLanguage}`);
+    this.applyLanguageUI();
+    this.speakAi(this.currentLanguage === 'TH' ? 'สลับเป็นภาษาไทยเรียบร้อย' : 'Switched to English interface');
   }
 
   updateNotificationFeed(msg) {
@@ -1480,7 +1648,7 @@ class SmartSaveApp {
     container.innerHTML = `
       <div class="status-card" style="margin-bottom:8px; display:block; font-family:var(--font-mono);">
         <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-          <span>TOTAL RESERVE:</span>
+          <span>TOTAL COMMITTED:</span>
           <strong>${this.formatCurrency(total)}</strong>
         </div>
         <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
@@ -1538,11 +1706,11 @@ class SmartSaveApp {
     setTimeout(() => {
       let reply = '';
       if (topic.includes('วิเคราะห์การออมรอบด้าน')) {
-        reply = '[AI_6.0_AUDIT]: ตรวจสอบข้อมูล Node สม่ำเสมอ ไม่พบความเสี่ยงด้านวินัย แนะนำจัดสรรเงิน 20% เพื่อต่อยอดการลงทุนสินทรัพย์ปลอดภัย';
+        reply = '[AI_8.0_AUDIT]: วิเคราะห์ข้อมูลเสร็จสิ้น วินัยการออมมีความต่อเนื่องในเกณฑ์ดีเยี่ยม แนะนำกันเงินออม 20% เพื่อต่อยอดการลงทุนสินทรัพย์มั่นคง';
       } else if (topic.includes('วันนี้ควรออมเท่าไร')) {
-        reply = '[AI_6.0_RECOMMEND]: เพื่อรักษาระดับ Uptime Streak แนะนำ Commit ยอดออมขั้นต่ำ ฿100 - ฿200 ในวันนี้';
+        reply = '[AI_8.0_RECOMMEND]: เพื่อรักษาระดับ Uptime Streak ให้ต่อเนื่อง แนะนำจัดสรรเงินออมขั้นต่ำ ฿100 - ฿200 ในวันนี้';
       } else {
-        reply = '[AI_6.0_STREAK]: ระบบประเมินความต่อเนื่องของ Node อยู่ในเกณฑ์ระดับเสถียรภาพสูง';
+        reply = '[AI_8.0_STREAK]: ระบบประเมินค่าความสม่ำเสมอของ Node อยู่ในระดับเสถียรภาพสูง ปราศจากความเสี่ยง';
       }
       box.innerHTML += `<div class="chat-msg ai">${reply}</div>`;
       box.scrollTop = box.scrollHeight;
@@ -1580,7 +1748,7 @@ class SmartSaveApp {
       let sec = 30;
       const helpOut = document.getElementById('aiHelpOutput');
       helpOut.innerHTML = `<p style="color:var(--danger); font-weight:bold; font-family:var(--font-mono);">[PURGE_IN_PROGRESS]: กำลังทำลายข้อมูลใน <span id="countdown">${sec}</span>s...</p>`;
-      this.speakAi('ระบบกำลังทำลายข้อมูลทั้งหมดภายในสามสิบวินาที');
+      this.speakAi(this.currentLanguage === 'TH' ? 'ระบบกำลังทำลายข้อมูลทั้งหมดภายในสามสิบวินาที' : 'Purging all node data in thirty seconds');
       
       const timer = setInterval(() => {
         sec--;
