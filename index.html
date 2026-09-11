@@ -3,48 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking v7.0 — Data Center & Cloud Rocket</title>
-  <meta name="theme-color" content="#030712">
+  <title>SmartSave Banking v9.0 — Clicx & Data Center 2026</title>
+  <meta name="theme-color" content="#020617">
   <style>
     :root {
-      --bg: #030712;
+      --bg: #020617;
       --surface: #0b1329;
-      --surface-secondary: #111e38;
+      --surface-secondary: #132247;
       --surface-glass: rgba(11, 19, 41, 0.94);
-      --primary: #0284c7;
-      --primary-soft: rgba(2, 132, 199, 0.15);
+      --primary: #0ea5e9;
+      --primary-soft: rgba(14, 165, 233, 0.14);
       --primary-glow: #38bdf8;
-      --text: #f0f6fc;
-      --text-secondary: #859bb5;
-      --border: #1e3a5f;
-      --border-focus: #0284c7;
-      --border-grid: rgba(30, 58, 95, 0.35);
+      --accent-cyan: #06b6d4;
+      --text: #f8fafc;
+      --text-secondary: #94a3b8;
+      --border: #1e293b;
+      --border-focus: #0ea5e9;
+      --border-grid: rgba(30, 41, 59, 0.5);
       --success: #10b981;
       --warning: #f59e0b;
-      --danger: #f43f5e;
-      --card-gradient: linear-gradient(145deg, #0f274a 0%, #061224 100%);
-      --radius-sm: 6px;
-      --radius-md: 10px;
-      --radius-lg: 16px;
+      --danger: #ef4444;
+      --card-gradient: linear-gradient(135deg, #0c2340 0%, #030d1e 100%);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
       --safe-bottom: env(safe-area-inset-bottom, 16px);
       --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Prompt", sans-serif;
-      --font-mono: "SF Mono", "Fira Code", Menlo, monospace;
+      --font-mono: "SF Mono", "Fira Code", monospace;
     }
 
     [data-theme="light"] {
-      --bg: #f0f4f8;
+      --bg: #f8fafc;
       --surface: #ffffff;
-      --surface-secondary: #e2e8f0;
+      --surface-secondary: #f1f5f9;
       --surface-glass: rgba(255, 255, 255, 0.96);
       --primary: #0284c7;
       --primary-soft: rgba(2, 132, 199, 0.08);
       --primary-glow: #0284c7;
-      --text: #0b1329;
-      --text-secondary: #5a718c;
-      --border: #cbd5e1;
+      --text: #0f172a;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
       --border-focus: #0284c7;
-      --border-grid: rgba(203, 213, 225, 0.6);
-      --card-gradient: linear-gradient(145deg, #e0f2fe 0%, #bae6fd 100%);
+      --border-grid: rgba(226, 232, 240, 0.6);
+      --card-gradient: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
     }
 
     * {
@@ -80,6 +81,7 @@
       border-right: 1px solid var(--border);
     }
 
+    /* Top Bar */
     .top-bar {
       height: 64px;
       padding: 0 16px;
@@ -90,14 +92,14 @@
       top: 0;
       z-index: 50;
       background: var(--surface-glass);
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
 
     .dc-node-info {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .status-beacon {
@@ -115,14 +117,14 @@
     }
 
     .user-greeting h4 {
-      font-size: 0.88rem;
+      font-size: 0.92rem;
       font-weight: 700;
       letter-spacing: -0.3px;
       font-family: var(--font-mono);
     }
 
     .user-greeting p {
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       color: var(--text-secondary);
       font-family: var(--font-mono);
     }
@@ -142,8 +144,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: var(--radius-sm);
       transition: background 0.2s, border-color 0.2s;
     }
@@ -157,60 +159,61 @@
     }
 
     .view-section { display: none; }
-    .view-section.active { display: block; animation: terminalIn 0.2s ease-out; }
+    .view-section.active { display: block; animation: terminalIn 0.22s ease-out; }
 
     @keyframes terminalIn {
-      from { opacity: 0; transform: translateY(4px); }
+      from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Main Balance Card */
+    /* Main Balance Card (Clicx 2026 Style) */
     .balance-card {
       background: var(--card-gradient);
       color: #ffffff;
-      padding: 22px;
-      border-radius: var(--radius-md);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      padding: 24px;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
       position: relative;
       overflow: hidden;
-      margin-bottom: 18px;
-      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
     .balance-card::before {
-      content: 'DC_RESERVE // CLOUD_ROCKET_ISOLATED';
+      content: 'CLICX DIGITAL 2026 // VAULT';
       position: absolute;
-      top: 10px;
-      right: 14px;
+      top: 12px;
+      right: 16px;
       font-family: var(--font-mono);
-      font-size: 0.6rem;
-      color: var(--text-secondary);
-      opacity: 0.6;
+      font-size: 0.65rem;
+      color: var(--primary-glow);
+      opacity: 0.8;
+      letter-spacing: 0.5px;
     }
 
     .card-label {
-      font-size: 0.75rem;
-      color: var(--primary-glow);
+      font-size: 0.78rem;
+      color: var(--text-secondary);
       font-family: var(--font-mono);
       margin-bottom: 4px;
       text-transform: uppercase;
     }
 
     .card-balance {
-      font-size: 2.3rem;
+      font-size: 2.35rem;
       font-weight: 800;
       letter-spacing: -0.5px;
       margin-bottom: 16px;
       font-family: var(--font-mono);
       font-variant-numeric: tabular-nums;
       color: #ffffff;
-      text-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+      text-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
     }
 
     .card-meta {
       display: flex;
       justify-content: space-between;
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       border-top: 1px solid rgba(255,255,255,0.12);
       padding-top: 12px;
       font-family: var(--font-mono);
@@ -218,26 +221,26 @@
 
     .btn-main-add {
       width: 100%;
-      height: 50px;
+      height: 52px;
       background: var(--primary);
       color: #fff;
       font-weight: 700;
       font-size: 0.95rem;
       border: 1px solid var(--primary-glow);
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-md);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      margin-bottom: 18px;
-      box-shadow: 0 0 15px rgba(2, 132, 199, 0.4);
+      margin-bottom: 20px;
+      box-shadow: 0 0 18px rgba(14, 165, 233, 0.4);
       transition: all 0.15s;
     }
 
     .btn-main-add:active { transform: scale(0.98); opacity: 0.9; }
 
-    .favorites-container { margin-bottom: 18px; }
+    .favorites-container { margin-bottom: 20px; }
     .section-title {
       font-size: 0.75rem;
       color: var(--text-secondary);
@@ -245,13 +248,13 @@
       text-transform: uppercase;
       font-family: var(--font-mono);
       letter-spacing: 0.5px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .favorites-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 6px;
+      gap: 8px;
     }
 
     .fav-item {
@@ -262,29 +265,29 @@
       background: var(--surface);
       border: 1px solid var(--border);
       padding: 10px 4px;
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-md);
       cursor: pointer;
       transition: all 0.15s;
     }
 
     .fav-item:active { border-color: var(--primary); background: var(--surface-secondary); }
-    .fav-item svg { width: 18px; height: 18px; stroke: var(--primary-glow); }
-    .fav-item span { font-size: 0.65rem; color: var(--text-secondary); font-weight: 500; }
+    .fav-item svg { width: 20px; height: 20px; stroke: var(--primary-glow); }
+    .fav-item span { font-size: 0.68rem; color: var(--text-secondary); font-weight: 500; font-family: var(--font-mono); }
 
     .notif-feed {
       background: var(--surface);
       border: 1px solid var(--border);
       border-left: 3px solid var(--primary-glow);
-      border-radius: var(--radius-sm);
-      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     .notif-text {
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       color: var(--text);
       line-height: 1.4;
       flex: 1;
@@ -292,7 +295,7 @@
     }
 
     .notif-time {
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       color: var(--text-secondary);
       white-space: nowrap;
       font-family: var(--font-mono);
@@ -301,64 +304,64 @@
     .status-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 18px;
+      gap: 12px;
+      margin-bottom: 20px;
     }
 
     .status-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      padding: 12px;
-      border-radius: var(--radius-sm);
+      padding: 14px;
+      border-radius: var(--radius-md);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       cursor: pointer;
     }
 
-    .status-info h4 { font-size: 0.7rem; color: var(--text-secondary); font-family: var(--font-mono); }
-    .status-info p { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-top: 2px; font-family: var(--font-mono); }
+    .status-info h4 { font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono); }
+    .status-info p { font-size: 1rem; font-weight: 700; color: var(--text); margin-top: 2px; font-family: var(--font-mono); }
 
     /* Forms */
-    .form-group { margin-bottom: 14px; }
+    .form-group { margin-bottom: 16px; }
     .form-group label {
       display: block;
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       color: var(--text-secondary);
       font-family: var(--font-mono);
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       text-transform: uppercase;
     }
 
     .form-control {
       width: 100%;
-      height: 46px;
+      height: 48px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 0 12px;
+      padding: 0 14px;
       color: var(--text);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-family: var(--font-mono);
       outline: none;
     }
 
-    .form-control:focus { border-color: var(--border-focus); box-shadow: 0 0 6px var(--primary-soft); }
+    .form-control:focus { border-color: var(--border-focus); box-shadow: 0 0 8px var(--primary-soft); }
 
     .quick-amount-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 6px;
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
     .btn-quick-amt {
       background: var(--surface-secondary);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 8px 0;
+      padding: 10px 0;
       border-radius: var(--radius-sm);
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       font-weight: 600;
       font-family: var(--font-mono);
       cursor: pointer;
@@ -369,11 +372,11 @@
 
     .btn-primary {
       width: 100%;
-      height: 46px;
+      height: 48px;
       background: var(--primary);
       color: #fff;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       border: 1px solid var(--primary-glow);
       border-radius: var(--radius-sm);
       cursor: pointer;
@@ -381,7 +384,7 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      box-shadow: 0 0 10px var(--primary-soft);
+      box-shadow: 0 0 12px var(--primary-soft);
     }
 
     .btn-primary:active { opacity: 0.9; }
@@ -394,10 +397,10 @@
       transform: translateX(-50%);
       width: 100%;
       max-width: 480px;
-      height: calc(56px + var(--safe-bottom));
+      height: calc(60px + var(--safe-bottom));
       padding-bottom: var(--safe-bottom);
       background: var(--surface-glass);
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(16px);
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-around;
@@ -412,7 +415,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 3px;
+      gap: 4px;
       color: var(--text-secondary);
       cursor: pointer;
       flex: 1;
@@ -420,8 +423,8 @@
     }
 
     .nav-btn.active { color: var(--primary-glow); }
-    .nav-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; }
-    .nav-btn span { font-size: 0.65rem; font-family: var(--font-mono); }
+    .nav-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; }
+    .nav-btn span { font-size: 0.68rem; font-family: var(--font-mono); }
 
     .tx-item {
       display: flex;
@@ -429,22 +432,22 @@
       align-items: center;
       background: var(--surface);
       border: 1px solid var(--border);
-      padding: 10px 12px;
-      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
       margin-bottom: 8px;
     }
 
-    .tx-info h5 { font-size: 0.85rem; font-weight: 600; }
-    .tx-info p { font-size: 0.68rem; color: var(--text-secondary); margin-top: 2px; font-family: var(--font-mono); }
-    .tx-amount { font-size: 0.9rem; font-weight: 700; color: var(--success); font-family: var(--font-mono); }
+    .tx-info h5 { font-size: 0.88rem; font-weight: 600; }
+    .tx-info p { font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px; font-family: var(--font-mono); }
+    .tx-amount { font-size: 0.95rem; font-weight: 700; color: var(--success); font-family: var(--font-mono); }
 
     /* Cloud Rocket Goal Card */
     .rocket-goal-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 12px;
-      margin-bottom: 10px;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 12px;
       position: relative;
     }
 
@@ -456,14 +459,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       font-family: var(--font-mono);
     }
 
     .rocket-goal-actions {
       display: flex;
       gap: 6px;
-      margin-top: 8px;
+      margin-top: 10px;
     }
 
     .chat-box {
@@ -472,19 +475,19 @@
       gap: 10px;
       height: 380px;
       overflow-y: auto;
-      padding: 12px;
+      padding: 14px;
       background: var(--surface);
-      border-radius: var(--radius-sm);
-      margin-bottom: 12px;
+      border-radius: var(--radius-md);
+      margin-bottom: 14px;
       border: 1px solid var(--border);
       font-family: var(--font-mono);
     }
 
     .chat-msg {
       max-width: 85%;
-      padding: 10px 12px;
+      padding: 10px 14px;
       border-radius: var(--radius-sm);
-      font-size: 0.78rem;
+      font-size: 0.82rem;
       line-height: 1.45;
     }
 
@@ -504,16 +507,16 @@
     .ai-action-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 6px;
+      gap: 8px;
     }
 
     .ai-btn-option {
       background: var(--surface);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 10px 12px;
+      padding: 12px 14px;
       border-radius: var(--radius-sm);
-      font-size: 0.78rem;
+      font-size: 0.82rem;
       text-align: left;
       cursor: pointer;
       display: flex;
@@ -524,11 +527,11 @@
 
     .camera-container {
       width: 100%;
-      height: 200px;
+      height: 220px;
       background: #000;
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-md);
       overflow: hidden;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -539,20 +542,20 @@
 
     .empty-state {
       text-align: center;
-      padding: 30px 16px;
+      padding: 36px 16px;
       color: var(--text-secondary);
       font-family: var(--font-mono);
-      font-size: 0.8rem;
+      font-size: 0.82rem;
     }
 
     .maintenance-banner {
-      background: rgba(245, 158, 11, 0.1);
+      background: rgba(245, 158, 11, 0.12);
       border: 1px solid var(--warning);
       color: var(--warning);
-      padding: 8px 10px;
+      padding: 10px 12px;
       border-radius: var(--radius-sm);
-      font-size: 0.72rem;
-      margin-bottom: 12px;
+      font-size: 0.76rem;
+      margin-bottom: 14px;
       display: none;
       font-family: var(--font-mono);
     }
@@ -563,9 +566,9 @@
 <div class="app-container">
   <!-- Sunday Maintenance Lock -->
   <div id="sundayLock" style="display:none; position:fixed; inset:0; background:var(--bg); z-index:9999; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px;">
-    <svg width="48" height="48" viewBox="0 0 24 24" stroke="var(--warning)" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    <h3 style="margin: 14px 0 6px 0; font-family:var(--font-mono);">DATA CENTER OFFLINE // SUNDAY</h3>
-    <p style="color:var(--text-secondary); font-size:0.8rem; font-family:var(--font-mono);">ระบบปิดการบันทึกข้อมูลประจำวันอาทิตย์ตามรอบสัปดาห์ (สามารถดูข้อมูลเดิมได้)</p>
+    <svg width="56" height="56" viewBox="0 0 24 24" stroke="var(--warning)" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <h3 style="margin: 16px 0 6px 0; font-family:var(--font-mono);">DATA CENTER OFFLINE // SUNDAY</h3>
+    <p style="color:var(--text-secondary); font-size:0.82rem; font-family:var(--font-mono);">ระบบปิดการบันทึกข้อมูลประจำวันอาทิตย์ตามรอบสัปดาห์ (สามารถดูข้อมูลเดิมได้)</p>
   </div>
 
   <!-- Top App Bar -->
@@ -573,16 +576,16 @@
     <div class="dc-node-info">
       <div class="status-beacon"></div>
       <div class="user-greeting">
-        <h4 id="headerUserName">DC_NODE_USR</h4>
+        <h4 id="headerUserName">CLICX_NODE_USR</h4>
         <p id="headerClock">00:00:00 UTC</p>
       </div>
     </div>
     <div class="top-actions">
-      <button class="icon-btn" id="btnLangToggle" title="Language">
-        <span style="font-size:0.7rem; font-weight:700; font-family:var(--font-mono);" id="langText">TH</span>
+      <button class="icon-btn" id="btnLangToggle" title="Instant Language Switcher">
+        <span style="font-size:0.75rem; font-weight:700; font-family:var(--font-mono);" id="langText">TH</span>
       </button>
       <button class="icon-btn" id="btnRefresh" title="Refresh">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
       </button>
     </div>
   </header>
@@ -597,10 +600,10 @@
 
     <!-- 1. AUTH VIEW -->
     <section id="viewAuth" class="view-section active">
-      <div style="text-align:center; margin: 30px 0 20px 0;">
-        <svg width="44" height="44" viewBox="0 0 24 24" stroke="var(--primary-glow)" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        <h2 style="font-size:1.4rem; margin-top:8px; font-family:var(--font-mono);">SmartSave DC v7.0</h2>
-        <p style="color:var(--text-secondary); font-size:0.75rem; font-family:var(--font-mono);">Cloud Rocket Terminal Edition</p>
+      <div style="text-align:center; margin: 36px 0 24px 0;">
+        <svg width="48" height="48" viewBox="0 0 24 24" stroke="var(--primary-glow)" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <h2 style="font-size:1.5rem; margin-top:8px; font-family:var(--font-mono);">SmartSave v9.0</h2>
+        <p style="color:var(--text-secondary); font-size:0.78rem; font-family:var(--font-mono);">Clicx Digital Save 2026 // Data Center Terminal</p>
       </div>
 
       <div id="authForms">
@@ -639,7 +642,7 @@
         </div>
 
         <button class="btn-primary" id="btnSubmitAuth" style="margin-top:8px;">เข้าสู่ระบบ Terminal</button>
-        <p style="text-align:center; font-size:0.75rem; color:var(--text-secondary); margin-top:14px; cursor:pointer; font-family:var(--font-mono);" id="toggleAuthMode">[ ลงทะเบียน Node ใหม่ + ยืนยันตัวตน ]</p>
+        <p style="text-align:center; font-size:0.78rem; color:var(--text-secondary); margin-top:14px; cursor:pointer; font-family:var(--font-mono);" id="toggleAuthMode">[ ลงทะเบียน Node ใหม่ + ยืนยันตัวตน ]</p>
       </div>
     </section>
 
@@ -655,7 +658,7 @@
       </div>
 
       <button class="btn-main-add" onclick="app.navigate('viewAddSaving')">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
         <span>บันทึกเงินออม (EXECUTE SAVING)</span>
       </button>
 
@@ -669,7 +672,7 @@
           </div>
           <div class="fav-item" onclick="app.navigate('viewGoals')">
             <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
-            <span>Cloud Rocket</span>
+            <span>Rocket</span>
           </div>
           <div class="fav-item" onclick="app.navigate('viewSavingPlan')">
             <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -688,7 +691,7 @@
 
       <!-- Smart Notification Feed -->
       <div class="notif-feed">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary-glow)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary-glow)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
         <div class="notif-text" id="liveNotifMessage">Data Center Node Online. บันทึกและควบคุมข้อมูลเงินออมตามปกติ</div>
         <div class="notif-time" id="liveNotifTime">NOW</div>
       </div>
@@ -696,14 +699,14 @@
       <!-- Streak & Rank -->
       <div class="status-row">
         <div class="status-card" onclick="app.navigate('viewRankDetails')">
-          <svg width="20" height="20" viewBox="0 0 24 24" stroke="var(--primary-glow)" stroke-width="2" fill="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" stroke="var(--primary-glow)" stroke-width="2" fill="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           <div class="status-info">
             <h4>SECURITY RANK</h4>
             <p id="userRankDisplay">Beginner</p>
           </div>
         </div>
         <div class="status-card">
-          <svg width="20" height="20" viewBox="0 0 24 24" stroke="var(--warning)" stroke-width="2" fill="none"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" stroke="var(--warning)" stroke-width="2" fill="none"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
           <div class="status-info">
             <h4>UPTIME STREAK</h4>
             <p id="userStreakDisplay">0 วัน</p>
@@ -714,7 +717,7 @@
 
     <!-- 3. ADD SAVING VIEW -->
     <section id="viewAddSaving" class="view-section">
-      <h3 style="margin-bottom:14px; font-family:var(--font-mono);">// TRANSACTION ENTRY</h3>
+      <h3 style="margin-bottom:16px; font-family:var(--font-mono);">// TRANSACTION ENTRY</h3>
       <form id="formAddSaving" onsubmit="event.preventDefault(); app.handleSaveTransaction();">
         <div class="form-group">
           <label>AMOUNT (THB ONLY)</label>
@@ -765,7 +768,7 @@
 
     <!-- 4. SAVING HISTORY VIEW -->
     <section id="viewHistory" class="view-section">
-      <h3 style="margin-bottom:10px; font-family:var(--font-mono);">// TRANSACTION AUDIT LOG</h3>
+      <h3 style="margin-bottom:12px; font-family:var(--font-mono);">// TRANSACTION AUDIT LOG</h3>
       <div class="form-group">
         <input type="text" id="searchHistory" class="form-control" placeholder="ค้นหาตามโน้ต หรือหมวดหมู่..." oninput="app.filterHistory()">
       </div>
@@ -776,12 +779,12 @@
     <section id="viewGoals" class="view-section">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
         <h3 style="font-family:var(--font-mono);">// CLOUD ROCKET GOALS</h3>
-        <button class="btn-quick-amt" style="padding:4px 10px;" onclick="app.openAddGoalPrompt()">+ NEW ROCKET</button>
+        <button class="btn-quick-amt" style="padding:4px 12px;" onclick="app.openAddGoalPrompt()">+ NEW ROCKET</button>
       </div>
-      <p style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:12px; font-family:var(--font-mono);">*ระบบ Cloud Rocket แยกเงินเก็บอิสระ ไม่นับรวมใน Total Savings จนกว่าจะบรรลุ 100%</p>
+      <p style="font-size:0.72rem; color:var(--text-secondary); margin-bottom:14px; font-family:var(--font-mono);">*ระบบ Cloud Rocket แยกเงินเก็บอิสระ ไม่นับรวมใน Total Savings จนกว่าจะบรรลุ 100%</p>
       <div id="goalsContainer"></div>
       
-      <h4 style="font-family:var(--font-mono); font-size:0.8rem; margin: 18px 0 8px 0; color:var(--text-secondary);">// COMPLETED ROCKET HISTORY</h4>
+      <h4 style="font-family:var(--font-mono); font-size:0.82rem; margin: 20px 0 10px 0; color:var(--text-secondary);">// COMPLETED ROCKET HISTORY</h4>
       <div id="goalHistoryContainer"></div>
     </section>
 
@@ -801,7 +804,7 @@
 
     <!-- 7. ANALYSIS VIEW -->
     <section id="viewAnalysis" class="view-section">
-      <h3 style="margin-bottom:10px; font-family:var(--font-mono);">// ANALYTICS ENGINE</h3>
+      <h3 style="margin-bottom:12px; font-family:var(--font-mono);">// ANALYTICS ENGINE</h3>
       <div id="analysisContainer"></div>
     </section>
 
@@ -828,7 +831,7 @@
       
       <div class="ai-action-grid">
         <button class="ai-btn-option" onclick="app.handleForgotCredentials()">1. รีเซ็ตรหัสผ่าน / ชื่อผู้ใช้ (1 ครั้ง/วัน)</button>
-        <button class="ai-btn-option" onclick="app.handleLanguageToggle()">2. สลับภาษา Interface (TH / EN) (1 ครั้ง/วัน)</button>
+        <button class="ai-btn-option" onclick="app.openAiVoiceSettings()">2. ตั้งค่าเสียงภาษา AI Voice (เลือกเสียงระบบ)</button>
         <button class="ai-btn-option" onclick="app.openSoundSettings()">3. ตั้งค่าความถี่เสียงแจ้งเตือน (10 Tones)</button>
         <button class="ai-btn-option" style="color:var(--danger);" onclick="app.handlePurgeAllData()">4. PURGE ALL DATA (นับถอยหลัง 30 วิ)</button>
       </div>
@@ -837,14 +840,14 @@
 
     <!-- 10. SAVING CALENDAR VIEW -->
     <section id="viewCalendar" class="view-section">
-      <h3 style="margin-bottom:10px; font-family:var(--font-mono);">// SAVINGS AUDIT CALENDAR</h3>
+      <h3 style="margin-bottom:12px; font-family:var(--font-mono);">// SAVINGS AUDIT CALENDAR</h3>
       <div id="calendarContainer"></div>
     </section>
 
     <!-- 11. RANK DETAILS VIEW -->
     <section id="viewRankDetails" class="view-section">
       <h3 style="font-family:var(--font-mono);">// SECURITY RANKS</h3>
-      <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:10px; font-family:var(--font-mono);">คำนวณจากยอดออมจริงและ Uptime Streak</p>
+      <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:12px; font-family:var(--font-mono);">คำนวณจากยอดออมจริงและ Uptime Streak</p>
       <div id="rankDetailsList"></div>
     </section>
 
@@ -860,38 +863,38 @@
 
     <!-- 13. MORE MENU VIEW -->
     <section id="viewMoreMenu" class="view-section">
-      <h3 style="margin-bottom:14px; font-family:var(--font-mono);">// SYSTEM MODULES</h3>
+      <h3 style="margin-bottom:16px; font-family:var(--font-mono);">// SYSTEM MODULES</h3>
       <div class="ai-action-grid">
         <button class="ai-btn-option" onclick="app.navigate('viewHistory')">
           <span>ประวัติรายการออม (Saving History)</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="ai-btn-option" onclick="app.navigate('viewSavingPlan')">
           <span>คำนวณแผนการออม (Saving Plan Engine)</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="ai-btn-option" onclick="app.navigate('viewCalendar')">
           <span>ปฏิทินการออม (Audit Calendar)</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="ai-btn-option" onclick="app.navigate('viewRankDetails')">
           <span>เกียรติประวัติ (Saving Rank)</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="ai-btn-option" onclick="app.navigate('viewCategorySettings')">
           <span>หมวดหมู่บันทึก (Categories)</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="ai-btn-option" onclick="app.navigate('viewAiHelp')">
           <span>ศูนย์บริการ AI & ระบบช่วยเหลือ</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
       </div>
     </section>
 
   </main>
 
-  <!-- Bottom Navigation Bar -->
+  <!-- Modern Clicx 2026 Bottom Navigation Bar -->
   <nav class="bottom-nav" id="bottomNav" style="display:none;">
     <button class="nav-btn active" onclick="app.navigate('viewDashboard')">
       <svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -902,15 +905,15 @@
       <span>SAVE</span>
     </button>
     <button class="nav-btn" onclick="app.navigate('viewGoals')">
-      <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <svg viewBox="0 0 24 24"><polygon points="12 2 19 21 12 17 5 21 12 2"/></svg>
       <span>ROCKET</span>
     </button>
     <button class="nav-btn" onclick="app.navigate('viewAnalysis')">
-      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
       <span>STATS</span>
     </button>
     <button class="nav-btn" onclick="app.navigate('viewMoreMenu')">
-      <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
       <span>MORE</span>
     </button>
   </nav>
@@ -920,13 +923,13 @@
 <script>
 /**
  * SmartSave Banking - Client Core Module ES2025+
- * Data Center Edition v7.0 // Cloud Rocket Goal Engine & AI Speech Synthesis
+ * Data Center & Clicx 2026 Edition v9.0
  */
 
 const CONFIG = {
   GAS_ENDPOINT: 'https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec',
-  DB_NAME: 'SmartSaveBankDB_v70_ROCKET',
-  VERSION: '7.0.0-ROCKET',
+  DB_NAME: 'SmartSaveBankDB_v90_CLICX',
+  VERSION: '9.0.0-PRO',
   CACHE_LIMIT_BYTES: 5 * 1024 * 1024 * 1024
 };
 
@@ -936,7 +939,8 @@ class SmartSaveApp {
     this.db = null;
     this.categories = ['เงินสำรองฉุกเฉิน', 'พอร์ตลงทุนสินทรัพย์', 'กองทุนสำรองเกษียณ', 'ออมรายวันสภาพคล่อง'];
     this.selectedAudioTone = 1;
-    this.currentLanguage = 'TH';
+    this.currentLanguage = localStorage.getItem('SMARTSAVE_LANG') || 'TH';
+    this.selectedAiVoiceIndex = parseInt(localStorage.getItem('SMARTSAVE_VOICE_IDX') || '0');
     this.speechSynthesis = window.speechSynthesis || null;
     this.init();
   }
@@ -951,6 +955,7 @@ class SmartSaveApp {
     this.loadSession();
     this.renderRankList();
     this.calculateSavingPlan();
+    document.getElementById('langText').innerText = this.currentLanguage;
   }
 
   checkSundayLock() {
@@ -1223,13 +1228,11 @@ class SmartSaveApp {
     if (amt && amt > 0) {
       goal.currentAmount += amt;
 
-      // Check if 100% complete
       if (goal.currentAmount >= goal.targetAmount) {
         goal.currentAmount = goal.targetAmount;
         goal.status = 'completed';
         goal.completedAt = new Date().toISOString();
 
-        // 100% Milestone: Create transaction to History
         const completionTx = {
           id: 'TX_GOAL_' + Date.now(),
           userId: this.currentUser.id,
@@ -1272,6 +1275,15 @@ class SmartSaveApp {
     }
   }
 
+  async deleteGoal(goalId) {
+    if (confirm('ยืนยันการลบเป้าหมาย Cloud Rocket นี้หรือไม่?')) {
+      const tx = this.db.transaction('goals', 'readwrite');
+      tx.objectStore('goals').delete(goalId);
+      this.speakAi('ลบเป้าหมายเรียบร้อย');
+      this.renderGoals();
+    }
+  }
+
   async renderGoals() {
     const goals = await this.getAllFromStore('goals');
     const container = document.getElementById('goalsContainer');
@@ -1301,7 +1313,8 @@ class SmartSaveApp {
             </div>
             <div class="rocket-goal-actions">
               <button class="btn-quick-amt" style="flex:1;" onclick="app.addFundsToGoal('${g.id}')">+ เติมเงิน</button>
-              <button class="btn-quick-amt" style="width:80px;" onclick="app.toggleGoalLock('${g.id}')">${g.isLocked ? 'ปลดล็อก' : 'ล็อก'}</button>
+              <button class="btn-quick-amt" style="width:70px;" onclick="app.toggleGoalLock('${g.id}')">${g.isLocked ? 'ปลดล็อก' : 'ล็อก'}</button>
+              <button class="btn-quick-amt" style="width:60px; color:var(--danger);" onclick="app.deleteGoal('${g.id}')">ลบ</button>
             </div>
           </div>
         `;
@@ -1332,12 +1345,44 @@ class SmartSaveApp {
       this.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = this.currentLanguage === 'TH' ? 'th-TH' : 'en-US';
+      const voices = this.speechSynthesis.getVoices();
+      if (voices.length > 0 && voices[this.selectedAiVoiceIndex]) {
+        utterance.voice = voices[this.selectedAiVoiceIndex];
+      }
       utterance.rate = 1.0;
       utterance.pitch = 1.0;
       this.speechSynthesis.speak(utterance);
     } catch (e) {
       console.warn('Speech error', e);
     }
+  }
+
+  openAiVoiceSettings() {
+    if (!this.speechSynthesis) return alert('เบราว์เซอร์ไม่รองรับ Web Speech API');
+    const voices = this.speechSynthesis.getVoices();
+    if (voices.length === 0) return alert('ไม่พบเสียง AI ที่ติดตั้งในอุปกรณ์');
+
+    let menuStr = 'เลือกเสียง AI Speech Voice:\n';
+    voices.slice(0, 10).forEach((v, idx) => {
+      menuStr += `${idx + 1}. ${v.name} (${v.lang})\n`;
+    });
+
+    const choice = prompt(menuStr, this.selectedAiVoiceIndex + 1);
+    const idx = parseInt(choice) - 1;
+    if (idx >= 0 && idx < voices.length) {
+      this.selectedAiVoiceIndex = idx;
+      localStorage.setItem('SMARTSAVE_VOICE_IDX', idx);
+      this.speakAi('ทดสอบการออกเสียง AI Voice สำเร็จ');
+      alert(`เลือกเสียง ${voices[idx].name} เรียบร้อย`);
+    }
+  }
+
+  handleLanguageToggle() {
+    this.currentLanguage = this.currentLanguage === 'TH' ? 'EN' : 'TH';
+    document.getElementById('langText').innerText = this.currentLanguage;
+    localStorage.setItem('SMARTSAVE_LANG', this.currentLanguage);
+    this.speakAi(this.currentLanguage === 'TH' ? 'สลับเป็นภาษาไทยเรียบร้อย' : 'Switched to English');
+    alert(`Language switched to ${this.currentLanguage}`);
   }
 
   updateNotificationFeed(msg) {
@@ -1519,17 +1564,6 @@ class SmartSaveApp {
       alert('อัปเดต Security Key เรียบร้อย กรุณาเริ่ม Session ใหม่');
       this.logout();
     }
-  }
-
-  handleLanguageToggle() {
-    const today = new Date().toISOString().slice(0, 10);
-    if (localStorage.getItem('LAST_LANG_CHANGE') === today) {
-      return alert('สลับภาษาได้ 1 ครั้งต่อวัน');
-    }
-    this.currentLanguage = this.currentLanguage === 'TH' ? 'EN' : 'TH';
-    document.getElementById('langText').innerText = this.currentLanguage;
-    localStorage.setItem('LAST_LANG_CHANGE', today);
-    alert(`Language switched to ${this.currentLanguage}`);
   }
 
   openSoundSettings() {
