@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking v11.0 — Clicx Digital Save 2026</title>
+  <title>SmartSave Banking v13.0 — Clicx Digital Save 2026</title>
   <meta name="theme-color" content="#020617">
   <style>
     :root {
@@ -81,6 +81,7 @@
       border-right: 1px solid var(--border);
     }
 
+    /* Top Bar */
     .top-bar {
       height: 64px;
       padding: 0 16px;
@@ -174,7 +175,7 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.4);
       position: relative;
       overflow: hidden;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       border: 1px solid rgba(255,255,255,0.08);
     }
 
@@ -232,14 +233,65 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       box-shadow: 0 0 18px rgba(14, 165, 233, 0.4);
       transition: all 0.15s;
     }
 
     .btn-main-add:active { transform: scale(0.98); opacity: 0.9; }
 
-    .favorites-container { margin-bottom: 20px; }
+    /* Admin Broadcast Notification Box (Home View) */
+    .admin-broadcast-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent-cyan);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .admin-broadcast-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .broadcast-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--primary-glow);
+      font-family: var(--font-mono);
+    }
+
+    .broadcast-content {
+      font-size: 0.78rem;
+      color: var(--text);
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+
+    .broadcast-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+    }
+
+    .btn-broadcast-act {
+      background: var(--surface-secondary);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+    }
+
+    .favorites-container { margin-bottom: 16px; }
     .section-title {
       font-size: 0.75rem;
       color: var(--text-secondary);
@@ -247,7 +299,7 @@
       text-transform: uppercase;
       font-family: var(--font-mono);
       letter-spacing: 0.5px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .favorites-grid {
@@ -278,15 +330,15 @@
       border: 1px solid var(--border);
       border-left: 3px solid var(--primary-glow);
       border-radius: var(--radius-md);
-      padding: 12px 14px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .notif-text {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text);
       line-height: 1.4;
       flex: 1;
@@ -294,7 +346,7 @@
     }
 
     .notif-time {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--text-secondary);
       white-space: nowrap;
       font-family: var(--font-mono);
@@ -304,13 +356,13 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .status-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      padding: 14px;
+      padding: 12px;
       border-radius: var(--radius-md);
       display: flex;
       align-items: center;
@@ -318,10 +370,10 @@
       cursor: pointer;
     }
 
-    .status-info h4 { font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono); }
-    .status-info p { font-size: 1rem; font-weight: 700; color: var(--text); margin-top: 2px; font-family: var(--font-mono); }
+    .status-info h4 { font-size: 0.72rem; color: var(--text-secondary); font-family: var(--font-mono); }
+    .status-info p { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-top: 2px; font-family: var(--font-mono); }
 
-    /* Forms */
+    /* Forms & Controls */
     .form-group { margin-bottom: 16px; }
     .form-group label {
       display: block;
@@ -388,7 +440,7 @@
 
     .btn-primary:active { opacity: 0.9; }
 
-    /* Modern Bottom Navigation Bar */
+    /* Bottom Navigation Bar */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -472,7 +524,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      height: 380px;
+      height: 360px;
       overflow-y: auto;
       padding: 14px;
       background: var(--surface);
@@ -601,8 +653,8 @@
     <section id="viewAuth" class="view-section active">
       <div style="text-align:center; margin: 36px 0 24px 0;">
         <svg width="48" height="48" viewBox="0 0 24 24" stroke="var(--primary-glow)" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        <h2 style="font-size:1.5rem; margin-top:8px; font-family:var(--font-mono);">SmartSave v11.0</h2>
-        <p style="color:var(--text-secondary); font-size:0.78rem; font-family:var(--font-mono);">Clicx Digital Save 2026 // AI 8.0 Engine</p>
+        <h2 style="font-size:1.5rem; margin-top:8px; font-family:var(--font-mono);">SmartSave v13.0</h2>
+        <p style="color:var(--text-secondary); font-size:0.78rem; font-family:var(--font-mono);">Clicx Digital Save 2026 // AI 10.0 Engine</p>
       </div>
 
       <div id="authForms">
@@ -656,16 +708,30 @@
         </div>
       </div>
 
-      <button class="btn-main-add" onclick="app.navigate('viewAddSaving')">
+      <!-- Main Action (Guarded with 6-Digit PIN Security) -->
+      <button class="btn-main-add" onclick="app.requestAddSavingAuth()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
         <span id="btnTxtAddSaving">บันทึกเงินออม (EXECUTE SAVING)</span>
       </button>
+
+      <!-- Admin Central Broadcast Box -->
+      <div class="admin-broadcast-box" id="adminBroadcastBox">
+        <div class="admin-broadcast-header">
+          <div class="broadcast-title" id="bcTitle">[DATACENTER BROADCAST]</div>
+          <button class="btn-broadcast-act" onclick="app.fetchAdminBroadcast()">รีข้อความ</button>
+        </div>
+        <div class="broadcast-content" id="bcContent">กำลังซิงค์ข้อความประกาศจากส่วนกลาง...</div>
+        <div class="broadcast-actions">
+          <span id="bcTime">-</span>
+          <button class="btn-broadcast-act" onclick="app.markBroadcastAsRead()">อ่านข้อความแล้ว</button>
+        </div>
+      </div>
 
       <!-- Quick Favorites -->
       <div class="favorites-container">
         <div class="section-title" id="lblQuickRouting">// QUICK ROUTING</div>
         <div class="favorites-grid">
-          <div class="fav-item" onclick="app.navigate('viewAddSaving')">
+          <div class="fav-item" onclick="app.requestAddSavingAuth()">
             <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
             <span id="favSave">ออมเงิน</span>
           </div>
@@ -683,7 +749,7 @@
           </div>
           <div class="fav-item" onclick="app.navigate('viewAiSaving')">
             <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            <span>AI 8.0</span>
+            <span>AI 10.0</span>
           </div>
         </div>
       </div>
@@ -807,19 +873,20 @@
       <div id="analysisContainer"></div>
     </section>
 
-    <!-- 8. AI SAVING 8.0 VIEW -->
+    <!-- 8. AI SAVING 10.0 VIEW -->
     <section id="viewAiSaving" class="view-section">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <h3 style="font-family:var(--font-mono);">// AI ENGINE 8.0</h3>
+        <h3 style="font-family:var(--font-mono);">// AI ENGINE 10.0</h3>
         <button class="btn-quick-amt" style="color:var(--danger); border-color:var(--danger);" onclick="app.logout()" id="btnTerminate">TERMINATE SESSION</button>
       </div>
       <div class="chat-box" id="aiSavingChatBox">
-        <div class="chat-msg ai">[AI_8.0_CORE]: พร้อมประมวลผลข้อมูลการเงินของคุณ เลือกรอบการวิเคราะห์ด้านล่าง</div>
+        <div class="chat-msg ai">[AI_10.0_CORE]: Financial neural matrix online. พร้อมประมวลผลข้อมูลการออมจริงทั้งหมด</div>
       </div>
       <div class="ai-action-grid">
-        <button class="ai-btn-option" onclick="app.askAiSaving('วิเคราะห์การออมรอบด้าน')">📊 วิเคราะห์การออมรอบด้าน</button>
-        <button class="ai-btn-option" onclick="app.askAiSaving('วันนี้ควรออมเท่าไร')">💡 แนะนำยอดออมประจำวัน</button>
-        <button class="ai-btn-option" onclick="app.askAiSaving('วิเคราะห์ Streak และความสม่ำเสมอ')">🔥 ประเมินความสม่ำเสมอและวินัย</button>
+        <button class="ai-btn-option" onclick="app.askAiSaving('ข้อมูลการออมจริงทั้งหมด')">📊 วิเคราะห์ข้อมูลการออมจริงทั้งหมด</button>
+        <button class="ai-btn-option" onclick="app.askAiSaving('ข้อมูลแรงค์การออม')">🏆 ตรวจสอบสถานะและข้อมูลแรงค์การออม</button>
+        <button class="ai-btn-option" onclick="app.askAiSaving('คำแนะนำและแผนออม')">💡 คำแนะนำกลยุทธ์การออมประจำวัน</button>
+        <button class="ai-btn-option" onclick="app.startAiPinConfiguration()">🔒 ตั้งค่า PIN 6 หลักเพื่อความปลอดภัย (ทำรายการภายใน 30 วิ)</button>
       </div>
     </section>
 
@@ -899,7 +966,7 @@
       <svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       <span id="navHome">HOME</span>
     </button>
-    <button class="nav-btn" onclick="app.navigate('viewAddSaving')">
+    <button class="nav-btn" onclick="app.requestAddSavingAuth()">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
       <span id="navSave">SAVE</span>
     </button>
@@ -922,13 +989,13 @@
 <script>
 /**
  * SmartSave Banking - Client Core Module ES2025+
- * Data Center & Clicx 2026 Edition v11.0 // AI 8.0 Engine & Cloud Rocket
+ * Data Center & Clicx 2026 Edition v13.0 // AI 10.0 Engine & Admin Broadcast Box
  */
 
 const CONFIG = {
   GAS_ENDPOINT: 'https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec',
-  DB_NAME: 'SmartSaveBankDB_v110_CLICX',
-  VERSION: '11.0.0-PRO',
+  DB_NAME: 'SmartSaveBankDB_v130_CLICX',
+  VERSION: '13.0.0-PRO',
   CACHE_LIMIT_BYTES: 5 * 1024 * 1024 * 1024
 };
 
@@ -1009,7 +1076,7 @@ const I18N = {
     targetAmt: 'TARGET VALUE (THB):',
     planDays: 'HORIZON (DAYS):',
     titleAnalytics: '// QUANT ANALYTICS SUITE',
-    titleAiHelp: '// AI 8.0 SUPPORT MATRIX',
+    titleAiHelp: '// AI 10.0 SUPPORT MATRIX',
     directSupport: 'Automated Operations Hub',
     forgotCred: '1. Reset Credentials (Once/Day)',
     voiceSettings: '2. Configure AI Voice Persona & Lang',
@@ -1025,7 +1092,7 @@ const I18N = {
     moreCalendar: 'Audit Frequency Calendar',
     moreRank: 'Rank Milestones',
     moreCat: 'Category Directory',
-    moreHelp: 'AI 8.0 Operations & Support',
+    moreHelp: 'AI 10.0 Operations & Support',
     navHome: 'HOME',
     navSave: 'SAVE',
     navRocket: 'ROCKET',
@@ -1058,6 +1125,7 @@ class SmartSaveApp {
     this.renderRankList();
     this.calculateSavingPlan();
     this.applyLanguageUI();
+    this.fetchAdminBroadcast();
   }
 
   checkSundayLock() {
@@ -1143,7 +1211,6 @@ class SmartSaveApp {
     const dict = I18N[this.currentLanguage] || I18N.TH;
     document.getElementById('langText').innerText = this.currentLanguage;
     
-    // UI Label sync
     const elMap = {
       lblTotalSavings: dict.totalReserve,
       btnTxtAddSaving: dict.executeSaving,
@@ -1201,6 +1268,97 @@ class SmartSaveApp {
     }
   }
 
+  // --- ADMIN BROADCAST MESSAGING ---
+  async fetchAdminBroadcast() {
+    try {
+      const res = await fetch(CONFIG.GAS_ENDPOINT, { method: 'GET' });
+      const data = await res.json();
+      if (data && data.broadcast) {
+        const bc = data.broadcast;
+        const readId = localStorage.getItem('READ_BROADCAST_ID');
+        document.getElementById('bcTitle').innerText = bc.title;
+        document.getElementById('bcContent').innerText = bc.content;
+        document.getElementById('bcTime').innerText = bc.timestamp;
+        if (readId === bc.id) {
+          document.getElementById('bcTitle').style.color = 'var(--text-secondary)';
+          document.getElementById('bcContent').style.opacity = '0.7';
+        } else {
+          document.getElementById('bcTitle').style.color = 'var(--primary-glow)';
+          document.getElementById('bcContent').style.opacity = '1';
+        }
+      }
+    } catch (e) {
+      document.getElementById('bcContent').innerText = 'Data Center Local Standby. ดำเนินการตามปกติ';
+    }
+  }
+
+  markBroadcastAsRead() {
+    localStorage.setItem('READ_BROADCAST_ID', 'MSG_2026_09_12');
+    document.getElementById('bcTitle').style.color = 'var(--text-secondary)';
+    document.getElementById('bcContent').style.opacity = '0.7';
+    this.speakAi(this.currentLanguage === 'TH' ? 'ทำเครื่องหมายอ่านข้อความแล้ว' : 'Marked broadcast as read');
+  }
+
+  // --- 6-DIGIT PIN SECURITY CHECK ---
+  requestAddSavingAuth() {
+    if (!this.currentUser) return;
+    if (!this.currentUser.pin || this.currentUser.pin.trim() === '') {
+      this.speakAi(this.currentLanguage === 'TH' 
+        ? 'คุณยังไม่ได้ตั้งค่ารหัสผ่าน 6 หลัก กรุณาไปตั้งค่าในระบบแชท AI'
+        : 'PIN not configured. Please set up your 6-digit PIN in AI Chat.');
+      alert(this.currentLanguage === 'TH'
+        ? 'ความปลอดภัยขั้นสูง: คุณยังไม่ได้ตั้งค่า PIN 6 หลัก กรุณาไปที่หน้าแชท AI 10.0 เพื่อตั้งค่าก่อนบันทึกเงิน'
+        : 'Security Alert: PIN not configured. Please open AI Chat 10.0 to configure your PIN.');
+      this.navigate('viewAiSaving');
+      return;
+    }
+
+    const inputPin = prompt(this.currentLanguage === 'TH' ? 'กรุณากรอก PIN 6 หลักเพื่อเข้าสู่หน้าบันทึกการออม:' : 'Enter 6-digit security PIN:');
+    if (inputPin === this.currentUser.pin) {
+      this.navigate('viewAddSaving');
+    } else {
+      this.speakAi(this.currentLanguage === 'TH' ? 'รหัส PIN ไม่ถูกต้อง' : 'Invalid security PIN');
+      alert(this.currentLanguage === 'TH' ? 'รหัส PIN 6 หลักไม่ถูกต้อง ไม่สามารถเข้าถึงหน้าบันทึกได้' : 'Incorrect security PIN.');
+    }
+  }
+
+  startAiPinConfiguration() {
+    if (this.currentUser.pin && this.currentUser.pin.trim() !== '') {
+      return alert(this.currentLanguage === 'TH' ? 'PIN 6 หลักถูกตั้งค่าไว้แล้ว 1 ครั้งต่อบัญชี ไม่สามารถแก้ไขได้' : 'PIN is already locked to your account.');
+    }
+
+    const pin = prompt(this.currentLanguage === 'TH' ? 'กำหนด PIN 6 หลักใหม่ (ตั้งได้ครั้งเดียวเท่านั้น):' : 'Set your permanent 6-digit PIN:');
+    if (pin && pin.length === 6 && /^\d+$/.test(pin)) {
+      const box = document.getElementById('aiSavingChatBox');
+      box.innerHTML += `<div class="chat-msg ai">[AI_SECURITY]: กำลังประมวลผลการบันทึก PIN ภายใน 30 วินาที...</div>`;
+      this.speakAi('กำลังตั้งค่าและล็อกรหัสความปลอดภัย');
+
+      let sec = 3; // Fast commit (within 30s)
+      const timer = setInterval(async () => {
+        sec--;
+        if (sec <= 0) {
+          clearInterval(timer);
+          this.currentUser.pin = pin;
+          localStorage.setItem('SMARTSAVE_USER', JSON.stringify(this.currentUser));
+          
+          try {
+            fetch(CONFIG.GAS_ENDPOINT, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain' },
+              body: JSON.stringify({ action: 'SET_PIN', payload: { userId: this.currentUser.id, pin: pin } })
+            });
+          } catch (e) {}
+
+          box.innerHTML += `<div class="chat-msg ai">[AI_SECURITY_OK]: บันทึกและล็อก PIN 6 หลักเรียบร้อยแล้ว ไม่สามารถแก้ไขได้อีก</div>`;
+          this.speakAi('ตั้งค่า PIN 6 หลักเรียบร้อยแล้ว');
+          alert(this.currentLanguage === 'TH' ? 'ตั้งค่า PIN 6 หลักสำเร็จ! คุณสามารถเข้าใช้งานหน้าบันทึกเงินได้แล้ว' : 'PIN 6-digits configured successfully.');
+        }
+      }, 1000);
+    } else {
+      alert(this.currentLanguage === 'TH' ? 'PIN ต้องเป็นตัวเลข 6 หลักเท่านั้น' : 'PIN must be exactly 6 digits.');
+    }
+  }
+
   async startKycCamera() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
@@ -1244,13 +1402,14 @@ class SmartSaveApp {
         username: u,
         displayName: d,
         passwordHash: btoa(p),
+        pin: '',
         photoKyc: kycPhoto,
         verificationStatus: 'VERIFIED',
         createdAt: new Date().toISOString()
       };
       localStorage.setItem('SMARTSAVE_USER', JSON.stringify(user));
       this.currentUser = user;
-      this.speakAi(this.currentLanguage === 'TH' ? 'ลงทะเบียนและเข้าสู่ระบบสำเร็จ' : 'Node initialization and authentication successful');
+      this.speakAi(this.currentLanguage === 'TH' ? 'ลงทะเบียนสำเร็จ กรุณาตั้งค่า PIN ในระบบแชท AI' : 'Registration complete. Please configure your PIN in AI Chat.');
       this.loginSuccess();
     } else {
       const stored = localStorage.getItem('SMARTSAVE_USER');
@@ -1378,7 +1537,7 @@ class SmartSaveApp {
       };
       const tx = this.db.transaction('goals', 'readwrite');
       tx.objectStore('goals').add(goal);
-      this.speakAi(this.currentLanguage === 'TH' ? `สร้างเป้าหมาย ${name} วงเงิน ${target} บาท เรียบร้อย` : `Created Rocket Goal ${name} target ${target} Baht`);
+      this.speakAi(this.currentLanguage === 'TH' ? `สร้างเป้าหมาย ${name} เรียบร้อย` : `Created Rocket Goal ${name}`);
       this.renderGoals();
     }
   }
@@ -1418,12 +1577,12 @@ class SmartSaveApp {
         tx.objectStore('goals').put(goal);
         tx.objectStore('savings').add(completionTx);
 
-        this.speakAi(this.currentLanguage === 'TH' ? `ยินดีด้วย! เป้าหมาย ${goal.name} บรรลุหนึ่งร้อยเปอร์เซ็นต์เรียบร้อยแล้ว` : `Congratulations! Rocket Goal ${goal.name} reached 100% completion.`);
+        this.speakAi(this.currentLanguage === 'TH' ? `ยินดีด้วย! เป้าหมาย ${goal.name} บรรลุหนึ่งร้อยเปอร์เซ็นต์เรียบร้อยแล้ว` : `Rocket Goal ${goal.name} 100% completed.`);
         alert(`เป้าหมาย "${goal.name}" บรรลุ 100%! บันทึกเข้าสู่ประวัติการออมเรียบร้อย`);
       } else {
         const tx = this.db.transaction('goals', 'readwrite');
         tx.objectStore('goals').put(goal);
-        this.speakAi(this.currentLanguage === 'TH' ? `เพิ่มเงิน ${amt} บาท เข้าเป้าหมาย ${goal.name} สำเร็จ` : `Added ${amt} Baht to ${goal.name}`);
+        this.speakAi(this.currentLanguage === 'TH' ? `เพิ่มเงิน ${amt} บาท สำเร็จ` : `Added ${amt} Baht`);
       }
       this.refreshAllData();
     }
@@ -1506,7 +1665,7 @@ class SmartSaveApp {
     }
   }
 
-  // --- AI 8.0 & SPEECH SYNTHESIS ENGINE ---
+  // --- AI 10.0 ENGINE & SPEECH ---
   speakAi(text) {
     if (!this.speechSynthesis) return;
     try {
@@ -1699,18 +1858,23 @@ class SmartSaveApp {
     }
   }
 
-  askAiSaving(topic) {
+  async askAiSaving(topic) {
     const box = document.getElementById('aiSavingChatBox');
     box.innerHTML += `<div class="chat-msg user">${topic}</div>`;
 
+    const txs = await this.getAllFromStore('savings');
+    let total = txs.reduce((sum, t) => sum + t.amount, 0);
+    const uniqueDays = new Set(txs.map(t => t.date)).size;
+    const currentRank = this.calculateRank(total, uniqueDays);
+
     setTimeout(() => {
       let reply = '';
-      if (topic.includes('วิเคราะห์การออมรอบด้าน')) {
-        reply = '[AI_8.0_AUDIT]: วิเคราะห์ข้อมูลเสร็จสิ้น วินัยการออมมีความต่อเนื่องในเกณฑ์ดีเยี่ยม แนะนำกันเงินออม 20% เพื่อต่อยอดการลงทุนสินทรัพย์มั่นคง';
-      } else if (topic.includes('วันนี้ควรออมเท่าไร')) {
-        reply = '[AI_8.0_RECOMMEND]: เพื่อรักษาระดับ Uptime Streak ให้ต่อเนื่อง แนะนำจัดสรรเงินออมขั้นต่ำ ฿100 - ฿200 ในวันนี้';
+      if (topic.includes('ข้อมูลการออมจริงทั้งหมด')) {
+        reply = `[AI_10.0_AUDIT]: ยอดเงินออมจริงรวมสุทธิ ${this.formatCurrency(total)} จากการออมจริง ${uniqueDays} วัน และมีรายการบันทึกทั้งสิ้น ${txs.length} รายการ`;
+      } else if (topic.includes('ข้อมูลแรงค์การออม')) {
+        reply = `[AI_10.0_RANK]: ระดับปัจจุบันของคุณคือ [${currentRank}] ความต่อเนื่อง Uptime Streak อยู่ที่ ${uniqueDays} วัน สถานะระบบเสถียร`;
       } else {
-        reply = '[AI_8.0_STREAK]: ระบบประเมินค่าความสม่ำเสมอของ Node อยู่ในระดับเสถียรภาพสูง ปราศจากความเสี่ยง';
+        reply = '[AI_10.0_STRATEGY]: เพื่อรักษาระดับ Uptime Streak แนะนำ Commit ยอดออมขั้นต่ำ ฿100 - ฿200 ในวันนี้ และแบ่ง 20% เข้าพอร์ตลงทุน';
       }
       box.innerHTML += `<div class="chat-msg ai">${reply}</div>`;
       box.scrollTop = box.scrollHeight;
