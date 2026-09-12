@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking v13.0 — Clicx Digital Save 2026</title>
+  <title>SmartSave Banking v15.0 — Clicx Digital Save 2026</title>
   <meta name="theme-color" content="#020617">
   <style>
     :root {
@@ -373,7 +373,7 @@
     .status-info h4 { font-size: 0.72rem; color: var(--text-secondary); font-family: var(--font-mono); }
     .status-info p { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-top: 2px; font-family: var(--font-mono); }
 
-    /* Forms & Controls */
+    /* Forms */
     .form-group { margin-bottom: 16px; }
     .form-group label {
       display: block;
@@ -440,7 +440,7 @@
 
     .btn-primary:active { opacity: 0.9; }
 
-    /* Bottom Navigation Bar */
+    /* Bottom Navigation */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -653,7 +653,7 @@
     <section id="viewAuth" class="view-section active">
       <div style="text-align:center; margin: 36px 0 24px 0;">
         <svg width="48" height="48" viewBox="0 0 24 24" stroke="var(--primary-glow)" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        <h2 style="font-size:1.5rem; margin-top:8px; font-family:var(--font-mono);">SmartSave v13.0</h2>
+        <h2 style="font-size:1.5rem; margin-top:8px; font-family:var(--font-mono);">SmartSave v15.0</h2>
         <p style="color:var(--text-secondary); font-size:0.78rem; font-family:var(--font-mono);">Clicx Digital Save 2026 // AI 10.0 Engine</p>
       </div>
 
@@ -989,13 +989,13 @@
 <script>
 /**
  * SmartSave Banking - Client Core Module ES2025+
- * Data Center & Clicx 2026 Edition v13.0 // AI 10.0 Engine & Admin Broadcast Box
+ * Version 15.0 // Permanent Migration Protection & AI 10.0 Engine
  */
 
 const CONFIG = {
   GAS_ENDPOINT: 'https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec',
-  DB_NAME: 'SmartSaveBankDB_v130_CLICX',
-  VERSION: '13.0.0-PRO',
+  DB_NAME: 'SmartSaveBankDB_Universal_Storage', // ฐานข้อมูลหลัก ถาวร ไม่เปลี่ยนตามเวอร์ชันเพื่อป้องกันข้อมูลหาย
+  VERSION: '15.0.0-PRO',
   CACHE_LIMIT_BYTES: 5 * 1024 * 1024 * 1024
 };
 
@@ -1117,6 +1117,7 @@ class SmartSaveApp {
   async init() {
     this.checkSundayLock();
     await this.setupIndexedDB();
+    await this.performDataMigration(); // ตรวจสอบและย้ายข้อมูลจากเวอร์ชันก่อนหน้าแบบไร้รอยต่อ
     this.loadCategories();
     this.bindEvents();
     this.initClockAndMaintenance();
@@ -1182,6 +1183,55 @@ class SmartSaveApp {
       };
       req.onerror = (e) => reject(e);
     });
+  }
+
+  // --- AUTOMATIC DATA MIGRATION HANDLER (ข้อมูลไม่สูญหายเมื่ออัปเดตเวอร์ชัน) ---
+  async performDataMigration() {
+    const legacyDBNames = [
+      'SmartSaveBankDB_v130_CLICX',
+      'SmartSaveBankDB_v110_CLICX',
+      'SmartSaveBankDB_v90_CLICX',
+      'SmartSaveBankDB_v70_ROCKET',
+      'SmartSaveBankDB_v50_DC',
+      'SmartSaveBankDB_v30_PRO',
+      'SmartSaveBankDB_v2205_POS20',
+      'SmartSaveBankDB_v2203_POS',
+      'SmartSaveBankDB_v2201',
+      'SmartSaveBankDB_v82',
+      'SmartSaveBankDB_v78'
+    ];
+
+    for (let oldDBName of legacyDBNames) {
+      try {
+        const oldDB = await new Promise((res, rej) => {
+          const req = indexedDB.open(oldDBName);
+          req.onsuccess = () => res(req.result);
+          req.onerror = () => res(null);
+        });
+
+        if (oldDB && oldDB.objectStoreNames.contains('savings')) {
+          const txOld = oldDB.transaction(['savings', 'goals'], 'readonly');
+          const oldSavings = await new Promise(r => {
+            const req = txOld.objectStore('savings').getAll();
+            req.onsuccess = () => r(req.result || []);
+          });
+          const oldGoals = await new Promise(r => {
+            const req = txOld.objectStore('goals').getAll();
+            req.onsuccess = () => r(req.result || []);
+          });
+
+          if (oldSavings.length > 0 || oldGoals.length > 0) {
+            const txNew = this.db.transaction(['savings', 'goals'], 'readwrite');
+            oldSavings.forEach(item => txNew.objectStore('savings').put(item));
+            oldGoals.forEach(item => txNew.objectStore('goals').put(item));
+            console.log(`[DATA MIGRATION]: Successfully migrated ${oldSavings.length} records from ${oldDBName}`);
+          }
+          oldDB.close();
+        }
+      } catch (err) {
+        console.warn('Migration step skipped for', oldDBName);
+      }
+    }
   }
 
   bindEvents() {
@@ -1293,7 +1343,7 @@ class SmartSaveApp {
   }
 
   markBroadcastAsRead() {
-    localStorage.setItem('READ_BROADCAST_ID', 'MSG_2026_09_12');
+    localStorage.setItem('READ_BROADCAST_ID', 'MSG_2026_V15_RELEASE');
     document.getElementById('bcTitle').style.color = 'var(--text-secondary)';
     document.getElementById('bcContent').style.opacity = '0.7';
     this.speakAi(this.currentLanguage === 'TH' ? 'ทำเครื่องหมายอ่านข้อความแล้ว' : 'Marked broadcast as read');
@@ -1333,7 +1383,7 @@ class SmartSaveApp {
       box.innerHTML += `<div class="chat-msg ai">[AI_SECURITY]: กำลังประมวลผลการบันทึก PIN ภายใน 30 วินาที...</div>`;
       this.speakAi('กำลังตั้งค่าและล็อกรหัสความปลอดภัย');
 
-      let sec = 3; // Fast commit (within 30s)
+      let sec = 3;
       const timer = setInterval(async () => {
         sec--;
         if (sec <= 0) {
@@ -1665,7 +1715,7 @@ class SmartSaveApp {
     }
   }
 
-  // --- AI 10.0 ENGINE & SPEECH ---
+  // --- AI 10.0 & SPEECH SYNTHESIS ENGINE ---
   speakAi(text) {
     if (!this.speechSynthesis) return;
     try {
