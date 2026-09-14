@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking v15.0 — Clicx Digital Save 2026</title>
+  <title>SmartSave Banking v19.0 — Clicx Digital Save 2026</title>
   <meta name="theme-color" content="#020617">
   <style>
     :root {
@@ -263,6 +263,20 @@
       font-weight: 700;
       color: var(--primary-glow);
       font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .read-check-icon {
+      width: 16px;
+      height: 16px;
+      stroke: var(--success);
+      display: none;
+    }
+
+    .read-check-icon.active {
+      display: inline-block;
     }
 
     .broadcast-content {
@@ -284,7 +298,7 @@
       background: var(--surface-secondary);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 3px 8px;
+      padding: 4px 8px;
       border-radius: var(--radius-sm);
       cursor: pointer;
       font-size: 0.7rem;
@@ -440,7 +454,7 @@
 
     .btn-primary:active { opacity: 0.9; }
 
-    /* Bottom Navigation */
+    /* Bottom Navigation Bar */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -610,6 +624,16 @@
       display: none;
       font-family: var(--font-mono);
     }
+
+    .coming-soon-box {
+      border: 1px dashed var(--accent-cyan);
+      background: var(--surface-secondary);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      text-align: center;
+      margin-top: 16px;
+      font-family: var(--font-mono);
+    }
   </style>
 </head>
 <body data-theme="dark">
@@ -653,8 +677,8 @@
     <section id="viewAuth" class="view-section active">
       <div style="text-align:center; margin: 36px 0 24px 0;">
         <svg width="48" height="48" viewBox="0 0 24 24" stroke="var(--primary-glow)" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        <h2 style="font-size:1.5rem; margin-top:8px; font-family:var(--font-mono);">SmartSave v15.0</h2>
-        <p style="color:var(--text-secondary); font-size:0.78rem; font-family:var(--font-mono);">Clicx Digital Save 2026 // AI 10.0 Engine</p>
+        <h2 style="font-size:1.5rem; margin-top:8px; font-family:var(--font-mono);">SmartSave v19.0</h2>
+        <p style="color:var(--text-secondary); font-size:0.78rem; font-family:var(--font-mono);">Clicx Digital Save 2026 // AI 12.0 Engine</p>
       </div>
 
       <div id="authForms">
@@ -714,10 +738,13 @@
         <span id="btnTxtAddSaving">บันทึกเงินออม (EXECUTE SAVING)</span>
       </button>
 
-      <!-- Admin Central Broadcast Box -->
+      <!-- Admin Central Broadcast Box with Auto Checkmark -->
       <div class="admin-broadcast-box" id="adminBroadcastBox">
         <div class="admin-broadcast-header">
-          <div class="broadcast-title" id="bcTitle">[DATACENTER BROADCAST]</div>
+          <div class="broadcast-title">
+            <span id="bcTitle">[DATACENTER BROADCAST]</span>
+            <svg class="read-check-icon" id="readCheckIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
           <button class="btn-broadcast-act" onclick="app.fetchAdminBroadcast()">รีข้อความ</button>
         </div>
         <div class="broadcast-content" id="bcContent">กำลังซิงค์ข้อความประกาศจากส่วนกลาง...</div>
@@ -739,9 +766,9 @@
             <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><polygon points="12 2 19 21 12 17 5 21 12 2"/></svg>
             <span id="favRocket">Rocket</span>
           </div>
-          <div class="fav-item" onclick="app.navigate('viewSavingPlan')">
-            <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <span id="favPlan">แผนออม</span>
+          <div class="fav-item" onclick="app.navigate('viewBillTracker')">
+            <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span>บิลใช้จ่าย</span>
           </div>
           <div class="fav-item" onclick="app.navigate('viewAnalysis')">
             <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
@@ -749,7 +776,7 @@
           </div>
           <div class="fav-item" onclick="app.navigate('viewAiSaving')">
             <svg viewBox="0 0 24 24" stroke="var(--primary-glow)" fill="none" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            <span>AI 10.0</span>
+            <span>AI 12.0</span>
           </div>
         </div>
       </div>
@@ -853,7 +880,17 @@
       <div id="goalHistoryContainer"></div>
     </section>
 
-    <!-- 6. SAVING PLAN VIEW -->
+    <!-- 6. BILL TRACKER VIEW (COMING SOON) -->
+    <section id="viewBillTracker" class="view-section">
+      <h3 style="margin-bottom:12px; font-family:var(--font-mono);">// EXPENSE & BILL TRACKER</h3>
+      <div class="coming-soon-box">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--primary-glow)" stroke-width="1.8" style="margin-bottom:12px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <h4 style="color:var(--text); font-size:1rem; margin-bottom:6px;">หน้าระบบบันทึกบิลใช้จ่ายต่างๆ</h4>
+        <p style="color:var(--text-secondary); font-size:0.8rem;">[FEATURE STATUS: COMING SOON] ระบบกำลังอยู่ระหว่างการเชื่อมโยงกับฐานข้อมูล Data Center ในอัปเดตถัดไป</p>
+      </div>
+    </section>
+
+    <!-- 7. SAVING PLAN VIEW -->
     <section id="viewSavingPlan" class="view-section">
       <h3 style="margin-bottom:12px; font-family:var(--font-mono);" id="titleSavingPlan">// TARGET CALCULATION ENGINE</h3>
       <div class="form-group">
@@ -867,20 +904,20 @@
       <div id="planResultContainer" style="margin-top:14px;"></div>
     </section>
 
-    <!-- 7. ANALYSIS VIEW -->
+    <!-- 8. ANALYSIS VIEW -->
     <section id="viewAnalysis" class="view-section">
       <h3 style="margin-bottom:12px; font-family:var(--font-mono);" id="titleAnalytics">// ANALYTICS ENGINE</h3>
       <div id="analysisContainer"></div>
     </section>
 
-    <!-- 8. AI SAVING 10.0 VIEW -->
+    <!-- 9. AI SAVING 12.0 VIEW -->
     <section id="viewAiSaving" class="view-section">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <h3 style="font-family:var(--font-mono);">// AI ENGINE 10.0</h3>
+        <h3 style="font-family:var(--font-mono);">// AI ENGINE 12.0</h3>
         <button class="btn-quick-amt" style="color:var(--danger); border-color:var(--danger);" onclick="app.logout()" id="btnTerminate">TERMINATE SESSION</button>
       </div>
       <div class="chat-box" id="aiSavingChatBox">
-        <div class="chat-msg ai">[AI_10.0_CORE]: Financial neural matrix online. พร้อมประมวลผลข้อมูลการออมจริงทั้งหมด</div>
+        <div class="chat-msg ai">[AI_12.0_CORE]: Financial neural matrix online. พร้อมประมวลผลข้อมูลการออมจริงทั้งหมด</div>
       </div>
       <div class="ai-action-grid">
         <button class="ai-btn-option" onclick="app.askAiSaving('ข้อมูลการออมจริงทั้งหมด')">📊 วิเคราะห์ข้อมูลการออมจริงทั้งหมด</button>
@@ -890,7 +927,7 @@
       </div>
     </section>
 
-    <!-- 9. AI HELP CENTER VIEW -->
+    <!-- 10. AI HELP CENTER VIEW -->
     <section id="viewAiHelp" class="view-section">
       <h3 style="font-family:var(--font-mono);" id="titleAiHelp">// DC HELP & SYSTEM SERVICES</h3>
       <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:14px; font-family:var(--font-mono);" id="txtDirectSupport">Direct Terminal Support</p>
@@ -904,20 +941,20 @@
       <div id="aiHelpOutput" style="margin-top:14px;"></div>
     </section>
 
-    <!-- 10. SAVING CALENDAR VIEW -->
+    <!-- 11. SAVING CALENDAR VIEW -->
     <section id="viewCalendar" class="view-section">
       <h3 style="margin-bottom:12px; font-family:var(--font-mono);" id="titleCalendar">// SAVINGS AUDIT CALENDAR</h3>
       <div id="calendarContainer"></div>
     </section>
 
-    <!-- 11. RANK DETAILS VIEW -->
+    <!-- 12. RANK DETAILS VIEW -->
     <section id="viewRankDetails" class="view-section">
       <h3 style="font-family:var(--font-mono);" id="titleRanks">// SECURITY RANKS</h3>
       <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:12px; font-family:var(--font-mono);" id="txtRanksCriteria">คำนวณจากยอดออมจริงและ Uptime Streak</p>
       <div id="rankDetailsList"></div>
     </section>
 
-    <!-- 12. CATEGORY SETTINGS VIEW -->
+    <!-- 13. CATEGORY SETTINGS VIEW -->
     <section id="viewCategorySettings" class="view-section">
       <h3 style="font-family:var(--font-mono);" id="titleCatRegistry">// CATEGORY REGISTRY</h3>
       <div style="display:flex; gap:6px; margin: 10px 0;">
@@ -927,12 +964,16 @@
       <div id="categoryListContainer"></div>
     </section>
 
-    <!-- 13. MORE MENU VIEW -->
+    <!-- 14. MORE MENU VIEW -->
     <section id="viewMoreMenu" class="view-section">
       <h3 style="margin-bottom:16px; font-family:var(--font-mono);" id="titleMoreModules">// SYSTEM MODULES</h3>
       <div class="ai-action-grid">
         <button class="ai-btn-option" onclick="app.navigate('viewHistory')">
           <span id="moreHistory">ประวัติรายการออม (Saving History)</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <button class="ai-btn-option" onclick="app.navigate('viewBillTracker')">
+          <span>ระบบบันทึกบิลใช้จ่าย (Expense Tracker - Soon)</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </button>
         <button class="ai-btn-option" onclick="app.navigate('viewSavingPlan')">
@@ -989,13 +1030,13 @@
 <script>
 /**
  * SmartSave Banking - Client Core Module ES2025+
- * Version 15.0 // Permanent Migration Protection & AI 10.0 Engine
+ * Version 19.0 // Data Center & Clicx 2026 // AI 12.0 Engine, Checkmark Broadcast & PIN Gateway
  */
 
 const CONFIG = {
   GAS_ENDPOINT: 'https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec',
   DB_NAME: 'SmartSaveBankDB_Universal_Storage', // ฐานข้อมูลหลัก ถาวร ไม่เปลี่ยนตามเวอร์ชันเพื่อป้องกันข้อมูลหาย
-  VERSION: '15.0.0-PRO',
+  VERSION: '19.0.0-PRO',
   CACHE_LIMIT_BYTES: 5 * 1024 * 1024 * 1024
 };
 
@@ -1076,7 +1117,7 @@ const I18N = {
     targetAmt: 'TARGET VALUE (THB):',
     planDays: 'HORIZON (DAYS):',
     titleAnalytics: '// QUANT ANALYTICS SUITE',
-    titleAiHelp: '// AI 10.0 SUPPORT MATRIX',
+    titleAiHelp: '// AI 12.0 SUPPORT MATRIX',
     directSupport: 'Automated Operations Hub',
     forgotCred: '1. Reset Credentials (Once/Day)',
     voiceSettings: '2. Configure AI Voice Persona & Lang',
@@ -1092,7 +1133,7 @@ const I18N = {
     moreCalendar: 'Audit Frequency Calendar',
     moreRank: 'Rank Milestones',
     moreCat: 'Category Directory',
-    moreHelp: 'AI 10.0 Operations & Support',
+    moreHelp: 'AI 12.0 Operations & Support',
     navHome: 'HOME',
     navSave: 'SAVE',
     navRocket: 'ROCKET',
@@ -1117,7 +1158,7 @@ class SmartSaveApp {
   async init() {
     this.checkSundayLock();
     await this.setupIndexedDB();
-    await this.performDataMigration(); // ตรวจสอบและย้ายข้อมูลจากเวอร์ชันก่อนหน้าแบบไร้รอยต่อ
+    await this.performDataMigration(); // ดึงข้อมูลเก่าจากทุกเวอร์ชันอัตโนมัติ ข้อมูลจะไม่สูญหาย
     this.loadCategories();
     this.bindEvents();
     this.initClockAndMaintenance();
@@ -1185,9 +1226,11 @@ class SmartSaveApp {
     });
   }
 
-  // --- AUTOMATIC DATA MIGRATION HANDLER (ข้อมูลไม่สูญหายเมื่ออัปเดตเวอร์ชัน) ---
+  // --- AUTOMATIC DATA MIGRATION ENGINE (ข้อมูลไม่หายเมื่อมีเวอร์ชันใหม่) ---
   async performDataMigration() {
     const legacyDBNames = [
+      'SmartSaveBankDB_v170_CLICX',
+      'SmartSaveBankDB_v150_CLICX',
       'SmartSaveBankDB_v130_CLICX',
       'SmartSaveBankDB_v110_CLICX',
       'SmartSaveBankDB_v90_CLICX',
@@ -1203,7 +1246,7 @@ class SmartSaveApp {
 
     for (let oldDBName of legacyDBNames) {
       try {
-        const oldDB = await new Promise((res, rej) => {
+        const oldDB = await new Promise((res) => {
           const req = indexedDB.open(oldDBName);
           req.onsuccess = () => res(req.result);
           req.onerror = () => res(null);
@@ -1224,12 +1267,12 @@ class SmartSaveApp {
             const txNew = this.db.transaction(['savings', 'goals'], 'readwrite');
             oldSavings.forEach(item => txNew.objectStore('savings').put(item));
             oldGoals.forEach(item => txNew.objectStore('goals').put(item));
-            console.log(`[DATA MIGRATION]: Successfully migrated ${oldSavings.length} records from ${oldDBName}`);
+            console.log(`[DATA MIGRATION]: Successfully migrated records from ${oldDBName}`);
           }
           oldDB.close();
         }
       } catch (err) {
-        console.warn('Migration step skipped for', oldDBName);
+        console.warn('Migration check skipped for', oldDBName);
       }
     }
   }
@@ -1318,7 +1361,7 @@ class SmartSaveApp {
     }
   }
 
-  // --- ADMIN BROADCAST MESSAGING ---
+  // --- ADMIN CENTRAL BROADCAST MESSAGING ---
   async fetchAdminBroadcast() {
     try {
       const res = await fetch(CONFIG.GAS_ENDPOINT, { method: 'GET' });
@@ -1329,12 +1372,16 @@ class SmartSaveApp {
         document.getElementById('bcTitle').innerText = bc.title;
         document.getElementById('bcContent').innerText = bc.content;
         document.getElementById('bcTime').innerText = bc.timestamp;
+        
+        const checkIcon = document.getElementById('readCheckIcon');
         if (readId === bc.id) {
           document.getElementById('bcTitle').style.color = 'var(--text-secondary)';
           document.getElementById('bcContent').style.opacity = '0.7';
+          if (checkIcon) checkIcon.classList.add('active');
         } else {
           document.getElementById('bcTitle').style.color = 'var(--primary-glow)';
           document.getElementById('bcContent').style.opacity = '1';
+          if (checkIcon) checkIcon.classList.remove('active');
         }
       }
     } catch (e) {
@@ -1343,9 +1390,11 @@ class SmartSaveApp {
   }
 
   markBroadcastAsRead() {
-    localStorage.setItem('READ_BROADCAST_ID', 'MSG_2026_V15_RELEASE');
+    localStorage.setItem('READ_BROADCAST_ID', 'MSG_2026_V19_RELEASE');
     document.getElementById('bcTitle').style.color = 'var(--text-secondary)';
     document.getElementById('bcContent').style.opacity = '0.7';
+    const checkIcon = document.getElementById('readCheckIcon');
+    if (checkIcon) checkIcon.classList.add('active');
     this.speakAi(this.currentLanguage === 'TH' ? 'ทำเครื่องหมายอ่านข้อความแล้ว' : 'Marked broadcast as read');
   }
 
@@ -1357,8 +1406,8 @@ class SmartSaveApp {
         ? 'คุณยังไม่ได้ตั้งค่ารหัสผ่าน 6 หลัก กรุณาไปตั้งค่าในระบบแชท AI'
         : 'PIN not configured. Please set up your 6-digit PIN in AI Chat.');
       alert(this.currentLanguage === 'TH'
-        ? 'ความปลอดภัยขั้นสูง: คุณยังไม่ได้ตั้งค่า PIN 6 หลัก กรุณาไปที่หน้าแชท AI 10.0 เพื่อตั้งค่าก่อนบันทึกเงิน'
-        : 'Security Alert: PIN not configured. Please open AI Chat 10.0 to configure your PIN.');
+        ? 'ความปลอดภัยขั้นสูง: คุณยังไม่ได้ตั้งค่า PIN 6 หลัก กรุณาไปที่หน้าแชท AI 12.0 เพื่อตั้งค่าก่อนบันทึกเงิน'
+        : 'Security Alert: PIN not configured. Please open AI Chat 12.0 to configure your PIN.');
       this.navigate('viewAiSaving');
       return;
     }
@@ -1512,7 +1561,7 @@ class SmartSaveApp {
     if (viewId === 'viewAddSaving') document.querySelectorAll('.nav-btn')[1]?.classList.add('active');
     if (viewId === 'viewGoals') document.querySelectorAll('.nav-btn')[2]?.classList.add('active');
     if (viewId === 'viewAnalysis') document.querySelectorAll('.nav-btn')[3]?.classList.add('active');
-    if (viewId === 'viewMoreMenu') document.querySelectorAll('.nav-btn')[4]?.classList.add('active');
+    if (viewId === 'viewMoreMenu' || viewId === 'viewBillTracker') document.querySelectorAll('.nav-btn')[4]?.classList.add('active');
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -1715,7 +1764,7 @@ class SmartSaveApp {
     }
   }
 
-  // --- AI 10.0 & SPEECH SYNTHESIS ENGINE ---
+  // --- AI 12.0 & SPEECH SYNTHESIS ENGINE ---
   speakAi(text) {
     if (!this.speechSynthesis) return;
     try {
@@ -1920,11 +1969,11 @@ class SmartSaveApp {
     setTimeout(() => {
       let reply = '';
       if (topic.includes('ข้อมูลการออมจริงทั้งหมด')) {
-        reply = `[AI_10.0_AUDIT]: ยอดเงินออมจริงรวมสุทธิ ${this.formatCurrency(total)} จากการออมจริง ${uniqueDays} วัน และมีรายการบันทึกทั้งสิ้น ${txs.length} รายการ`;
+        reply = `[AI_12.0_AUDIT]: ยอดเงินออมจริงรวมสุทธิ ${this.formatCurrency(total)} จากการออมจริง ${uniqueDays} วัน และมีรายการบันทึกทั้งสิ้น ${txs.length} รายการ`;
       } else if (topic.includes('ข้อมูลแรงค์การออม')) {
-        reply = `[AI_10.0_RANK]: ระดับปัจจุบันของคุณคือ [${currentRank}] ความต่อเนื่อง Uptime Streak อยู่ที่ ${uniqueDays} วัน สถานะระบบเสถียร`;
+        reply = `[AI_12.0_RANK]: ระดับปัจจุบันของคุณคือ [${currentRank}] ความต่อเนื่อง Uptime Streak อยู่ที่ ${uniqueDays} วัน สถานะระบบเสถียร`;
       } else {
-        reply = '[AI_10.0_STRATEGY]: เพื่อรักษาระดับ Uptime Streak แนะนำ Commit ยอดออมขั้นต่ำ ฿100 - ฿200 ในวันนี้ และแบ่ง 20% เข้าพอร์ตลงทุน';
+        reply = '[AI_12.0_STRATEGY]: เพื่อรักษาระดับ Uptime Streak แนะนำ Commit ยอดออมขั้นต่ำ ฿100 - ฿200 ในวันนี้ และแบ่ง 20% เข้าพอร์ตลงทุน';
       }
       box.innerHTML += `<div class="chat-msg ai">${reply}</div>`;
       box.scrollTop = box.scrollHeight;
