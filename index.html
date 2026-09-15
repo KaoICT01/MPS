@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking v21.0 — Clicx Digital Save 2026</title>
+  <title>SmartSave Banking v23.0 — Clicx Digital Save 2026</title>
   <meta name="theme-color" content="#020617">
   <style>
     :root {
@@ -677,8 +677,8 @@
     <section id="viewAuth" class="view-section active">
       <div style="text-align:center; margin: 36px 0 24px 0;">
         <svg width="48" height="48" viewBox="0 0 24 24" stroke="var(--primary-glow)" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        <h2 style="font-size:1.5rem; margin-top:8px; font-family:var(--font-mono);">SmartSave v21.0</h2>
-        <p style="color:var(--text-secondary); font-size:0.78rem; font-family:var(--font-mono);">Clicx Digital Save 2026 // AI 12.0 Engine (1-User Edition)</p>
+        <h2 style="font-size:1.5rem; margin-top:8px; font-family:var(--font-mono);">SmartSave v23.0</h2>
+        <p style="color:var(--text-secondary); font-size:0.78rem; font-family:var(--font-mono);">Clicx Digital Save 2026 // AI 12.0 Engine (Strict 1-User Edition)</p>
       </div>
 
       <div id="authForms">
@@ -1030,13 +1030,13 @@
 <script>
 /**
  * SmartSave Banking - Client Core Module ES2025+
- * Version 21.0 // Data Center & Clicx 2026 // AI 12.0 Engine, 1-User Isolation & Checkmark Broadcast
+ * Version 23.0 // Data Center & Clicx 2026 // Strict 1-User Isolation & Factory Reset Engine
  */
 
 const CONFIG = {
   GAS_ENDPOINT: 'https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec',
   DB_NAME: 'SmartSaveBankDB_Universal_Storage', // ฐานข้อมูลหลัก ถาวร ไม่เปลี่ยนตามเวอร์ชันเพื่อป้องกันข้อมูลหาย
-  VERSION: '21.0.0-PRO',
+  VERSION: '23.0.0-PRO',
   CACHE_LIMIT_BYTES: 5 * 1024 * 1024 * 1024
 };
 
@@ -1229,6 +1229,7 @@ class SmartSaveApp {
   // --- AUTOMATIC DATA MIGRATION ENGINE (ข้อมูลไม่หายเมื่อมีเวอร์ชันใหม่) ---
   async performDataMigration() {
     const legacyDBNames = [
+      'SmartSaveBankDB_v210_CLICX',
       'SmartSaveBankDB_v190_CLICX',
       'SmartSaveBankDB_v170_CLICX',
       'SmartSaveBankDB_v150_CLICX',
@@ -1391,7 +1392,7 @@ class SmartSaveApp {
   }
 
   markBroadcastAsRead() {
-    localStorage.setItem('READ_BROADCAST_ID', 'MSG_2026_V19_RELEASE');
+    localStorage.setItem('READ_BROADCAST_ID', 'MSG_2026_V23_PRO_RELEASE');
     document.getElementById('bcTitle').style.color = 'var(--text-secondary)';
     document.getElementById('bcContent').style.opacity = '0.7';
     const checkIcon = document.getElementById('readCheckIcon');
@@ -2015,11 +2016,11 @@ class SmartSaveApp {
   }
 
   handlePurgeAllData() {
-    if (confirm('คำเตือน: ข้อมูลทั้งหมดบน Node นี้จะถูกทำลายถาวร ยืนยันคำสั่ง Purge หรือไม่?')) {
+    if (confirm('คำเตือนขั้นสูงสุด: ข้อมูลทั้งหมดบน Node นี้จะถูกลบถาวร ไม่สามารถกู้คืนได้ และระบบจะกลับเป็นค่าเริ่มต้นทั้งหมด ยืนยันคำสั่ง Purge หรือไม่?')) {
       let sec = 30;
       const helpOut = document.getElementById('aiHelpOutput');
-      helpOut.innerHTML = `<p style="color:var(--danger); font-weight:bold; font-family:var(--font-mono);">[PURGE_IN_PROGRESS]: กำลังทำลายข้อมูลใน <span id="countdown">${sec}</span>s...</p>`;
-      this.speakAi(this.currentLanguage === 'TH' ? 'ระบบกำลังทำลายข้อมูลทั้งหมดภายในสามสิบวินาที' : 'Purging all node data in thirty seconds');
+      helpOut.innerHTML = `<p style="color:var(--danger); font-weight:bold; font-family:var(--font-mono);">[PURGE_IN_PROGRESS]: กำลังทำลายและรีเซ็ตระบบทั้งหมดใน <span id="countdown">${sec}</span>s...</p>`;
+      this.speakAi(this.currentLanguage === 'TH' ? 'ระบบกำลังทำลายข้อมูลทั้งหมดและรีเซ็ตเป็นค่าเริ่มต้นภายในสามสิบวินาที' : 'Purging all node data and resetting to factory defaults in thirty seconds');
       
       const timer = setInterval(() => {
         sec--;
@@ -2027,8 +2028,23 @@ class SmartSaveApp {
         if (cEl) cEl.innerText = sec;
         if (sec <= 0) {
           clearInterval(timer);
+          
+          // ส่งคำขอลบข้อมูลบน Google Sheets ด้วยถ้ามี User
+          if (this.currentUser) {
+            try {
+              fetch(CONFIG.GAS_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ action: 'DELETE_ALL_USER_DATA', payload: { userId: this.currentUser.id } })
+              });
+            } catch (e) {}
+          }
+
+          // ลบ IndexedDB และ LocalStorage ทั้งหมด
           indexedDB.deleteDatabase(CONFIG.DB_NAME);
           localStorage.clear();
+          sessionStorage.clear();
+          alert(this.currentLanguage === 'TH' ? 'ลบข้อมูลทั้งหมดเรียบร้อยแล้ว ระบบกำลังเริ่มต้นใหม่' : 'All data purged. Resetting system.');
           location.reload();
         }
       }, 1000);
