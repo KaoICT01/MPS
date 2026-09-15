@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking v19.0 — Clicx Digital Save 2026</title>
+  <title>SmartSave Banking v21.0 — Clicx Digital Save 2026</title>
   <meta name="theme-color" content="#020617">
   <style>
     :root {
@@ -180,7 +180,7 @@
     }
 
     .balance-card::before {
-      content: 'CLICX DIGITAL 2026 // VAULT';
+      content: 'CLICX DIGITAL 2026 // VAULT (1-USER)';
       position: absolute;
       top: 12px;
       right: 16px;
@@ -677,8 +677,8 @@
     <section id="viewAuth" class="view-section active">
       <div style="text-align:center; margin: 36px 0 24px 0;">
         <svg width="48" height="48" viewBox="0 0 24 24" stroke="var(--primary-glow)" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        <h2 style="font-size:1.5rem; margin-top:8px; font-family:var(--font-mono);">SmartSave v19.0</h2>
-        <p style="color:var(--text-secondary); font-size:0.78rem; font-family:var(--font-mono);">Clicx Digital Save 2026 // AI 12.0 Engine</p>
+        <h2 style="font-size:1.5rem; margin-top:8px; font-family:var(--font-mono);">SmartSave v21.0</h2>
+        <p style="color:var(--text-secondary); font-size:0.78rem; font-family:var(--font-mono);">Clicx Digital Save 2026 // AI 12.0 Engine (1-User Edition)</p>
       </div>
 
       <div id="authForms">
@@ -1030,13 +1030,13 @@
 <script>
 /**
  * SmartSave Banking - Client Core Module ES2025+
- * Version 19.0 // Data Center & Clicx 2026 // AI 12.0 Engine, Checkmark Broadcast & PIN Gateway
+ * Version 21.0 // Data Center & Clicx 2026 // AI 12.0 Engine, 1-User Isolation & Checkmark Broadcast
  */
 
 const CONFIG = {
   GAS_ENDPOINT: 'https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec',
   DB_NAME: 'SmartSaveBankDB_Universal_Storage', // ฐานข้อมูลหลัก ถาวร ไม่เปลี่ยนตามเวอร์ชันเพื่อป้องกันข้อมูลหาย
-  VERSION: '19.0.0-PRO',
+  VERSION: '21.0.0-PRO',
   CACHE_LIMIT_BYTES: 5 * 1024 * 1024 * 1024
 };
 
@@ -1229,6 +1229,7 @@ class SmartSaveApp {
   // --- AUTOMATIC DATA MIGRATION ENGINE (ข้อมูลไม่หายเมื่อมีเวอร์ชันใหม่) ---
   async performDataMigration() {
     const legacyDBNames = [
+      'SmartSaveBankDB_v190_CLICX',
       'SmartSaveBankDB_v170_CLICX',
       'SmartSaveBankDB_v150_CLICX',
       'SmartSaveBankDB_v130_CLICX',
@@ -1488,6 +1489,14 @@ class SmartSaveApp {
 
     if (!u || !p) return alert('กรุณาระบุข้อมูลให้ครบถ้วน');
 
+    // Strict 1-User Isolation: บังคับบัญชีเดี่ยวต่ออุปกรณ์
+    const existingUser = localStorage.getItem('SMARTSAVE_USER');
+    if (isReg && existingUser) {
+      return alert(this.currentLanguage === 'TH' 
+        ? 'ข้อจำกัด 1 User ต่อ 1 บัญชี: อุปกรณ์นี้มีการลงทะเบียนบัญชีอยู่แล้ว หากต้องการลงทะเบียนใหม่ กรุณาลบข้อมูลทั้งหมดในหน้า AI Help' 
+        : 'Strict 1-User Policy: An account already exists on this node. Use AI Help to purge data first.');
+    }
+
     if (isReg) {
       const d = document.getElementById('authDisplayName').value.trim() || u;
       const cp = document.getElementById('authConfirmPassword').value.trim();
@@ -1511,9 +1520,8 @@ class SmartSaveApp {
       this.speakAi(this.currentLanguage === 'TH' ? 'ลงทะเบียนสำเร็จ กรุณาตั้งค่า PIN ในระบบแชท AI' : 'Registration complete. Please configure your PIN in AI Chat.');
       this.loginSuccess();
     } else {
-      const stored = localStorage.getItem('SMARTSAVE_USER');
-      if (stored) {
-        const user = JSON.parse(stored);
+      if (existingUser) {
+        const user = JSON.parse(existingUser);
         if (user.username === u && user.passwordHash === btoa(p)) {
           this.currentUser = user;
           this.speakAi(this.currentLanguage === 'TH' ? 'เข้าสู่ระบบสำเร็จ' : 'Terminal authentication verified');
