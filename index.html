@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SmartSave Banking v23.0 — Clicx Digital Save 2026</title>
+  <title>SmartSave Banking v25.0 — Clicx Digital Save 2026</title>
   <meta name="theme-color" content="#020617">
   <style>
     :root {
@@ -590,21 +590,6 @@
       font-family: var(--font-mono);
     }
 
-    .camera-container {
-      width: 100%;
-      height: 220px;
-      background: #000;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid var(--border);
-    }
-
-    video, canvas { width: 100%; height: 100%; object-fit: cover; }
-
     .empty-state {
       text-align: center;
       padding: 36px 16px;
@@ -633,6 +618,57 @@
       text-align: center;
       margin-top: 16px;
       font-family: var(--font-mono);
+    }
+
+    /* Daily PIN Security Numpad Pad */
+    .pin-display-dots {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .pin-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      transition: all 0.2s;
+    }
+
+    .pin-dot.filled {
+      background: var(--primary-glow);
+      border-color: var(--primary-glow);
+      box-shadow: 0 0 8px var(--primary-glow);
+    }
+
+    .numpad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    .numpad-btn {
+      height: 56px;
+      border-radius: 50%;
+      background: var(--surface-secondary);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 1.3rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      transition: all 0.15s;
+    }
+
+    .numpad-btn:active {
+      background: var(--primary-soft);
+      border-color: var(--primary);
     }
   </style>
 </head>
@@ -673,52 +709,41 @@
       [STATUS: BATCH_WINDOW] ช่วงเวลาสรุปยอดประจำวัน (23:00 - 23:30 น.) รายการจะเข้าคิวและซิงค์อัตโนมัติ
     </div>
 
-    <!-- 1. AUTH VIEW -->
-    <section id="viewAuth" class="view-section active">
-      <div style="text-align:center; margin: 36px 0 24px 0;">
-        <svg width="48" height="48" viewBox="0 0 24 24" stroke="var(--primary-glow)" stroke-width="2" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        <h2 style="font-size:1.5rem; margin-top:8px; font-family:var(--font-mono);">SmartSave v23.0</h2>
-        <p style="color:var(--text-secondary); font-size:0.78rem; font-family:var(--font-mono);">Clicx Digital Save 2026 // AI 12.0 Engine (Strict 1-User Edition)</p>
+    <!-- 1. DAILY PIN GATEWAY VIEW (ยกเลิกระบบ Login/Register เดิม) -->
+    <section id="viewDailyPinAuth" class="view-section active">
+      <div style="text-align:center; margin: 36px 0 20px 0;">
+        <svg width="48" height="48" viewBox="0 0 24 24" stroke="var(--primary-glow)" stroke-width="2" fill="none"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <h2 style="font-size:1.45rem; margin-top:8px; font-family:var(--font-mono);">SmartSave PIN Gateway</h2>
+        <p style="color:var(--text-secondary); font-size:0.78rem; font-family:var(--font-mono);">กรอกรหัส PIN 6 หลักเพื่อเข้าใช้งานประจำวัน</p>
       </div>
 
-      <div id="authForms">
-        <div id="registerFields" style="display:none;">
-          <div class="form-group">
-            <label id="lblDisplayName">Display Identifier</label>
-            <input type="text" class="form-control" id="authDisplayName" placeholder="ชื่อเรียก">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label id="lblUsername">Node Username</label>
-          <input type="text" class="form-control" id="authUsername" placeholder="กรอกชื่อผู้ใช้">
-        </div>
-        
-        <div class="form-group">
-          <label id="lblPassword">Security Key (Password)</label>
-          <input type="password" class="form-control" id="authPassword" placeholder="กรอกรหัสผ่าน">
-        </div>
-
-        <div id="registerExtraFields" style="display:none;">
-          <div class="form-group">
-            <label id="lblConfirmPassword">Confirm Security Key</label>
-            <input type="password" class="form-control" id="authConfirmPassword" placeholder="ยืนยันรหัสผ่าน">
-          </div>
-
-          <div class="form-group">
-            <label id="lblFaceKyc">Face Biometric Identity (KYC)</label>
-            <div class="camera-container">
-              <video id="kycVideo" autoplay playsinline></video>
-              <canvas id="kycCanvas" style="display:none;"></canvas>
-            </div>
-            <button type="button" class="btn-quick-amt" style="width:100%;" id="btnCaptureKyc">ถ่ายภาพยืนยันตัวตน</button>
-            <input type="hidden" id="kycImageBase64">
-          </div>
-        </div>
-
-        <button class="btn-primary" id="btnSubmitAuth" style="margin-top:8px;">เข้าสู่ระบบ Terminal</button>
-        <p style="text-align:center; font-size:0.78rem; color:var(--text-secondary); margin-top:14px; cursor:pointer; font-family:var(--font-mono);" id="toggleAuthMode">[ ลงทะเบียน Node ใหม่ + ยืนยันตัวตน ]</p>
+      <div class="pin-display-dots">
+        <div class="pin-dot" id="authDot0"></div>
+        <div class="pin-dot" id="authDot1"></div>
+        <div class="pin-dot" id="authDot2"></div>
+        <div class="pin-dot" id="authDot3"></div>
+        <div class="pin-dot" id="authDot4"></div>
+        <div class="pin-dot" id="authDot5"></div>
       </div>
+
+      <div class="numpad-grid">
+        <button class="numpad-btn" onclick="app.pressGatewayPin(1)">1</button>
+        <button class="numpad-btn" onclick="app.pressGatewayPin(2)">2</button>
+        <button class="numpad-btn" onclick="app.pressGatewayPin(3)">3</button>
+        <button class="numpad-btn" onclick="app.pressGatewayPin(4)">4</button>
+        <button class="numpad-btn" onclick="app.pressGatewayPin(5)">5</button>
+        <button class="numpad-btn" onclick="app.pressGatewayPin(6)">6</button>
+        <button class="numpad-btn" onclick="app.pressGatewayPin(7)">7</button>
+        <button class="numpad-btn" onclick="app.pressGatewayPin(8)">8</button>
+        <button class="numpad-btn" onclick="app.pressGatewayPin(9)">9</button>
+        <button class="numpad-btn" style="font-size:0.8rem;" onclick="app.bypassFirstTimeSetup()">ตั้งค่า</button>
+        <button class="numpad-btn" onclick="app.pressGatewayPin(0)">0</button>
+        <button class="numpad-btn" onclick="app.deleteGatewayPin()">⌫</button>
+      </div>
+
+      <p style="text-align:center; font-size:0.75rem; color:var(--text-secondary); margin-top:20px; font-family:var(--font-mono);" id="txtPinGatewayHint">
+        *หากยังไม่ได้ตั้งค่า PIN ให้ไปตั้งค่าความปลอดภัยในแชท AI 12.0
+      </p>
     </section>
 
     <!-- 2. DASHBOARD VIEW -->
@@ -914,7 +939,7 @@
     <section id="viewAiSaving" class="view-section">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
         <h3 style="font-family:var(--font-mono);">// AI ENGINE 12.0</h3>
-        <button class="btn-quick-amt" style="color:var(--danger); border-color:var(--danger);" onclick="app.logout()" id="btnTerminate">TERMINATE SESSION</button>
+        <button class="btn-quick-amt" style="color:var(--danger); border-color:var(--danger);" onclick="app.lockSession()" id="btnTerminate">LOCK TERMINAL</button>
       </div>
       <div class="chat-box" id="aiSavingChatBox">
         <div class="chat-msg ai">[AI_12.0_CORE]: Financial neural matrix online. พร้อมประมวลผลข้อมูลการออมจริงทั้งหมด</div>
@@ -933,10 +958,9 @@
       <p style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:14px; font-family:var(--font-mono);" id="txtDirectSupport">Direct Terminal Support</p>
       
       <div class="ai-action-grid">
-        <button class="ai-btn-option" onclick="app.handleForgotCredentials()" id="optForgotCred">1. รีเซ็ตรหัสผ่าน / ชื่อผู้ใช้ (1 ครั้ง/วัน)</button>
-        <button class="ai-btn-option" onclick="app.openAiVoiceSettings()" id="optVoiceSettings">2. ตั้งค่าเสียงภาษา AI Voice (เลือกเสียงระบบ)</button>
-        <button class="ai-btn-option" onclick="app.openSoundSettings()" id="optToneSettings">3. ตั้งค่าความถี่เสียงแจ้งเตือน (10 Tones)</button>
-        <button class="ai-btn-option" style="color:var(--danger);" onclick="app.handlePurgeAllData()" id="optPurgeData">4. PURGE ALL DATA (นับถอยหลัง 30 วิ)</button>
+        <button class="ai-btn-option" onclick="app.openAiVoiceSettings()" id="optVoiceSettings">1. ตั้งค่าเสียงภาษา AI Voice (เลือกเสียงระบบ)</button>
+        <button class="ai-btn-option" onclick="app.openSoundSettings()" id="optToneSettings">2. ตั้งค่าความถี่เสียงแจ้งเตือน (10 Tones)</button>
+        <button class="ai-btn-option" style="color:var(--danger);" onclick="app.handlePurgeAllData()" id="optPurgeData">3. PURGE ALL DATA (ลบข้อมูลทั้งหมดถาวร รีเซ็ตเริ่มต้น)</button>
       </div>
       <div id="aiHelpOutput" style="margin-top:14px;"></div>
     </section>
@@ -1030,13 +1054,13 @@
 <script>
 /**
  * SmartSave Banking - Client Core Module ES2025+
- * Version 23.0 // Data Center & Clicx 2026 // Strict 1-User Isolation & Factory Reset Engine
+ * Version 25.0 // Data Center & Clicx 2026 // Daily PIN Gateway (No Login/Register) & Factory Reset Engine
  */
 
 const CONFIG = {
   GAS_ENDPOINT: 'https://script.google.com/macros/s/AKfycbzeGO2XhMgVXAKDYVY2o-ntcLbgBEO0pMrCh7pdRxwOq23esodk_0UMD94USWwlWfR-/exec',
   DB_NAME: 'SmartSaveBankDB_Universal_Storage', // ฐานข้อมูลหลัก ถาวร ไม่เปลี่ยนตามเวอร์ชันเพื่อป้องกันข้อมูลหาย
-  VERSION: '23.0.0-PRO',
+  VERSION: '25.0.0-PRO',
   CACHE_LIMIT_BYTES: 5 * 1024 * 1024 * 1024
 };
 
@@ -1069,10 +1093,9 @@ const I18N = {
     titleAnalytics: '// ANALYTICS ENGINE',
     titleAiHelp: '// DC HELP & SYSTEM SERVICES',
     directSupport: 'Direct Terminal Support',
-    forgotCred: '1. รีเซ็ตรหัสผ่าน / ชื่อผู้ใช้ (1 ครั้ง/วัน)',
-    voiceSettings: '2. ตั้งค่าเสียงภาษา AI Voice (เลือกเสียงระบบ)',
-    toneSettings: '3. ตั้งค่าความถี่เสียงแจ้งเตือน (10 Tones)',
-    purgeData: '4. PURGE ALL DATA (นับถอยหลัง 30 วิ)',
+    voiceSettings: '1. ตั้งค่าเสียงภาษา AI Voice (เลือกเสียงระบบ)',
+    toneSettings: '2. ตั้งค่าความถี่เสียงแจ้งเตือน (10 Tones)',
+    purgeData: '3. PURGE ALL DATA (ลบข้อมูลทั้งหมดถาวร รีเซ็ตเริ่มต้น)',
     titleCalendar: '// SAVINGS AUDIT CALENDAR',
     titleRanks: '// SECURITY RANKS',
     ranksCriteria: 'คำนวณจากยอดออมจริงและ Uptime Streak',
@@ -1089,7 +1112,7 @@ const I18N = {
     navRocket: 'ROCKET',
     navStats: 'STATS',
     navMore: 'MORE',
-    terminate: 'TERMINATE SESSION'
+    terminate: 'LOCK TERMINAL'
   },
   EN: {
     totalReserve: 'Total Savings Vault (THB)',
@@ -1119,10 +1142,9 @@ const I18N = {
     titleAnalytics: '// QUANT ANALYTICS SUITE',
     titleAiHelp: '// AI 12.0 SUPPORT MATRIX',
     directSupport: 'Automated Operations Hub',
-    forgotCred: '1. Reset Credentials (Once/Day)',
-    voiceSettings: '2. Configure AI Voice Persona & Lang',
-    toneSettings: '3. Beacon Tone Frequency (10 Tones)',
-    purgeData: '4. PURGE ALL RECORDS (30s Timeout)',
+    voiceSettings: '1. Configure AI Voice Persona & Lang',
+    toneSettings: '2. Beacon Tone Frequency (10 Tones)',
+    purgeData: '3. PURGE ALL RECORDS (Factory Reset)',
     titleCalendar: '// AUDIT TIMELINE CALENDAR',
     titleRanks: '// STABILITY LEVEL HIERARCHY',
     ranksCriteria: 'Calculated via real committed funds and streak continuity.',
@@ -1139,7 +1161,7 @@ const I18N = {
     navRocket: 'ROCKET',
     navStats: 'STATS',
     navMore: 'MORE',
-    terminate: 'END SESSION'
+    terminate: 'LOCK TERMINAL'
   }
 };
 
@@ -1152,6 +1174,7 @@ class SmartSaveApp {
     this.currentLanguage = localStorage.getItem('SMARTSAVE_LANG') || 'TH';
     this.selectedAiVoiceName = localStorage.getItem('SMARTSAVE_VOICE_NAME') || '';
     this.speechSynthesis = window.speechSynthesis || null;
+    this.enteredGatewayPin = '';
     this.init();
   }
 
@@ -1163,11 +1186,12 @@ class SmartSaveApp {
     this.bindEvents();
     this.initClockAndMaintenance();
     this.checkCacheSize();
-    this.loadSession();
+    this.loadSessionUser();
     this.renderRankList();
     this.calculateSavingPlan();
     this.applyLanguageUI();
     this.fetchAdminBroadcast();
+    this.checkDailySession();
   }
 
   checkSundayLock() {
@@ -1229,6 +1253,7 @@ class SmartSaveApp {
   // --- AUTOMATIC DATA MIGRATION ENGINE (ข้อมูลไม่หายเมื่อมีเวอร์ชันใหม่) ---
   async performDataMigration() {
     const legacyDBNames = [
+      'SmartSaveBankDB_v230_CLICX',
       'SmartSaveBankDB_v210_CLICX',
       'SmartSaveBankDB_v190_CLICX',
       'SmartSaveBankDB_v170_CLICX',
@@ -1288,18 +1313,118 @@ class SmartSaveApp {
     document.getElementById('btnLangToggle').addEventListener('click', () => {
       this.handleLanguageToggle();
     });
+  }
 
-    document.getElementById('toggleAuthMode').addEventListener('click', () => {
-      const isReg = document.getElementById('registerFields').style.display === 'block';
-      document.getElementById('registerFields').style.display = isReg ? 'none' : 'block';
-      document.getElementById('registerExtraFields').style.display = isReg ? 'none' : 'block';
-      document.getElementById('btnSubmitAuth').innerText = isReg ? 'เข้าสู่ระบบ Terminal' : 'ลงทะเบียนและบันทึก Face ID';
-      document.getElementById('toggleAuthMode').innerText = isReg ? '[ ลงทะเบียน Node ใหม่ + ยืนยันตัวตน ]' : '[ เข้าสู่ระบบ Node ที่มีอยู่ ]';
-      if (!isReg) this.startKycCamera();
-    });
+  loadSessionUser() {
+    let stored = localStorage.getItem('SMARTSAVE_USER');
+    if (!stored) {
+      // โครงสร้าง User ถาวรระบบ Strict 1-User
+      const user = {
+        id: 'USR_NODE_' + Date.now(),
+        displayName: 'Node Terminal User',
+        pin: '',
+        createdAt: new Date().toISOString()
+      };
+      localStorage.setItem('SMARTSAVE_USER', JSON.stringify(user));
+      this.currentUser = user;
+    } else {
+      this.currentUser = JSON.parse(stored);
+    }
+  }
 
-    document.getElementById('btnSubmitAuth').addEventListener('click', () => this.handleAuthSubmit());
-    document.getElementById('btnCaptureKyc').addEventListener('click', () => this.captureKycPhoto());
+  checkDailySession() {
+    const today = new Date().toISOString().slice(0, 10);
+    const authDate = sessionStorage.getItem('PIN_AUTH_DATE');
+    
+    // ถ้ายังไม่ได้ตั้ง PIN ให้ข้ามไปหน้าตั้งค่าในแชท AI ทันที
+    if (!this.currentUser.pin || this.currentUser.pin.trim() === '') {
+      this.unlockAppLayout();
+      this.navigate('viewAiSaving');
+      setTimeout(() => {
+        alert(this.currentLanguage === 'TH' ? 'กรุณาตั้งค่า PIN 6 หลักของคุณผ่าน AI 12.0 ด้านล่าง' : 'Please configure your permanent 6-digit PIN via AI 12.0 below.');
+      }, 500);
+      return;
+    }
+
+    // มีการยืนยัน PIN ประจำวันใน Session แล้วหรือไม่
+    if (authDate === today) {
+      this.unlockAppLayout();
+      this.navigate('viewDashboard');
+      this.refreshAllData();
+    } else {
+      this.lockAppLayout();
+    }
+  }
+
+  pressGatewayPin(num) {
+    if (this.enteredGatewayPin.length < 6) {
+      this.enteredGatewayPin += num;
+      this.updateGatewayPinDots();
+      if (this.enteredGatewayPin.length === 6) {
+        setTimeout(() => this.verifyDailyPin(), 120);
+      }
+    }
+  }
+
+  deleteGatewayPin() {
+    if (this.enteredGatewayPin.length > 0) {
+      this.enteredGatewayPin = this.enteredGatewayPin.slice(0, -1);
+      this.updateGatewayPinDots();
+    }
+  }
+
+  updateGatewayPinDots() {
+    for (let i = 0; i < 6; i++) {
+      const dot = document.getElementById(`authDot${i}`);
+      if (dot) {
+        if (i < this.enteredGatewayPin.length) dot.classList.add('filled');
+        else dot.classList.remove('filled');
+      }
+    }
+  }
+
+  verifyDailyPin() {
+    if (this.currentUser.pin && this.enteredGatewayPin === this.currentUser.pin) {
+      sessionStorage.setItem('PIN_AUTH_DATE', new Date().toISOString().slice(0, 10));
+      this.speakAi(this.currentLanguage === 'TH' ? 'ยืนยันรหัสความปลอดภัยสำเร็จ เข้าสู่ระบบ' : 'PIN verified. Terminal unlocked.');
+      this.unlockAppLayout();
+      this.navigate('viewDashboard');
+      this.refreshAllData();
+      this.enteredGatewayPin = '';
+      this.updateGatewayPinDots();
+    } else {
+      this.speakAi(this.currentLanguage === 'TH' ? 'รหัส PIN ไม่ถูกต้อง' : 'Invalid PIN.');
+      alert(this.currentLanguage === 'TH' ? 'รหัส PIN 6 หลักไม่ถูกต้อง' : 'Incorrect security PIN.');
+      this.enteredGatewayPin = '';
+      this.updateGatewayPinDots();
+    }
+  }
+
+  bypassFirstTimeSetup() {
+    if (!this.currentUser.pin) {
+      this.unlockAppLayout();
+      this.navigate('viewAiSaving');
+    } else {
+      alert(this.currentLanguage === 'TH' ? 'PIN 6 หลักถูกตั้งค่าไว้แล้ว ไม่สามารถแก้ไขได้' : 'PIN already configured.');
+    }
+  }
+
+  unlockAppLayout() {
+    document.getElementById('appHeader').style.display = 'flex';
+    document.getElementById('bottomNav').style.display = 'flex';
+    document.getElementById('headerUserName').innerText = this.currentUser.displayName || 'Node User';
+  }
+
+  lockAppLayout() {
+    document.getElementById('appHeader').style.display = 'none';
+    document.getElementById('bottomNav').style.display = 'none';
+    this.navigate('viewDailyPinAuth');
+  }
+
+  lockSession() {
+    sessionStorage.removeItem('PIN_AUTH_DATE');
+    this.speakAi(this.currentLanguage === 'TH' ? 'ล็อกระบบเรียบร้อย' : 'Terminal locked.');
+    this.lockAppLayout();
   }
 
   applyLanguageUI() {
@@ -1334,7 +1459,6 @@ class SmartSaveApp {
       titleAnalytics: dict.titleAnalytics,
       titleAiHelp: dict.titleAiHelp,
       txtDirectSupport: dict.directSupport,
-      optForgotCred: dict.forgotCred,
       optVoiceSettings: dict.voiceSettings,
       optToneSettings: dict.toneSettings,
       optPurgeData: dict.purgeData,
@@ -1392,7 +1516,7 @@ class SmartSaveApp {
   }
 
   markBroadcastAsRead() {
-    localStorage.setItem('READ_BROADCAST_ID', 'MSG_2026_V23_PRO_RELEASE');
+    localStorage.setItem('READ_BROADCAST_ID', 'MSG_2026_V25_PRO_RELEASE');
     document.getElementById('bcTitle').style.color = 'var(--text-secondary)';
     document.getElementById('bcContent').style.opacity = '0.7';
     const checkIcon = document.getElementById('readCheckIcon');
@@ -1400,7 +1524,7 @@ class SmartSaveApp {
     this.speakAi(this.currentLanguage === 'TH' ? 'ทำเครื่องหมายอ่านข้อความแล้ว' : 'Marked broadcast as read');
   }
 
-  // --- 6-DIGIT PIN SECURITY CHECK ---
+  // --- 6-DIGIT PIN SECURITY CHECK BEFORE TRANSACTION ---
   requestAddSavingAuth() {
     if (!this.currentUser) return;
     if (!this.currentUser.pin || this.currentUser.pin.trim() === '') {
@@ -1441,6 +1565,7 @@ class SmartSaveApp {
           clearInterval(timer);
           this.currentUser.pin = pin;
           localStorage.setItem('SMARTSAVE_USER', JSON.stringify(this.currentUser));
+          sessionStorage.setItem('PIN_AUTH_DATE', new Date().toISOString().slice(0, 10));
           
           try {
             fetch(CONFIG.GAS_ENDPOINT, {
@@ -1457,106 +1582,6 @@ class SmartSaveApp {
       }, 1000);
     } else {
       alert(this.currentLanguage === 'TH' ? 'PIN ต้องเป็นตัวเลข 6 หลักเท่านั้น' : 'PIN must be exactly 6 digits.');
-    }
-  }
-
-  async startKycCamera() {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
-      document.getElementById('kycVideo').srcObject = stream;
-    } catch (err) {
-      console.warn('Biometric camera access unavailable', err);
-    }
-  }
-
-  captureKycPhoto() {
-    const video = document.getElementById('kycVideo');
-    const canvas = document.getElementById('kycCanvas');
-    canvas.width = 240;
-    canvas.height = 240;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(video, 0, 0, 240, 240);
-    const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
-    document.getElementById('kycImageBase64').value = dataUrl;
-    video.style.display = 'none';
-    canvas.style.display = 'block';
-    alert('Biometric Identity Encrypted & Saved.');
-  }
-
-  async handleAuthSubmit() {
-    const isReg = document.getElementById('registerFields').style.display === 'block';
-    const u = document.getElementById('authUsername').value.trim();
-    const p = document.getElementById('authPassword').value.trim();
-
-    if (!u || !p) return alert('กรุณาระบุข้อมูลให้ครบถ้วน');
-
-    // Strict 1-User Isolation: บังคับบัญชีเดี่ยวต่ออุปกรณ์
-    const existingUser = localStorage.getItem('SMARTSAVE_USER');
-    if (isReg && existingUser) {
-      return alert(this.currentLanguage === 'TH' 
-        ? 'ข้อจำกัด 1 User ต่อ 1 บัญชี: อุปกรณ์นี้มีการลงทะเบียนบัญชีอยู่แล้ว หากต้องการลงทะเบียนใหม่ กรุณาลบข้อมูลทั้งหมดในหน้า AI Help' 
-        : 'Strict 1-User Policy: An account already exists on this node. Use AI Help to purge data first.');
-    }
-
-    if (isReg) {
-      const d = document.getElementById('authDisplayName').value.trim() || u;
-      const cp = document.getElementById('authConfirmPassword').value.trim();
-      const kycPhoto = document.getElementById('kycImageBase64').value;
-
-      if (p !== cp) return alert('Security Keys ไม่ตรงกัน');
-      if (!kycPhoto) return alert('กรุณาบันทึกภาพถ่ายยืนยันตัวตน (KYC) ก่อนลงทะเบียน Node');
-
-      const user = {
-        id: 'USR_' + Date.now(),
-        username: u,
-        displayName: d,
-        passwordHash: btoa(p),
-        pin: '',
-        photoKyc: kycPhoto,
-        verificationStatus: 'VERIFIED',
-        createdAt: new Date().toISOString()
-      };
-      localStorage.setItem('SMARTSAVE_USER', JSON.stringify(user));
-      this.currentUser = user;
-      this.speakAi(this.currentLanguage === 'TH' ? 'ลงทะเบียนสำเร็จ กรุณาตั้งค่า PIN ในระบบแชท AI' : 'Registration complete. Please configure your PIN in AI Chat.');
-      this.loginSuccess();
-    } else {
-      if (existingUser) {
-        const user = JSON.parse(existingUser);
-        if (user.username === u && user.passwordHash === btoa(p)) {
-          this.currentUser = user;
-          this.speakAi(this.currentLanguage === 'TH' ? 'เข้าสู่ระบบสำเร็จ' : 'Terminal authentication verified');
-          this.loginSuccess();
-          return;
-        }
-      }
-      alert('Security Credentials ไม่ถูกต้อง');
-    }
-  }
-
-  loginSuccess() {
-    document.getElementById('appHeader').style.display = 'flex';
-    document.getElementById('bottomNav').style.display = 'flex';
-    document.getElementById('headerUserName').innerText = this.currentUser.displayName || this.currentUser.username;
-    this.navigate('viewDashboard');
-    this.refreshAllData();
-  }
-
-  loadSession() {
-    const stored = localStorage.getItem('SMARTSAVE_USER');
-    if (stored) {
-      this.currentUser = JSON.parse(stored);
-      this.loginSuccess();
-    }
-  }
-
-  logout() {
-    if (confirm('ยืนยันตัดการเชื่อมต่อ Terminal Session?')) {
-      this.speakAi(this.currentLanguage === 'TH' ? 'ออกจากระบบเรียบร้อย' : 'Terminal session ended');
-      this.currentUser = null;
-      document.getElementById('appHeader').style.display = 'none';
-      document.getElementById('bottomNav').style.display = 'none';
-      this.navigate('viewAuth');
     }
   }
 
@@ -1990,22 +2015,6 @@ class SmartSaveApp {
     }, 300);
   }
 
-  handleForgotCredentials() {
-    const today = new Date().toISOString().slice(0, 10);
-    if (localStorage.getItem('LAST_CRED_CHANGE') === today) {
-      return alert('จำกัดการเปลี่ยน Security Key 1 ครั้งต่อวัน');
-    }
-
-    const newPass = prompt('ระบุ Security Key (รหัสผ่านใหม่):');
-    if (newPass) {
-      this.currentUser.passwordHash = btoa(newPass);
-      localStorage.setItem('SMARTSAVE_USER', JSON.stringify(this.currentUser));
-      localStorage.setItem('LAST_CRED_CHANGE', today);
-      alert('อัปเดต Security Key เรียบร้อย กรุณาเริ่ม Session ใหม่');
-      this.logout();
-    }
-  }
-
   openSoundSettings() {
     const tone = prompt('เลือกความถี่เสียงแจ้งเตือน (Tone 1 - 10):', this.selectedAudioTone);
     if (tone && tone >= 1 && tone <= 10) {
@@ -2029,7 +2038,6 @@ class SmartSaveApp {
         if (sec <= 0) {
           clearInterval(timer);
           
-          // ส่งคำขอลบข้อมูลบน Google Sheets ด้วยถ้ามี User
           if (this.currentUser) {
             try {
               fetch(CONFIG.GAS_ENDPOINT, {
@@ -2040,7 +2048,6 @@ class SmartSaveApp {
             } catch (e) {}
           }
 
-          // ลบ IndexedDB และ LocalStorage ทั้งหมด
           indexedDB.deleteDatabase(CONFIG.DB_NAME);
           localStorage.clear();
           sessionStorage.clear();
